@@ -320,28 +320,42 @@
 
     .save-load-row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
       max-width: 620px;
       margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     .save-load-btn {
       flex: 1;
+      min-width: 160px;
       background: #000;
       color: #fff;
       border: 2px solid var(--border-color);
-      padding: 10px;
+      padding: 10px 6px;
       font-family: inherit;
-      font-size: 9px;
+      font-size: 8.5px;
       cursor: pointer;
       text-transform: uppercase;
+      line-height: 1.4;
     }
 
     .save-load-btn:hover {
       background: #222;
       border-color: var(--ut-yellow);
       color: var(--ut-yellow);
+    }
+
+    .save-load-btn.reset-btn {
+      border-color: var(--ut-red);
+      color: #ff8888;
+    }
+
+    .save-load-btn.reset-btn:hover {
+      background: #330000;
+      border-color: var(--ut-red);
+      color: #ffffff;
     }
 
     .game-over-envelope {
@@ -389,6 +403,10 @@
       }
       .game-over-envelope {
         width: 110px;
+      }
+      .save-load-btn {
+        font-size: 8px;
+        min-width: 100%;
       }
     }
   </style>
@@ -500,10 +518,10 @@ function playGameOverSting() {
 }
 
 /* =========================================================================
-   2. BANCO DE PREGUNTAS CON PRUEBA ANTERIOR Y APUNTES CRUZADOS
+   2. BANCO DE 150 PREGUNTAS (DISTRIBUIDO Y EQUILIBRADO)
    ========================================================================= */
 const MASTER_QUESTION_BANK = [
-  // --- FASE 99: CERTAMEN / PRUEBA ANTERIOR (INTACTA) ---
+  // --- FASE 99: CERTAMEN / PRUEBA ANTERIOR (24 PREGUNTAS REALES INTACTAS) ---
   {
     id: 1001, phase: 99, isPastExam: true,
     q: "El benchmarking significa:",
@@ -830,16 +848,15 @@ const MASTER_QUESTION_BANK = [
     exp: "Un proceso es el conjunto de actividades y tareas dinámicamente articuladas para alcanzar un resultado u objetivo determinado."
   },
 
-  // --- PREGUNTAS DISTRIBUIDAS POR FASE 1 A 6 (NUTRIDAS CON LOS APUNTES DE AULA) ---
-  // FASE 1: CONCEPTOS DE EMPRESA, RECURSOS Y OPERACIONES
+  // --- FASE 1: CONCEPTO DE EMPRESA, RECURSOS Y OPERACIONES ---
   {
     id: 1, phase: 1,
     q: "Según Peter Drucker, la empresa se define formalmente como:",
     options: [
-      "Un organismo del Estado para distribuir riqueza",
+      "Un organismo estatal sin fines de lucro orientado a redistribuir subsidios",
       "Una actividad económica organizada, dirigida a la producción de bienes y servicios para el mercado",
-      "Una entidad sin fines de lucro enfocada en la caridad",
-      "Una máquina extractiva de recursos naturales"
+      "Una comunidad gremial solidaria dedicada exclusivamente a la beneficencia pública",
+      "Una estructura corporativa orientada a la extracción continua de materias primas"
     ],
     ans: 1,
     hint: "Drucker vincula la empresa directamente con la producción económica orientada al mercado.",
@@ -912,29 +929,29 @@ const MASTER_QUESTION_BANK = [
   },
   {
     id: 7, phase: 1,
-    q: "De acuerdo a la clasificación por actividad o área, una empresa que fabrica muebles de madera se clasifica como:",
+    q: "Una industria primaria se caracteriza por centrar su producción en:",
     options: [
-      "Extractiva o primaria por el origen forestal de sus insumos",
-      "Industrial o manufacturera por transformar materias primas",
-      "Terciaria o comercializadora pura de bienes importados",
-      "De servucción por la atención entregada en el mostrador"
+      "El desarrollo de plataformas informáticas para el sector bancario",
+      "La transformación directa de recursos naturales (agricultura, minería, pesca)",
+      "La prestación de servicios profesionales y asesorías tributarias avanzadas",
+      "El ensamble y empaquetado de componentes manufacturados importados"
     ],
     ans: 1,
-    hint: "Transforma materias primas en un bien físico final o intermedio.",
-    exp: "Una fábrica de muebles transforma materias primas entregadas por el sector primario, siendo una empresa industrial."
+    hint: "Involucra actividades que extraen insumos directamente de la tierra, la agricultura o el mar.",
+    exp: "El sector primario extrae y aprovecha directamente los recursos de la naturaleza."
   },
   {
     id: 8, phase: 1,
-    q: "La práctica comercial y financiera de 'Arbitraje de bienes' consiste formalmente en:",
+    q: "En una Sociedad Anónima (S.A.), la responsabilidad patrimonial de los socios se define como:",
     options: [
-      "Someter discrepancias de contratos al fallo de un tribunal arbitral",
-      "Comprar un bien en un mercado barato para venderlo en otro donde cotiza más alto",
-      "Adquirir materias primas exclusivamente a través de compras centralizadas",
-      "Pagar tarifas diferenciales por pieza producida en líneas de montaje"
+      "Solidaria e ilimitada comprometiendo bienes presentes y futuros",
+      "Limitada estrictamente al monto del aporte o capital invertido",
+      "Determinada judicialmente según el pasivo circulante del ejercicio",
+      "Exclusiva de los administradores y miembros del comité de directores"
     ],
     ans: 1,
-    hint: "Aprovechar la diferencia de precios entre dos plazas para obtener ganancia neta.",
-    exp: "Arbitraje de bienes: práctica que consiste en comprar un bien en un mercado donde su precio es bajo para venderlo en otro donde cotiza más alto."
+    hint: "Los accionistas protegen su patrimonio personal; solo arriesgan las acciones suscritas.",
+    exp: "En las sociedades de capital (S.A.), la responsabilidad patrimonial del accionista se limita a sus acciones aportadas."
   },
   {
     id: 9, phase: 1,
@@ -951,16 +968,16 @@ const MASTER_QUESTION_BANK = [
   },
   {
     id: 10, phase: 1,
-    q: "El concepto de 'Outsourcing' se define rigurosamente en la pauta de aula como:",
+    q: "Una sociedad en comandita reúne a dos clases de socios:",
     options: [
-      "La contratación de trabajadores independientes a honorarios",
-      "Contratar empresas externas para la ejecución de procesos específicos",
-      "La exportación de mercaderías terminadas a distribuidores asiáticos",
-      "La incorporación de socios comanditarios que aportan liquidez"
+      "Socios locales que aportan liquidez y socios externos de garantía",
+      "Gestores (administran con riesgo ilimitado) y Comanditarios (aporte limitado)",
+      "Socios ejecutivos de operaciones y socios fiscalizadores de balance",
+      "Socios fundadores con derecho a veto y socios transitorios de capital"
     ],
     ans: 1,
-    hint: "Subcontratación de procesos no medulares con firmas especializadas.",
-    exp: "Outsourcing es contratar empresas externas para que se encarguen de procesos específicos de la firma."
+    hint: "Unos llevan la gestión asumiendo riesgo personal y otros aportan capital de forma pasiva.",
+    exp: "Estructura mixta: socios gestores administran; comanditarios aportan capital sin intervenir en la gestión directa."
   },
   {
     id: 11, phase: 1,
@@ -1003,486 +1020,1162 @@ const MASTER_QUESTION_BANK = [
   },
   {
     id: 14, phase: 1,
-    q: "¿Qué es el 'Cliente Interno' dentro de los conceptos integradores de la cátedra?",
+    q: "Completar la frase: Mientras el Front Office está en contacto directo con el usuario, el Back Office garantiza la ________ de los procesos internos.",
     options: [
-      "El comprador que adquiere bienes a través de plataformas virtuales",
-      "Miembro o área de la empresa que recibe insumos o datos de otra sección",
-      "El auditor externo que fiscaliza la exactitud de los balances",
-      "El accionista que aporta capital de trabajo para la producción"
+      "estandarización, soporte operativo y control documental",
+      "reducción arancelaria y fiscal en ventas al por mayor",
+      "eliminación de responsabilidades directivas en planta",
+      "comercialización masiva en plataformas de comercio digital"
     ],
-    ans: 1,
-    hint: "Ejemplo de aula: área de ventas que depende del despacho de bodega y logística.",
-    exp: "Cliente interno: miembro o equipo dentro de la organización que recibe insumos o información de otra área para realizar su trabajo."
+    ans: 0,
+    hint: "El cliente es atendido gracias a que el soporte administrativo interno funciona coordinado.",
+    exp: "El back office proporciona el soporte estructural, financiero y documental para que la venta sea exitosa."
   },
   {
     id: 15, phase: 1,
-    q: "En la gestión de 'Calidad Total vs Costos', la cátedra postula formalmente que:",
+    q: "¿Qué ventaja estratégica otorga un sistema BPMS en el back office?",
     options: [
-      "Invertir en calidad encarece el producto y reduce el margen financiero",
-      "Invertir preventivamente en calidad reduce los costos de 'no calidad' (reprocesos y mermas)",
-      "La calidad sólo debe medirse en la fase de atención del Front Office",
-      "Los estándares de calidad impiden alcanzar economías de escala fabriles"
+      "Suprimir el cumplimiento de normativas tributarias y laborales vigentes",
+      "Integrar, estandarizar y automatizar los flujos de procesos en la nube",
+      "Transferir el riesgo crediticio de las ventas hacia proveedores externos",
+      "Reemplazar totalmente a la alta gerencia en la formulación del negocio"
     ],
     ans: 1,
-    hint: "Hacerlo bien a la primera evita desperdicios, rechazos y pérdida de clientes.",
-    exp: "Invertir en calidad reduce drásticamente los costos de 'no calidad' (mermas, reprocesos, devoluciones y pérdida de clientes)."
+    hint: "Permite modelar, integrar y monitorear tareas corporativas de punta a punta de forma digital.",
+    exp: "Un BPMS integra flujos, monitorea tiempos, reduce errores y centraliza la información en tiempo real."
+  },
+  {
+    id: 16, phase: 1,
+    q: "Las empresas heterogestionadas son aquellas en donde las decisiones son tomadas por:",
+    options: [
+      "Asambleas paritarias compuestas exclusivamente por la base de trabajadores",
+      "Directores o personas ajenas a la actividad laboral operativa cotidiana",
+      "Organismos fiscalizadores del Estado mediante resoluciones públicas",
+      "Comités de consumidores organizados a través de canales de compra"
+    ],
+    ans: 1,
+    hint: "La administración y gobierno recaen en un directorio externo a la mano de obra operativa.",
+    exp: "En la heterogestión, la propiedad y la alta dirección están diferenciadas de la mano de obra directa."
+  },
+  {
+    id: 17, phase: 1,
+    q: "En una empresa descentralizada, la autoridad para tomar decisiones se caracteriza por:",
+    options: [
+      "Concentrarse exclusivamente en la presidencia de la junta directiva",
+      "Distribuirse en la estructura administrativa mediante delegación formal",
+      "Depender de la aprobación previa de las entidades reguladoras externas",
+      "Diluirse sin que existan jerarquías ni responsabilidades individuales"
+    ],
+    ans: 1,
+    hint: "La toma de decisiones no está atrapada en la cúspide; se reparte hacia los mandos medios y operativos.",
+    exp: "La descentralización delega la facultad decisoria hacia niveles intermedios y operativos cercanos al problema."
+  },
+  {
+    id: 18, phase: 1,
+    q: "El capital de trabajo (activos circulantes) de una empresa tiene como función:",
+    options: [
+      "Financiar la compra de bienes inmuebles a largo plazo para renta",
+      "Cubrir las operaciones del ciclo corriente (caja, inventarios, cobranza)",
+      "Garantizar el pago de créditos sindicados con vencimientos futuros",
+      "Amortizar depreciaciones acumuladas de instalaciones industriales"
+    ],
+    ans: 1,
+    hint: "Es el recurso corriente para pagar sueldos, reponer inventarios y financiar cuentas del mes.",
+    exp: "El capital de trabajo financia el ciclo operacional cotidiano (comprar, producir, vender y cobrar)."
+  },
+  {
+    id: 19, phase: 1,
+    q: "¿Qué define técnicamente a un bien de consumo intermedio?",
+    options: [
+      "Un bien que satisface directamente al consumidor en su estado actual",
+      "Un bien adquirido como insumo para integrarse en un proceso productivo",
+      "Un producto intangible consumido en el mismo momento de su emisión",
+      "Un activo fijo que delimita la escala estructural de la compañía"
+    ],
+    ans: 1,
+    hint: "Sirve como insumo para fabricar otro producto posterior.",
+    exp: "Bienes intermedios son insumos para fabricar otros bienes (ej. harina vendida a una panadería)."
+  },
+  {
+    id: 20, phase: 1,
+    q: "Respecto a la clasificación de bienes, la harina de trigo representa:",
+    options: [
+      "Un bien estrictamente primario sin posibilidad de ser manufacturado",
+      "Un producto que puede ser final o intermedio según su destino económico",
+      "Un servicio intangible de servucción sin soporte físico apreciable",
+      "Un activo fijo de infraestructura que delimita la escala fabril"
+    ],
+    ans: 1,
+    hint: "En el hogar es consumo final; en una fábrica de galletas es insumo intermedio.",
+    exp: "Un mismo bien puede ser intermedio o final dependiendo de si se usa en la industria o en el hogar."
+  },
+  {
+    id: 21, phase: 1,
+    q: "Un Centro de Servicios Compartidos (CSC) se diferencia del back office tradicional en que:",
+    options: [
+      "Opera como una unidad informal sin métricas de gestión ni jefaturas",
+      "Centraliza deliberadamente servicios de soporte para múltiples filiales",
+      "Atiende únicamente consultas telefónicas de clientes finales del Front",
+      "Carece de sistemas de información integrados para la administración"
+    ],
+    ans: 1,
+    hint: "Unifica y estandariza funciones comunes (como nóminas o cobranza) para todas las filiales de un grupo corporativo.",
+    exp: "El CSC unifica y estandariza servicios corporativos (facturación, nóminas, soporte TI) para toda una corporación."
+  },
+  {
+    id: 22, phase: 1,
+    q: "¿Qué efecto contable produce la depreciación en el balance de una empresa?",
+    options: [
+      "Incrementa de manera directa el saldo disponible en la cuenta corriente",
+      "Refleja el desgaste y pérdida de valor de activos fijos en el tiempo",
+      "Cancela las obligaciones financieras de corto plazo con proveedores",
+      "Aumenta el valor patrimonial estimado de las existencias terminadas"
+    ],
+    ans: 1,
+    hint: "Reconoce que los bienes de uso sufren desgaste u obsolescencia a lo largo de su vida útil.",
+    exp: "La depreciación distribuye el costo del activo fijo a lo largo de su vida útil por desgaste u obsolescencia."
+  },
+  {
+    id: 23, phase: 1,
+    q: "Completar la frase: La circularización de saldos es un procedimiento de control que busca verificar externamente las cuentas por ________.",
+    options: [
+      "cobrar o pagar mediante confirmación con clientes y proveedores",
+      "castigar contablemente por incobrabilidad en el ejercicio fiscal",
+      "subastar judicialmente por quiebra o cesación de pagos de la firma",
+      "transferir a sociedades filiales para reducir la base tributaria"
+    ],
+    ans: 0,
+    hint: "Es una técnica de auditoría donde se solicita a terceros que confirmen los saldos en libros.",
+    exp: "Técnica de auditoría consistente en pedir a clientes o proveedores que confirmen directamente el saldo adeudado."
+  },
+  {
+    id: 24, phase: 1,
+    q: "Las empresas públicas se justifican en una economía principalmente por:",
+    options: [
+      "La necesidad de maximizar el margen de utilidad sobre el patrimonio",
+      "Soberanía, áreas estratégicas, subsidiaridad o servicios esenciales",
+      "El interés en desplazar enteramente la iniciativa privada local",
+      "La obligación de contratar únicamente personal de administración pública"
+    ],
+    ans: 1,
+    hint: "El Estado cubre sectores estratégicos o donde el mercado privado no tiene incentivos de rentabilidad.",
+    exp: "El Estado asume roles estratégicos (Codelco, Enap) o cubre necesidades sociales donde los privados no tienen incentivos."
+  },
+  {
+    id: 25, phase: 1,
+    q: "¿Cómo se define el 'Layout' en los apuntes de la cátedra?",
+    options: [
+      "La campaña gráfica publicitaria orientada al público objetivo",
+      "La distribución física y espacial estratégica de áreas, maquinarias y puestos",
+      "El organigrama formal de delegación jerárquica de la directiva",
+      "El registro de transacciones de inventario en el balance general"
+    ],
+    ans: 1,
+    hint: "Diseño espacial de los puestos y máquinas para optimizar el flujo de trabajo.",
+    exp: "Layout: distribución física y espacial estratégica de las áreas de trabajo, maquinaria y estaciones para maximizar la eficiencia y experiencia."
   },
 
   // FASE 2: PROBLEMA ADMINISTRATIVO Y EL ADMINISTRADOR
   {
-    id: 26, phase: 2,
-    q: "En toda forma de cooperación organizada surge el problema administrativo porque:",
+    id: 34, phase: 2,
+    q: "Completar la frase: La tarea básica de la administración consiste en lograr objetivos organizacionales ________ de las personas.",
     options: [
-      "Las leyes tributarias exigen la constitución formal de un directorio",
-      "Hay al menos dos personas en función de un objetivo común que requiere recursos",
-      "Los trabajadores demandan asambleas paritarias para fijar remuneraciones",
-      "El mercado financiero impone auditorías externas a las operaciones"
+      "prescindiendo del criterio y la voluntad",
+      "a través de la coordinación deliberada",
+      "en abierta contradicción a los intereses",
+      "sustituyendo la cooperación por mandatos"
     ],
     ans: 1,
-    hint: "Basta que haya 2 personas trabajando por un objetivo común.",
-    exp: "En toda forma de cooperación organizada donde hay al menos dos personas tras un objetivo común se requiere coordinación y recursos."
+    hint: "Un administrador lidera y canaliza el trabajo conjunto de los demás colaboradores.",
+    exp: "El administrador no produce todo por sí mismo; coordina, potencia y canaliza esfuerzos ajenos hacia el logro común."
   },
   {
-    id: 27, phase: 2,
-    q: "La tarea medular del administrador según los apuntes de clase se sintetiza en:",
+    id: 35, phase: 2,
+    q: "Daniel Goleman sostiene que ante altas exigencias cognitivas en directivos:",
     options: [
-      "Elaborar balances tributarios y vigilar el cumplimiento de horarios",
-      "Interpretar objetivos y transformarlos en acción organizacional eficaz",
-      "Prescindir de la delegación para concentrar el mando en la cúspide",
-      "Sustituir la cooperación humana por protocolos estandarizados rígidos"
+      "El coeficiente intelectual garantiza enteramente el éxito laboral",
+      "La inteligencia emocional se convierte en el factor determinante clave",
+      "Las emociones deben ser reprimidas para mantener la rigidez técnica",
+      "Los conocimientos enciclopédicos desplazan a la empatía relacional"
     ],
     ans: 1,
-    hint: "Transformar metas en acción coordinada mediante el proceso administrativo clásico.",
-    exp: "Interpretar los objetivos propuestos y transformarlos en acción organizacional a través del proceso administrativo."
+    hint: "A iguales capacidades técnicas, las competencias emocionales marcan el desempeño sobresaliente.",
+    exp: "A igual preparación técnica, la empatía, autocontrol y manejo relacional determinan el desempeño sobresaliente."
   },
   {
-    id: 28, phase: 2,
-    q: "Según los apuntes, el trabajo principal y misión de largo plazo del administrador es:",
+    id: 36, phase: 2,
+    q: "¿Cuáles son las cinco dimensiones básicas de la Inteligencia Emocional?",
     options: [
-      "Resolver litigios comerciales con los competidores del sector",
-      "Proyectar a la organización de una situación actual a una futura relativamente mejor",
-      "Reducir al mínimo los inventarios de seguridad en las bodegas",
-      "Supervisar visualmente cada movimiento en la línea de montaje"
+      "Cálculo, memoria, razonamiento abstracto, velocidad y lenguaje",
+      "Autoconocimiento, autorregulación, motivación, empatía y destreza social",
+      "Planificación, organización, integración, dirección y control",
+      "Entradas, procesos, salidas, retroalimentación y homeostasis"
     ],
     ans: 1,
-    hint: "Mover a la organización desde el estado del diagnóstico presente hacia la meta futura deseable.",
+    hint: "Son las cinco dimensiones intrapersonales e interpersonales sistematizadas por Goleman.",
+    exp: "Son las cinco dimensiones intrapersonales e interpersonales descritas por Goleman."
+  },
+  {
+    id: 37, phase: 2,
+    q: "Poseer una elevada inteligencia emocional en potencia significa que la persona:",
+    options: [
+      "Dominará de forma automática e infalible cualquier rol directivo",
+      "Tiene un excelente potencial que debe traducir en aptitudes reales",
+      "Carece de vulnerabilidades psicológicas frente al estrés laboral",
+      "No requiere capacitación en herramientas técnicas de administración"
+    ],
+    ans: 1,
+    hint: "El potencial innato debe cultivarse mediante hábitos diarios para volverse destreza real.",
+    exp: "El potencial emocional no garantiza aptitud directa si no se entrena en la práctica y en los hábitos cotidianos."
+  },
+  {
+    id: 38, phase: 2,
+    q: "Según el estudio del BID sobre el mercado laboral chileno, los empleadores valoran más:",
+    options: [
+      "Los conocimientos técnicos ultraespecíficos del puesto a desempeñar",
+      "Habilidades socioemocionales (compromiso, honestidad) y comunicación",
+      "La memorización exhaustiva de normativas tributarias y laborales",
+      "La disposición a ejecutar órdenes sin cuestionar su pertinencia"
+    ],
+    ans: 1,
+    hint: "Lo técnico se enseña en la inducción; las actitudes morales y la comunicación son indispensables de origen.",
+    exp: "Lo técnico se enseña en la empresa; las actitudes éticas, adaptabilidad y comunicación son indispensables de origen."
+  },
+  {
+    id: 39, phase: 2,
+    q: "En el Índice de Actitud Innovadora y Emprendedora en Chile, el atributo más alto fue:",
+    options: [
+      "La confianza general en las instituciones del sistema económico",
+      "La perseverancia y resiliencia ante escenarios de adversidad",
+      "La propensión a asumir riesgos financieros sin respaldo de capital",
+      "La capacidad de asociatividad formal con grandes conglomerados"
+    ],
+    ans: 1,
+    hint: "Superó el 85%: describe la tenacidad de continuar ante la adversidad.",
+    exp: "La perseverancia (88,5% en emprendedores y 85,5% país) es el rasgo más marcado del emprendedor chileno."
+  },
+  {
+    id: 40, phase: 2,
+    q: "En el ámbito directivo, la resiliencia se define como:",
+    options: [
+      "La rigidez inflexible para mantener planes operativos sin cambios",
+      "La capacidad de sobreponerse a reveses y convertirlos en aprendizaje",
+      "La transferencia de pérdidas hacia proveedores en periodos críticos",
+      "El traspaso de decisiones complejas hacia comités de asesoría"
+    ],
+    ans: 1,
+    hint: "Significa no rendirse y aprender de los reveses para volver a emprender.",
+    exp: "Resiliencia es la actitud de sobreponerse a crisis, ajustar el rumbo y persistir con tenacidad."
+  },
+  {
+    id: 41, phase: 2,
+    q: "La matriz FODA clasifica el diagnóstico de una organización distinguiendo:",
+    options: [
+      "Variables pasadas y presentes como externas, y futuras como internas",
+      "Factores internos (F y D) frente a condiciones del entorno (O y A)",
+      "Procesos productivos primarios frente a actividades de apoyo contable",
+      "Entradas del macroentorno frente a mecanismos de retroalimentación"
+    ],
+    ans: 1,
+    hint: "Lo propio de la firma son F y D; lo que ocurre en el mercado circundante son O y A.",
+    exp: "Fortalezas y debilidades radican dentro de la firma; oportunidades y amenazas provienen del entorno competitivo."
+  },
+  {
+    id: 42, phase: 2,
+    q: "Para el análisis estructurado del ambiente externo se suelen emplear:",
+    options: [
+      "El modelo de las Cinco Fuerzas de Porter y el marco analítico PEST",
+      "El organigrama de puestos y la descripción de perfiles funcionales",
+      "La auditoría de estados financieros y el balance de comprobación",
+      "El inventario físico de materias primas y maquinaria instalada"
+    ],
+    ans: 0,
+    hint: "Dos modelos clásicos: atractivo industrial del sector y variables del macroentorno.",
+    exp: "Porter evalúa el atractivo de la industria y PEST el macroentorno general."
+  },
+  {
+    id: 43, phase: 2,
+    q: "Completar la frase: En la cadena de valor, la gestión de recursos humanos y el desarrollo tecnológico son actividades de ________.",
+    options: [
+      "soporte o apoyo a las fases de creación directa de valor",
+      "logística de salida orientada a la distribución minorista",
+      "producción física ejecutadas en las líneas de ensamblaje",
+      "atención postventa prestadas al cliente en el mostrador"
+    ],
+    ans: 0,
+    hint: "Brindan el soporte indispensable para que las actividades primarias operen con eficacia.",
+    exp: "Son actividades de soporte que sustentan y fortalecen la ejecución de las actividades primarias."
+  },
+  {
+    id: 44, phase: 2,
+    q: "El principio de autorregulación emocional en el liderazgo busca:",
+    options: [
+      "Suprimir las opiniones divergentes de colaboradores en asambleas",
+      "Canalizar impulsos perjudiciales para decidir con serenidad y lucidez",
+      "Delegar las resoluciones conflictivas en instancias externas a la firma",
+      "Evitar la fijación de metas que generen tensión en los equipos"
+    ],
+    ans: 1,
+    hint: "Dominar impulsos destructivos para actuar con templanza y lucidez en momentos de crisis.",
+    exp: "La autorregulación evita reacciones viscerales y mantiene el autodominio en momentos de crisis."
+  },
+  {
+    id: 45, phase: 2,
+    q: "El propósito esencial del trabajo del administrador consiste en:",
+    options: [
+      "Mantener estáticas las operaciones sin alterar rutinas existentes",
+      "Proyectar a la organización desde un estado actual a uno mejor",
+      "Asegurar la ejecución de órdenes jerárquicas sin revisar su impacto",
+      "Centralizar todos los trámites documentales en la dirección general"
+    ],
+    ans: 1,
+    hint: "La esencia de la gestión es transformar y mejorar los resultados en el tiempo.",
     exp: "El trabajo del administrador es proyectar a la organización de una situación actual a una futura relativamente mejor."
   },
   {
-    id: 29, phase: 2,
-    q: "En clases se destacó el concepto de 'Pericia'. Este se define formalmente como:",
+    id: 46, phase: 2,
+    q: "Según Goleman, la 'pericia' profesional se concibe como:",
     options: [
-      "Poseer un coeficiente intelectual sobresaliente en matemáticas",
-      "La combinación del sentido común con el conocimiento especializado y la práctica",
-      "La autoridad formal otorgada por el nombramiento en el directorio",
-      "La capacidad de memorizar normativas legales de comercio exterior"
+      "La posesión innata de un coeficiente intelectual sobresaliente",
+      "La integración de sentido común, conocimiento experto y práctica",
+      "La habilidad manual para reparar maquinaria de alta complejidad",
+      "La acumulación de credenciales académicas sin ejercicio laboral"
     ],
     ans: 1,
-    hint: "Sentido común más técnica especializada y experiencia acumulada.",
-    exp: "Pericia: combinación de sentido común con conocimiento especializado y la habilidad adquirida con la práctica."
+    hint: "Integra conocimientos técnicos internalizados con la práctica cotidiana constante.",
+    exp: "La pericia es competencia adquirida: conocimiento técnico internalizado y enriquecido por la experiencia cotidiana."
   },
   {
-    id: 30, phase: 2,
-    q: "Respecto a la Inteligencia Emocional en directivos, el 'Corolario' de aula advierte que:",
+    id: 47, phase: 2,
+    q: "¿Por qué el avance tecnológico por sí solo no garantiza el éxito de una empresa?",
     options: [
-      "Garantiza de forma inmediata e infalible el éxito en el liderazgo",
-      "Una elevada IE por sí sola no garantiza haber aprendido las aptitudes de trabajo",
-      "Carece de relevancia frente al coeficiente intelectual en puestos altos",
-      "Debe aplicarse únicamente en situaciones de conflicto con sindicatos"
+      "Porque los softwares sufren obsolescencia instantánea en el mercado",
+      "Porque requiere una gestión humana capaz de articular los recursos",
+      "Porque los consumidores prefieren procesos manuales y tradicionales",
+      "Porque los marcos regulatorios prohíben la digitalización fabril"
     ],
     ans: 1,
-    hint: "El potencial emocional debe traducirse deliberadamente en aptitudes laborales reales.",
-    exp: "Una elevada IE por sí sola no garantiza que se hayan aprendido las aptitudes laborales; solo otorga el potencial para adquirirlas."
+    hint: "Las herramientas son neutras; su impacto depende del liderazgo y coordinación humana.",
+    exp: "Las máquinas y softwares son inertes; su rendimiento depende de la coordinación y liderazgo de las personas."
   },
   {
-    id: 31, phase: 2,
-    q: "A nivel directivo, la declaración de cátedra sobre el mercado laboral contemporáneo sostiene que:",
+    id: 48, phase: 2,
+    q: "Completar la frase: La empatía directiva consiste en la capacidad de comprender los ________ de los colaboradores para coordinar con eficacia.",
     options: [
-      "Las empresas compiten exclusivamente mediante guerras agresivas de precios",
-      "Ya no se compite sólo con productos, sino con el buen uso de la gente",
-      "La maquinaria pesada sustituye enteramente las competencias directivas",
-      "El liderazgo autocrático supera al liderazgo participativo en rendimiento"
+      "errores técnicos y omisiones involuntarias de registro",
+      "sentimientos, motivaciones y puntos de vista personales",
+      "planes sindicales y estrategias reivindicativas internas",
+      "salarios de mercado y pretensiones de renta devengada"
     ],
     ans: 1,
-    hint: "Declaración textual de aula sobre el valor de las personas en la competencia moderna.",
-    exp: "Declaración de cátedra: 'Ya no se compite sólo con productos, sino con el buen uso de la gente'."
+    hint: "Comprender la perspectiva y emociones del prójimo para interactuar de forma constructiva.",
+    exp: "Empatía es calibrar las necesidades y estados emocionales de colegas y subordinados para interactuar mejor."
   },
   {
-    id: 32, phase: 2,
-    q: "¿Qué término utilizó el profesor para describir la actitud de 'desinterés o anomia' laboral?",
+    id: 49, phase: 2,
+    q: "Respecto a las competencias emocionales en el liderazgo, se postula que:",
     options: [
-      "Entropía positiva de gestión",
-      "El hecho perjudicial de que 'no importe lo que uno hace'",
-      "Resiliencia pasiva de operarios",
-      "Estandarización técnica de tareas"
+      "Basta con dominar una sola destreza aislada para ser excelente",
+      "Se presentan agrupadas y requieren una combinación equilibrada",
+      "Resultan prescindibles si el directivo posee autoridad jurídica",
+      "Deben aplicarse únicamente al tratar con mandos medios y jefaturas"
     ],
     ans: 1,
-    hint: "El peligro moral y funcional de actuar con indiferencia en la organización.",
-    exp: "En clases se remarcó el concepto de anomia/desinterés: 'el hecho de que no importe lo que hace', destruyendo el compromiso."
+    hint: "El liderazgo eficaz combina visión, autocontrol, iniciativa, empatía y trabajo colaborativo en equipo.",
+    exp: "El liderazgo eficaz combina visión, autocontrol, iniciativa, empatía y trabajo colaborativo en equipo."
   },
   {
-    id: 33, phase: 2,
-    q: "Según Robert Katz, la combinación de habilidades técnicas, humanas y conceptuales:",
+    id: 50, phase: 2,
+    q: "La afirmación de que 'las habilidades gerenciales requeridas son idénticas en todos los niveles' es:",
     options: [
-      "Permanece inalterable en idéntica proporción en toda la carrera",
-      "Varía a medida que el individuo asciende en la escala jerárquica",
-      "Exige eliminar las habilidades humanas al llegar a la gerencia",
-      "Depende exclusivamente de la profesión universitaria de origen"
+      "Totalmente cierta, pues todo administrador ejecuta el proceso POIDC",
+      "Falsa, ya que la proporción de destrezas varía según el rango jerárquico",
+      "Válida exclusivamente en organizaciones que operan con lucro mercantil",
+      "Aplicable solo en estructuras corporativas con descentralización plena"
     ],
     ans: 1,
-    hint: "En la base se exige ejecución técnica; en los cargos superiores se demanda visión abstracta y estratégica.",
-    exp: "La adecuada combinación de estas habilidades varía a medida que un individuo asciende en la escala jerárquica."
+    hint: "En la base domina la técnica; en la alta dirección manda la conceptual.",
+    exp: "La adecuada combinación de habilidades varía a medida que se asciende de la supervisión a la alta dirección."
   },
 
   // FASE 3: ESCUELAS CLÁSICAS (TAYLOR Y FAYOL)
   {
-    id: 51, phase: 3,
-    q: "¿En qué año Frederick W. Taylor publicó su obra 'Principios de la Administración Científica'?",
+    id: 58, phase: 3,
+    q: "El principio de 'División del Trabajo' según los economistas clásicos y Fayol busca:",
     options: [
-      "1776, en plena Revolución Industrial inglesa",
-      "1911, buscando la máxima eficiencia en talleres industriales",
-      "1916, sistematizando las funciones directivas en Francia",
-      "1936, analizando el gasto público y las tasas de interés"
+      "Hacer que cada operario domine todas las etapas del proceso fabril",
+      "La especialización que incrementa la eficiencia y destreza en tareas",
+      "Separar físicamente las cuadrillas para evitar la formación sindical",
+      "Reducir las exigencias de rendimiento técnico a los trabajadores"
     ],
     ans: 1,
-    hint: "A comienzos del siglo XX (década de 1910) publicó su tratado en EE. UU.",
-    exp: "En 1911 Taylor publicó su célebre libro sobre la administración científica fabril."
+    hint: "La especialización ahorra tiempo y afina la destreza del operario o técnico.",
+    exp: "La división del trabajo especializa funciones para producir más y mejor con el mismo esfuerzo tanto técnico como directivo."
   },
   {
-    id: 52, phase: 3,
-    q: "Taylor incorporó el 'pago a trato' con el objetivo central de:",
+    id: 59, phase: 3,
+    q: "Completar la frase: Según Fayol, la autoridad confiere el derecho de mandar, siendo la responsabilidad su ________ ineludible.",
     options: [
-      "Garantizar un ingreso mínimo fijo sin importar la producción",
-      "Vincular el salario directamente a la productividad y eficiencia del obrero",
-      "Financiar fondos de retiro y previsión social en las empresas",
-      "Evitar la sindicalización mediante bonos discrecionales"
+      "límite contractual de jornada",
+      "contraparte o consecuencia natural",
+      "exención tributaria reconocida",
+      "atenuante jurídica ante fallas"
     ],
     ans: 1,
-    hint: "Pagar por pieza producida o terminada para premiar el rendimiento.",
-    exp: "Taylor incorporó el pago a trato (por pieza producida) para remunerar de forma justa ligada a la productividad."
+    hint: "Quien tiene la potestad de ordenar debe responder ineludiblemente por los resultados.",
+    exp: "Autoridad y responsabilidad van estrechamente unidas; la segunda es consecuencia inmediata de la primera."
   },
   {
-    id: 53, phase: 3,
-    q: "La famosa frase de Taylor que resume el enfoque científico en los talleres es:",
+    id: 60, phase: 3,
+    q: "El principio de 'Subordinación del interés particular al general' implica que:",
     options: [
-      "'La unión de los obreros hace la fuerza corporativa'",
-      "'Siempre hay una mejor forma de hacer las cosas'",
-      "'La autoridad formal delega toda la responsabilidad'",
-      "'El orden material sustituye al orden social'"
+      "Los fines de la compañía deben supeditarse a las metas de los directores",
+      "El interés organizacional debe prevalecer sobre ambiciones individuales",
+      "La empresa debe anteponer el lucro bursátil a la legislación laboral",
+      "Los planes departamentales no requieren alineamiento corporativo"
     ],
     ans: 1,
-    hint: "El principio 'the one best way' frente a la costumbre empírica.",
-    exp: "Taylor resumió su doctrina en la máxima: 'Siempre hay una mejor forma de hacer las cosas'."
+    hint: "El objetivo colectivo de la empresa debe estar por encima de ambiciones individuales.",
+    exp: "Cuando surge discrepancia, la administración debe conciliar intereses asegurando que prime el bien común general."
   },
   {
-    id: 54, phase: 3,
-    q: "Henri Fayol publicó su tratado 'Administración Industrial y General' en el año:",
+    id: 61, phase: 3,
+    q: "El principio fayoliano del 'Orden' se resume comúnmente bajo la fórmula:",
     options: [
-      "1898, analizando la gestión minera en Norteamérica",
-      "1916, clasificando las operaciones y funciones administrativas",
-      "1929, en respuesta al desplome de los mercados bursátiles",
-      "1954, formulando la administración por objetivos"
+      "Exigir obediencia incondicional sin admitir sugerencias del personal",
+      "Un lugar para cada cosa (y persona) y cada cosa (y persona) en su lugar",
+      "Sancionar económicamente cualquier atraso en la línea de montaje",
+      "Centralizar todas las autorizaciones de compra en la gerencia general"
     ],
     ans: 1,
-    hint: "El libro francés que sistematizó la Teoría Clásica de la administración.",
-    exp: "En 1916 Fayol publicó su trascendental obra en Francia."
+    hint: "Aplica tanto para herramientas e inventarios como para colocar a la persona idónea en su puesto.",
+    exp: "Fayol distingue orden material y social: cada recurso y persona debe estar en el lugar y función que le corresponde."
   },
   {
-    id: 55, phase: 3,
-    q: "Fayol clasificó las actividades de la empresa en seis grupos:",
+    id: 62, phase: 3,
+    q: "El principio de 'Equidad' en la dirección exige combinar:",
     options: [
-      "Jurídicas, operacionales, tácticas, estratégicas, éticas y sociales",
-      "Técnicas, comerciales, financieras, de seguridad, contables y administrativas",
-      "Planificación, presupuesto, auditoría, tesorería, ventas y despacho",
-      "Primarias, secundarias, terciarias, conexas, públicas y mixtas"
+      "Rigor punitivo y descuentos salariales ante ineficiencias de planta",
+      "Justicia y amabilidad para inspirar lealtad y devoción en el personal",
+      "Cumplimiento formal de contratos sin atender necesidades individuales",
+      "Distribución idéntica de rentas sin distinguir el mérito del trabajador"
     ],
     ans: 1,
-    hint: "Producción técnica, compras/ventas, capital financiero, custodia, contabilidad y gestión de mando.",
-    exp: "Fayol distinguió seis actividades esenciales: técnicas, de seguridad, financieras, comerciales, contables y administrativas."
+    hint: "Aplicar la justicia con bondad y comprensión para asegurar lealtad y buen clima.",
+    exp: "Para obtener lealtad de los subordinados, la gerencia debe aplicar amabilidad y justicia en sus relaciones."
   },
   {
-    id: 56, phase: 3,
-    q: "El principio fayoliano de 'Unidad de Mando' establece categóricamente que:",
+    id: 63, phase: 3,
+    q: "Fayol advierte sobre los peligros de la 'Inestabilidad en el puesto' señalando que:",
     options: [
-      "Cada cuadrilla de operarios debe elegir a su supervisor por votación",
-      "Los empleados deben recibir órdenes sólo de un superior",
-      "Todas las decisiones deben concentrarse en la cima del directorio",
-      "La autoridad formal se ejerce mediante comités interdisciplinarios"
+      "La rotación permanente estimula la creatividad y adaptabilidad laboral",
+      "La rotación innecesaria es causa y efecto de una mala administración",
+      "La permanencia en un cargo entorpece el aprendizaje de nuevas técnicas",
+      "Los contratos indefinidos incrementan los costos fijos de operación"
     ],
     ans: 1,
-    hint: "Recibir órdenes de dos superiores causa desorden y evasión de responsabilidades.",
-    exp: "Unidad de mando: los empleados deben recibir órdenes exclusivamente de un superior inmediato."
+    hint: "Una alta rotación impide que los colaboradores maduren en sus puestos y dispara los costos de entrenamiento.",
+    exp: "El tiempo de aprendizaje es costoso; la rotación constante genera desorden e ineficiencia organizativa."
   },
   {
-    id: 57, phase: 3,
-    q: "¿Por qué Fayol es considerado por muchos autores como el verdadero padre de la administración?",
+    id: 64, phase: 3,
+    q: "Respecto al principio de 'Iniciativa', Fayol exhorta a los directivos a:",
     options: [
-      "Porque inventó los diagramas de flujo y las líneas de montaje",
-      "Porque sus postulados son aplicables a todos los niveles de la empresa",
-      "Porque limitó sus estudios exclusivamente a la base de talleres fabriles",
-      "Porque propuso eliminar las jerarquías en favor de asambleas de trabajadores"
+      "Prohibir que los subordinados ejecuten ideas no aprobadas por la cima",
+      "Sacrificar la vanidad personal para permitir que otros conciban planes",
+      "Monopolizar la formulación estratégica en la alta gerencia corporativa",
+      "Sancionar los errores cometidos en proyectos concebidos por empleados"
     ],
     ans: 1,
-    hint: "Taylor analizó el taller; Fayol estructuró la dirección general de toda la corporación.",
-    exp: "A diferencia de Taylor, los postulados de Fayol son universales y aplicables a todos los niveles jerárquicos."
+    hint: "Un líder deja el ego de lado para motivar a su equipo a formular y ejecutar ideas.",
+    exp: "Permitir concebir y ejecutar un plan genera profunda satisfacción al trabajador; el líder debe dejar de lado el ego."
+  },
+  {
+    id: 65, phase: 3,
+    q: "El 'Espíritu de Equipo' en la teoría fayoliana postula fundamentalmente:",
+    options: [
+      "Que el conflicto interno es el motor indispensable para la innovación",
+      "Que la armonía y unión entre las personas hacen la fuerza de la firma",
+      "Que el trabajo individual rinde más que el esfuerzo coordinado grupal",
+      "Que la división del personal evita la formación de agrupaciones de base"
+    ],
+    ans: 1,
+    hint: "La unión hace la fuerza: evitar generar divisiones y promover la colaboración fluida.",
+    exp: "'La unión hace la fuerza': subraya la necesidad de cooperación, comunicación fluida y cohesión entre áreas."
+  },
+  {
+    id: 66, phase: 3,
+    q: "En relación a la 'Centralización', la postura clásica de Fayol indica que:",
+    options: [
+      "Debe aplicarse de manera absoluta y rígida en cualquier organización",
+      "El grado óptimo de concentración de autoridad varía según cada caso",
+      "La descentralización total debe imponerse como norma en toda faena",
+      "La autoridad debe residir exclusivamente en asambleas de operarios"
+    ],
+    ans: 1,
+    hint: "No hay una receta fija; el nivel adecuado depende del tipo de negocio y de la capacidad del equipo.",
+    exp: "El grado óptimo de centralización o descentralización depende de las circunstancias individuales de cada empresa."
+  },
+  {
+    id: 67, phase: 3,
+    q: "Tanto Taylor como Fayol coincidieron plenamente en que:",
+    options: [
+      "La gerencia debe delegar enteramente el control en comités gremiales",
+      "El derroche e ineficiencia en el uso de recursos retrasan a la sociedad",
+      "La producción debe restringirse para mantener elevados precios de venta",
+      "Los incentivos morales superan en efectividad a las retribuciones de renta"
+    ],
+    ans: 1,
+    hint: "Ambos ingenieros compartían que el despilfarro dañaba a los trabajadores, empresas y sociedad.",
+    exp: "Ambos consideraban que el despilfarro de recursos humanos y materiales dañaba el bienestar y avance de la sociedad."
   },
 
   // FASE 4: PLANIFICACIÓN EMPRESARIAL
   {
-    id: 76, phase: 4,
-    q: "La función administrativa de Planificación se define como:",
+    id: 82, phase: 4,
+    q: "La 'Misión' de un negocio define fundamentalmente:",
     options: [
-      "El registro contable retrospectivo de gastos operacionales incurridos",
-      "Decidir de antemano qué hacer, cómo hacerlo, cuándo, con qué recursos y quién lo hará",
-      "La resolución de litigios judiciales derivados de contratos comerciales",
-      "La supervisión visual directa de los operarios en los talleres fabriles"
+      "El volumen de dividendos proyectados a repartir en la próxima década",
+      "Qué productos ofrece, a qué mercados atiende y su liderazgo competitivo",
+      "El porcentaje de depreciación anual aplicable a las instalaciones",
+      "La estructura salarial por categorías de trabajadores en la empresa"
     ],
     ans: 1,
-    hint: "Es anticipar el porvenir, trazando un puente desde la situación actual hasta la meta deseada.",
-    exp: "Planear es decidir de antemano qué hacer, cómo hacerlo, cuándo, con qué recursos y quién deberá llevarlo a cabo."
+    hint: "Define la identidad presente: el ámbito de producto, cliente, geografía y cómo ganamos en el mercado.",
+    exp: "La misión declara los negocios actuales y futuros: productos, mercados, cobertura geográfica y ventaja competitiva."
   },
   {
-    id: 77, phase: 4,
-    q: "Los 'Supuestos' en la construcción de planes se clasifican formalmente en:",
+    id: 83, phase: 4,
+    q: "La 'Visión' de una organización se conceptualiza como:",
     options: [
-      "Supuestos legales regulatorios y supuestos tributarios fiscales",
-      "Supuestos cuantitativos (cifras, horas) y cualitativos (entorno, clima)",
-      "Supuestos arancelarios de aduana y supuestos de transporte marítimo",
-      "Supuestos de activos fijos y supuestos de pasivo circulante"
+      "El balance patrimonial auditado al cierre del periodo contable",
+      "El resultado de los sueños corporativos puestos en acción a futuro",
+      "La nómina formal de responsabilidades asignadas a los puestos",
+      "El cálculo actuarial de indemnizaciones por años de servicio"
     ],
     ans: 1,
-    hint: "Incluyen números y horas estimadas, así como variables de clima social y político.",
-    exp: "Los supuestos se construyen técnicamente y son cuantitativos (horas hombre, combustible, precios) y cualitativos (personal, entorno)."
+    hint: "Es el horizonte aspiracional de largo plazo que guía e inspira a la organización.",
+    exp: "La visión es el resultado de nuestros sueños puestos en acción: qué, cómo, cuándo y por qué de nuestro porvenir."
   },
   {
-    id: 78, phase: 4,
-    q: "El principio de 'Prevalencia de la Planeación' establece textualmente que:",
+    id: 84, phase: 4,
+    q: "En la jerarquía de planes, las 'Políticas' se definen como:",
     options: [
-      "La planeación sólo se realiza tras constatar pérdidas financieras en balance",
-      "La planeación precede a la ejecución de todas las otras funciones empresariales",
-      "Organizar y controlar son funciones que prescinden de metas previas",
-      "El presupuesto operacional sustituye a la formulación estratégica"
+      "Instrucciones cronológicas rígidas que no admiten interpretación",
+      "Criterios o enunciados generales que orientan la toma de decisiones",
+      "Asignaciones presupuestarias expresadas en términos numéricos",
+      "Prohibiciones taxativas que anulan la discrecionalidad del personal"
     ],
     ans: 1,
-    hint: "No se puede organizar personal ni controlar resultados si primero no se han fijado las metas.",
-    exp: "La planeación precede a la ejecución de todas las otras funciones empresariales; establece los objetivos para el esfuerzo grupal."
+    hint: "Marcan pautas de criterio general dentro de las cuales los administradores deciden con criterio.",
+    exp: "Las políticas son guías generales de pensamiento que encauzan la toma de decisiones con cierta discrecionalidad."
   },
   {
-    id: 79, phase: 4,
-    q: "El 'Principio del Cambio de Rumbo' impone al administrador la obligación de:",
+    id: 85, phase: 4,
+    q: "A diferencia de las políticas, las 'Reglas' se caracterizan por:",
     options: [
-      "Modificar semanalmente las metas corporativas para sorprender al mercado",
-      "Revisar periódicamente acontecimientos y expectativas rediseñando planes",
-      "Desvincular a los mandos medios si surge la primera desviación de costos",
-      "Ignorar las turbulencias externas para mantener rígidos los programas"
+      "Permitir un amplio margen de juicio y criterio al colaborador",
+      "Exponer acciones específicas y tajantes no sujetas a discrecionalidad",
+      "Formular metas de largo plazo vinculadas al retorno de la inversión",
+      "Articular tareas complejas que combinan presupuestos y programas"
     ],
     ans: 1,
-    hint: "Como un piloto de avión: recalcular la ruta periódicamente para asegurar llegar al destino fijado.",
-    exp: "Revisar periódicamente expectativas y acontecimientos para rediseñar planes manteniendo el curso a las metas."
+    hint: "Mandatos directos como 'no fumar' o 'usar casco': no permiten interpretación ni excepciones.",
+    exp: "Las reglas ordenan o prohíben acciones concretas y definidas, sin admitir margen de discrecionalidad personal."
   },
   {
-    id: 80, phase: 4,
-    q: "En los apuntes de clase, ¿cuáles son los cuatro elementos de la secuencia de Gestión Estratégica?",
+    id: 86, phase: 4,
+    q: "Los 'Procedimientos' son planes estructurados que establecen:",
     options: [
-      "Compra - Fabricación - Venta - Cobranza comercial",
-      "Diagnóstico - Supuesto - Objetivo - Estrategia",
-      "Entradas - Procesamiento - Salidas - Retroalimentación",
-      "Autoridad - Poder - Delegación - Coordinación"
+      "El método y secuencia cronológica para realizar actividades futuras",
+      "Las directrices éticas que guían la misión institucional de la firma",
+      "La asignación de fondos monetarios para comprar materias primas",
+      "El conjunto de metas estratégicas a alcanzar al cierre del quinquenio"
     ],
-    ans: 1,
-    hint: "Secuencia lógica anotada en pizarra: desde evaluar la realidad hasta el cómo lograrlo.",
-    exp: "Secuencia de gestión estratégica de cátedra: Diagnóstico -> Supuesto -> Objetivo -> Estrategia."
+    ans: 0,
+    hint: "Guían la acción en forma de paso 1, paso 2 y paso 3 ordenados cronológicamente.",
+    exp: "Los procedimientos detallan la serie cronológica de pasos y métodos para ejecutar actividades rutinarias."
   },
   {
-    id: 81, phase: 4,
-    q: "La 'Delegación' en la etapa de organización administrativa consiste en:",
+    id: 87, phase: 4,
+    q: "Un 'Presupuesto' es formalmente un plan que se expresa en:",
     options: [
-      "Transferir responsabilidades sin otorgar facultades decisorias",
-      "Transferir tareas asignando formalmente la autoridad para realizarlas",
-      "Contratar asesores externos para evadir el control operativo",
-      "Eliminar los mandos medios del organigrama institucional"
+      "Declaraciones cualitativas sobre principios morales de la directiva",
+      "Términos numéricos y financieros de resultados y recursos esperados",
+      "Pautas generales de reclutamiento para el personal de operaciones",
+      "Narrativas estratégicas sobre la imagen de marca de la compañía"
     ],
     ans: 1,
-    hint: "Traspaso de tareas acompañado del poder formal para ejecutarlas.",
-    exp: "Delegación: transferir tareas con la debida autoridad para realizarlas de manera efectiva."
+    hint: "La cuantificación numérica de los ingresos, egresos y flujos esperados para un periodo.",
+    exp: "El presupuesto es una formulación de resultados esperados expresada en cifras monetarias o unidades cuantitativas."
+  },
+  {
+    id: 88, phase: 4,
+    q: "Los 'Programas' se definen en el proceso de planeación como:",
+    options: [
+      "Guías de conducta que prohíben expresamente determinadas acciones",
+      "Complejos integrados de metas, políticas, pasos, recursos y plazos",
+      "Registros de entrada y salida de materiales en las bodegas fabriles",
+      "Mecanismos de control aplicados una vez que el desvío se produjo"
+    ],
+    ans: 1,
+    hint: "Unifican metas, tiempos, responsables y presupuestos para llevar a cabo una iniciativa completa.",
+    exp: "Un programa articula metas, políticas, procedimientos, reglas, tareas a seguir y recursos para un curso dado."
+  },
+  {
+    id: 89, phase: 4,
+    q: "El principio de 'Contribución a los Objetivos' señala que todo plan debe:",
+    options: [
+      "Formularse con independencia de los propósitos generales de la firma",
+      "Facilitar la consecución deliberada de las metas organizacionales",
+      "Priorizar la reducción del gasto aun a costa de paralizar la planta",
+      "Evitar la cooperación entre distintas unidades del organigrama"
+    ],
+    ans: 1,
+    hint: "Cualquier plan departamental debe apuntar a la misma meta compartida de la compañía.",
+    exp: "El propósito de cualquier plan derivado es facilitar positivamente el logro de los objetivos de la empresa."
+  },
+  {
+    id: 90, phase: 4,
+    q: "La 'Eficiencia de los Planes' se mide evaluando:",
+    options: [
+      "La extensión del informe y la cantidad de anexos metodológicos",
+      "Su contribución a las metas frente a los costos y riesgos asumidos",
+      "La rapidez con que la gerencia general autoriza los presupuestos",
+      "El número de reuniones de coordinación necesarias para su diseño"
+    ],
+    ans: 1,
+    hint: "Compara el beneficio obtenido en las metas contra lo que costó diseñar y ejecutar el plan.",
+    exp: "Un plan es eficiente si su aporte a los objetivos supera ampliamente los costos y consecuencias imprevistas de ejecutarlo."
+  },
+  {
+    id: 91, phase: 4,
+    q: "El 'Principio de Compromiso' en planeación estratégica exige que:",
+    options: [
+      "Los planes de inversión cubran el plazo necesario para su maduración",
+      "Los contratos de los directivos se renueven de forma indefinida",
+      "Las metas departamentales se fijen a un horizonte fijo de un mes",
+      "El personal renuncie a incrementos de renta durante la ejecución"
+    ],
+    ans: 0,
+    hint: "El plazo debe ser lo suficientemente largo como para amortizar la inversión y ver madurar las decisiones.",
+    exp: "La planeación debe cubrir el tiempo futuro necesario para prever el cumplimiento cabal de los compromisos adoptados."
+  },
+  {
+    id: 92, phase: 4,
+    q: "El 'Principio de Flexibilidad' advierte sobre la necesidad de:",
+    options: [
+      "Modificar metas arbitrariamente sin evaluar pérdidas ni costos",
+      "Dotar a los planes de capacidad de adaptación frente a imprevistos",
+      "Prescindir de acuerdos contractuales formales con los proveedores",
+      "Reemplazar presupuestos cuantitativos por estimaciones informales"
+    ],
+    ans: 1,
+    hint: "Diseñar planes con capacidad de maniobra reduce el impacto de sorpresas o crisis en el entorno.",
+    exp: "A mayor flexibilidad de los planes, menor riesgo de daño ante imprevistos, sopesando su costo de oportunidad."
+  },
+  {
+    id: 93, phase: 4,
+    q: "Los tres niveles jerárquicos de la planificación estratégica son:",
+    options: [
+      "Planificación previa, planificación concurrente y planificación tardía",
+      "Nivel Corporativo, Nivel de Negocios (UEN) y Nivel Funcional",
+      "Nivel Metropolitano, Nivel Regional y Nivel Comunal de operaciones",
+      "Nivel de Socios Gestores, Socios Pasivos y Auditores Externos"
+    ],
+    ans: 1,
+    hint: "Desde la cartera general de la corporación, pasando por cada unidad de negocio, hasta cada departamento.",
+    exp: "Nivel corporativo (toda la empresa), de negocios (ventaja competitiva por UEN) y funcional (finanzas, RRHH, etc.)."
+  },
+  {
+    id: 94, phase: 4,
+    q: "Una Unidad Estratégica de Negocios (UEN) se caracteriza por:",
+    options: [
+      "Un almacén central donde se custodian materiales de desecho",
+      "Un foco de productos y clientes con rivales definidos y plan propio",
+      "Un departamento contable dedicado a la liquidación de remuneraciones",
+      "Una sucursal bancaria que canaliza créditos de corto plazo a la firma"
+    ],
+    ans: 1,
+    hint: "Unidad independiente dentro de un conglomerado con sus propios competidores, clientes y plan de negocio.",
+    exp: "Agrupa productos/servicios diferenciados vendidos a un grupo uniforme de clientes enfrentando competidores definidos."
+  },
+  {
+    id: 95, phase: 4,
+    q: "El Plan de Desarrollo Estratégico 2023-2029 de la PUCV se estructura en:",
+    options: [
+      "Cuatro áreas tradicionales de acreditación sin ejes transversales",
+      "Nueve lineamientos estratégicos (misionales, transversales, identidad)",
+      "Catorce principios fabriles inspirados en la administración científica",
+      "Veinte metas cuantitativas de matrícula sin enfoque de sostenibilidad"
+    ],
+    ans: 1,
+    hint: "El documento oficial organiza sus desafíos en nueve ejes estratégicos.",
+    exp: "El PDEI PUCV 2023-2029 se estructura en 9 lineamientos estratégicos que articulan la gestión hacia el Centenario."
+  },
+  {
+    id: 96, phase: 4,
+    q: "La Visión actualizada de la PUCV destaca institucionalmente por:",
+    options: [
+      "Su focalización en carreras técnicas de corta duración sin investigación",
+      "Universidad católica, de excelencia y vocación pública con impacto social",
+      "Un perfil corporativo de sociedad anónima orientada al lucro financiero",
+      "Una gestión cerrada que prescinde del diálogo con el medio externo"
+    ],
+    ans: 1,
+    hint: "Destaca la excelencia, la identidad católica, la vocación pública y el desarrollo sostenible.",
+    exp: "La visión institucional aprobada proyecta una universidad católica, de excelencia y vocación pública que transforma vidas."
+  },
+  {
+    id: 97, phase: 4,
+    q: "Completar la frase: La instancia institucional de participación comunitaria en el plan estratégico de la PUCV se llamó ________.",
+    options: [
+      "Diálogos de Gestión Fabril",
+      "Pensemos PUCV",
+      "Comité de Crisis 2029",
+      "Encuentro de Directores"
+    ],
+    ans: 1,
+    hint: "Instancia institucional de diálogo que integró a más de 8.000 miembros de la comunidad.",
+    exp: "'Pensemos PUCV' fue la instancia de diálogo con más de 8.000 participantes de la comunidad universitaria y entorno."
   },
 
   // FASE 5: ESTRATEGIA COMPETITIVA Y PORTER
   {
-    id: 101, phase: 5,
-    q: "La 'Ventaja Competitiva' se define financieramente en los apuntes de aula como:",
+    id: 106, phase: 5,
+    q: "Una industria con barreras de entrada ALTAS y de salida BAJAS presenta:",
     options: [
-      "Obtener utilidades líquidas iguales a la tasa de inflación anual",
-      "Obtener una rentabilidad superior al costo de capital de la empresa",
-      "Reducir a cero los costos laborales mediante subcontratación total",
-      "Monopolizar las licitaciones públicas en mercados cerrados"
+      "Rendimientos promedio bajos, altamente volátiles y riesgosos",
+      "Rendimientos económicos elevados y estables en el largo plazo",
+      "Guerra de precios continua provocada por empresas atrapadas",
+      "Niveles de rentabilidad nulos por saturación masiva de oferentes"
     ],
     ans: 1,
-    hint: "Rendimiento del capital invertido por sobre su costo de financiamiento.",
-    exp: "Objetivo de la ventaja competitiva: obtener una rentabilidad superior al costo de capital (crear valor)."
+    hint: "Pocos pueden ingresar a disputar clientes y si a alguien le va mal, puede retirarse sin perder su fortuna.",
+    exp: "Entran pocos rivales (barrera alta) y quien fracasa sale fácil (barrera baja), generando rendimientos elevados y estables."
   },
   {
-    id: 102, phase: 5,
-    q: "Las Cinco Fuerzas que determinan la rentabilidad potencial de una industria según Porter son:",
+    id: 107, phase: 5,
+    q: "Una industria con barreras de entrada BAJAS y de salida ALTAS se caracteriza por:",
     options: [
-      "Económica, política, social, tecnológica y medioambiental",
-      "Rivalidad interna, nuevos participantes, sustitutos, compradores y proveedores",
-      "Planificación, organización, dirección, coordinación y control",
-      "Ahorro, inversión, producción, gastos operacionales e ingresos"
+      "Márgenes financieros elevados y estabilidad garantizada en el tiempo",
+      "Rendimientos bajos y riesgosos, con guerras de precios crónicas",
+      "Inexistencia de rivalidad competitiva entre las firmas establecidas",
+      "Un monopolio natural donde una sola compañía abastece al mercado"
     ],
     ans: 1,
-    hint: "Competidores directos, entrantes potenciales, productos de reemplazo, clientes y proveedores.",
-    exp: "Porter postula que la estructura de la industria está conformada por esas cinco fuerzas competitivas."
+    hint: "Cualquiera entra a saturar el mercado, pero nadie puede cerrar por culpa de activos atrapados.",
+    exp: "Entran muchos competidores y nadie puede salir fácilmente por activos especializados, destruyendo utilidades."
   },
   {
-    id: 103, phase: 5,
-    q: "En el análisis FODA de las notas de clase, un conflicto laboral interno califica como:",
+    id: 108, phase: 5,
+    q: "El poder negociador de los Compradores (clientes) aumenta cuando:",
     options: [
-      "Una amenaza derivada de normativas de la Dirección del Trabajo",
-      "Una debilidad interna atribuible a la gestión y clima de la firma",
-      "Una oportunidad para reestructurar la planta fabril",
-      "Una fortaleza originada en la deliberación colectiva"
+      "Están atomizados y compran en volúmenes pequeños y dispersos",
+      "Están concentrados, compran a gran escala y tienen bajos costos de cambio",
+      "El producto adquirido es singular y no tiene sustitutos disponibles",
+      "La industria proveedora opera bajo condiciones de monopolio puro"
     ],
     ans: 1,
-    hint: "Factor negativo que radica al interior de la propia organización.",
-    exp: "Los conflictos con el personal propio constituyen aspectos internos negativos: debilidades."
+    hint: "Unos pocos clientes se llevan casi toda tu producción y pueden cambiarse a otro proveedor sin costo alguno.",
+    exp: "Compradores concentrados y con bajos costos de cambio pueden forzar bajas de precios y mayores exigencias."
   },
   {
-    id: 104, phase: 5,
-    q: "El estudio de puertos y transporte en Asia para una exportadora de fruta atañe en la cadena de valor a:",
+    id: 109, phase: 5,
+    q: "El concepto de 'Integración hacia Atrás' se produce cuando una empresa:",
     options: [
-      "La infraestructura general y marco jurídico de la firma",
-      "La logística de salida (distribución y despacho al comprador)",
-      "El desarrollo tecnológico de embalajes en el huerto",
-      "La logística de entrada de fertilizantes e insumos agrícolas"
+      "Contrata centros de distribución externos para entregar sus productos",
+      "Pasa a controlar o producir sus propios insumos y materias primas",
+      "Liquida sus activos circulantes para comprar bonos en el mercado",
+      "Delega el servicio de postventa en plataformas de atención remota"
     ],
     ans: 1,
-    hint: "Movimiento y entrega del producto terminado en los mercados de destino.",
-    exp: "Logística externa o de salida: almacenamiento de productos terminados, transporte, despacho y programación de pedidos."
+    hint: "La empresa se convierte en su propio proveedor para no depender de suministros externos.",
+    exp: "Ocurre cuando la firma abastece internamente sus insumos (ej. marcas propias de supermercados elaboradas por ellos)."
   },
   {
-    id: 105, phase: 5,
-    q: "La 'Estrategia' se conceptualiza según los apuntes como:",
+    id: 110, phase: 5,
+    q: "El concepto de 'Integración hacia Adelante' implica que la empresa:",
     options: [
-      "Una regla estricta que prohíbe incurrir en desviaciones presupuestarias",
-      "Un patrón de decisiones coherente, unificador e integrativo para lograr ventaja",
-      "Un estado contable que refleja la situación patrimonial del ejercicio",
-      "Una auditoría preventiva aplicada sobre las cuentas corrientes bancarias"
+      "Pasa a poseer sus propios canales de venta o distribución directa",
+      "Adquiere a sus proveedores de materia prima para bajar costos",
+      "Delega la comercialización mayorista en intermediarios externos",
+      "Reduce su capacidad fabril para dedicarse a la asesoría financiera"
+    ],
+    ans: 0,
+    hint: "Una fábrica abre sus propias tiendas para vender directamente al consumidor sin intermediarios.",
+    exp: "Integrarse hacia adelante es ganar control sobre los canales de comercialización y distribución final."
+  },
+  {
+    id: 111, phase: 5,
+    q: "En la Cadena de Valor de Porter, las 5 actividades primarias son:",
+    options: [
+      "Auditoría, asesoría legal, informática, compras y remuneraciones",
+      "Logística interna, operaciones, logística externa, marketing/ventas y servicio",
+      "Planificación, presupuesto, dotación de personal, liderazgo y control",
+      "Diseño de marca, finanzas corporativas, relaciones públicas y tesorería"
     ],
     ans: 1,
-    hint: "Marco conceptual y patrón deliberado que orienta las decisiones de negocio.",
-    exp: "Estrategia: patrón de decisiones coherente, unificador e integrativo que busca una ventaja competitiva sostenible."
+    hint: "Desde que entra la materia prima, pasando por la fábrica, despacho, publicidad y soporte postventa.",
+    exp: "Las actividades primarias involucran recepción, transformación, entrega, venta y soporte postventa del bien."
+  },
+  {
+    id: 112, phase: 5,
+    q: "Completar la frase: En la cadena de valor, el 'Margen' representa la diferencia entre ________.",
+    options: [
+      "el activo fijo total y el pasivo exigible de corto plazo",
+      "el valor total pagado por clientes y los costos acumulados",
+      "los ingresos presupuestados y los gastos de publicidad",
+      "el inventario de materias primas y las existencias finales"
+    ],
+    ans: 1,
+    hint: "Es el beneficio neto que queda tras restar todos los costos del valor pagado por los compradores.",
+    exp: "Margen es la diferencia entre el valor total que los compradores pagan y los costos totales de ejecutar las actividades."
+  },
+  {
+    id: 113, phase: 5,
+    q: "Las dos estrategias competitivas genéricas principales de Porter son:",
+    options: [
+      "Especulación financiera y endeudamiento de largo plazo",
+      "Liderazgo General en Costos y Diferenciación del producto",
+      "Integración hacia atrás e integración hacia adelante",
+      "Concentración de propiedad y heterogestión directiva"
+    ],
+    ans: 1,
+    hint: "O eres el productor más barato de la industria o vendes algo percibido como único y exclusivo.",
+    exp: "Porter postula que la ventaja competitiva sostenible se logra por liderazgo en costos o por diferenciación."
+  },
+  {
+    id: 114, phase: 5,
+    q: "La estrategia de Liderazgo en Costos exige fundamentalmente:",
+    options: [
+      "Invertir fuertemente en publicidad de prestigio y packaging exclusivo",
+      "Instalaciones de escala eficiente, estricto control y minimizar gastos",
+      "Cobrar los precios más altos de la industria aprovechando la marca",
+      "Focalizarse en nichos de lujo con atención personalizada y costosa"
+    ],
+    ans: 1,
+    hint: "Economías de escala y disciplina austera en todos los departamentos para bajar el costo unitario.",
+    exp: "Busca la estructura de costos más baja mediante economías de escala, control estricto de gastos y producción eficiente."
+  },
+  {
+    id: 115, phase: 5,
+    q: "En la estrategia de Diferenciación, el margen de ganancia superior se logra por:",
+    options: [
+      "Reducir al mínimo los salarios y la inversión en materias primas",
+      "Crear atributos singulares que permiten cobrar un precio premium",
+      "Producir bienes homogéneos en masa sin invertir en imagen corporativa",
+      "Comprar insumos de baja calidad para recortar los gastos operativos"
+    ],
+    ans: 1,
+    hint: "El cliente reconoce un diseño o prestigio único y está feliz de pagar un precio más alto.",
+    exp: "Exige crear algo percibido como único en la industria, permitiendo obtener el margen aumentando el precio."
+  },
+  {
+    id: 116, phase: 5,
+    q: "La ventaja competitiva de D&S (Líder) analizada en cátedra se basó en:",
+    options: [
+      "Diferenciación exclusiva mediante venta de bienes de lujo importados",
+      "Liderazgo en costos vía megamercados, distribución central y marcas propias",
+      "Cerrar salas en zonas urbanas para concentrarse en recintos rurales",
+      "Prescindir de instrumentos de crédito propio como la tarjeta de compras"
+    ],
+    ans: 1,
+    hint: "Megamercados de gran volumen, marcas privadas y su centro de distribución centralizado para bajar precios.",
+    exp: "D&S cimentó su liderazgo en costos con compras centralizadas, megamercados, economías de escala y marcas privadas."
+  },
+  {
+    id: 117, phase: 5,
+    q: "Los cuatro determinantes del 'Diamante de la Ventaja Nacional' de Porter son:",
+    options: [
+      "Balanza de pagos, inflación, desempleo e inversión extranjera directa",
+      "Condiciones de factores, demanda, sectores conexos y rivalidad interna",
+      "Poder judicial, poder ejecutivo, parlamento y banco central emisor",
+      "Logística interna, operaciones, logística externa, marketing y postventa"
+    ],
+    ans: 1,
+    hint: "Los cuatro vértices analizan empresas rivales, mano de obra/recursos, clientes exigentes y proveedores locales.",
+    exp: "Estrategia/estructura/rivalidad, condiciones de los factores, condiciones de la demanda y sectores conexos/apoyo."
+  },
+  {
+    id: 118, phase: 5,
+    q: "En el Diamante de Porter, un 'factor avanzado' se diferencia de uno básico en que:",
+    options: [
+      "Viene heredado gratuitamente de la geografía, el clima y los yacimientos",
+      "Es creado mediante inversión en capital humano, ciencia y tecnología",
+      "Carece de valor estratégico para competir en los mercados internacionales",
+      "No puede ser modificado por políticas públicas de fomento estatal"
+    ],
+    ans: 1,
+    hint: "No viene dado por la geografía o el clima; se crea con investigación científica, universidades y tecnología.",
+    exp: "Factores básicos son heredados (recursos naturales); avanzados son creados (I+D, mano de obra calificada, conectividad)."
+  },
+  {
+    id: 119, phase: 5,
+    q: "¿Cómo impacta una intensa rivalidad entre competidores domésticos en un país?",
+    options: [
+      "Debilita a las empresas locales haciéndolas quebrar frente a foráneas",
+      "Las estimula a innovar y perfeccionarse, preparándolas para el exterior",
+      "Elimina todo incentivo para exportar bienes hacia otros continentes",
+      "Provoca una recesión prolongada al saturar el consumo en el mercado"
+    ],
+    ans: 1,
+    hint: "Tener rivales agresivos en tu propio patio te impide dormirte en los laureles y te forja para competir afuera.",
+    exp: "Una fuerte rivalidad local impulsa a las firmas a innovar y ser más eficientes, creando ventajas exportables."
+  },
+  {
+    id: 120, phase: 5,
+    q: "Completar la frase: La esencia de la estrategia corporativa radica en la gestión deliberada de cambio para lograr una ventaja ________.",
+    options: [
+      "competitiva sostenible y permanente en el tiempo",
+      "arancelaria transitoria que dure unos pocos días",
+      "fiscal mediante la postergación de declaraciones",
+      "monopólica garantizada por decreto del gobierno"
+    ],
+    ans: 0,
+    hint: "Una verdadera ventaja no dura 5 minutos; debe ser duradera y difícil de copiar por los rivales.",
+    exp: "La esencia de la estrategia es gestionar deliberadamente el cambio hacia ventajas competitivas sostenidas en el tiempo."
+  },
+  {
+    id: 121, phase: 5,
+    q: "¿Por qué los productos sustitutos imponen un límite a una industria?",
+    options: [
+      "Porque los organismos públicos prohíben legalmente subir los aranceles",
+      "Porque fijan un techo a los precios: si suben, el cliente migra al sustituto",
+      "Porque los sustitutos tienen costos de fabricación equivalentes a cero",
+      "Porque eliminan de inmediato la rivalidad entre los oferentes actuales"
+    ],
+    ans: 1,
+    hint: "Si el boleto de avión sube al doble, la gente decide viajar en autobús o tren.",
+    exp: "La disponibilidad de sustitutos con buena relación precio-rendimiento pone un techo a la rentabilidad del sector."
   },
 
   // FASE 6: SISTEMAS, SERVUCCIÓN Y VIRTUDES
   {
-    id: 126, phase: 6,
-    q: "En el modelo de Servucción, la 'Zona de Arbitraje' (ZA) es:",
+    id: 134, phase: 6,
+    q: "En filosofía ética, el concepto de 'Êthos' se traduce originariamente como:",
     options: [
-      "El tribunal judicial donde se resuelven demandas laborales",
-      "El ámbito físico o virtual donde se negocia la producción del servicio",
-      "El almacén cerrado donde se custodian los insumos de soporte",
-      "La central telefónica que atiende reclamos del Front Office"
+      "El conjunto de posesiones materiales acumuladas en la vida",
+      "El carácter moral forjado como 'morada interior' mediante actos",
+      "El estatus social reconocido por las instituciones formales",
+      "La habilidad instrumental para ejecutar tareas mecánicas de precisión"
     ],
     ans: 1,
-    hint: "Espacio de interacción donde se fijan condiciones: laxista o burocrática.",
-    exp: "Zona de Arbitraje (ZA): ámbito físico o virtual donde se negocia cómo se producirá y cumplirá el servicio."
+    hint: "Del griego: la 'morada' interior o personalidad moral construida a lo largo de la vida.",
+    exp: "Êthos es la morada interior, el carácter que singulariza a la persona y que se forja con sus decisiones cotidianas."
   },
   {
-    id: 127, phase: 6,
-    q: "En la Servucción, las 'Relaciones de Concomitancia' (RC) se refieren a:",
+    id: 135, phase: 6,
+    q: "Según Aristóteles, el Êthos se adquiere a través de la 'héxis', que es:",
     options: [
-      "La relación jerárquica entre el gerente y el personal de contacto",
-      "La interacción y relación entre los propios clientes durante la prestación",
-      "Los contratos de suministro acordados con los proveedores de insumos",
-      "El intercambio de datos contables entre distintas unidades funcionales"
+      "La dotación genética transmitida por herencia biológica",
+      "El hábito resultante del ejercicio reiterado de actos buenos",
+      "La imposición punitiva de reglamentos jurídicos estatales",
+      "La adquisición de bienes muebles mediante contratos formales"
     ],
     ans: 1,
-    hint: "Ejemplo de aula: conducta y filas entre los clientes en un supermercado.",
-    exp: "Relaciones de concomitancia: relación e interacción entre los clientes cuando se consume y presta el servicio."
+    hint: "A través del hábito (héxis): la práctica constante y repetida de decisiones correctas.",
+    exp: "El hábito (héxis) es el ejercicio reiterado de un acto que por constancia se consolida como carácter moral."
   },
   {
-    id: 128, phase: 6,
-    q: "En Servucción, el 'Momento de la Verdad' (MV) exige la definición de:",
+    id: 136, phase: 6,
+    q: "La 'Dignidad Innata' de la persona humana radica en que:",
     options: [
-      "Sanciones disciplinarias inmediatas para operarios de taller",
-      "Protocolos adecuados (verbales, físicos, sonoros) en cada interacción",
-      "Tarifas diferenciales de cobro según el estrato socioeconómico",
-      "Auditorías fiscales previas a la entrega de la factura comercial"
+      "Posee títulos de propiedad sobre activos financieros de valor",
+      "Vale en sí y por sí, siendo fin en sí misma y nunca mero medio",
+      "Ocupa posiciones de alta jerarquía dentro de una corporación",
+      "Cumple cabalmente con las cuotas de productividad asignadas"
     ],
     ans: 1,
-    hint: "Cada punto de contacto entre cliente y servicio requiere estándares y protocolos definidos.",
-    exp: "Momento de la Verdad: interacción entre elementos de servucción; requiere definir protocolos (verbal, físico, sonoro)."
+    hint: "Es el fundamento de los Derechos Humanos: todo ser humano vale por lo que es, nunca como una herramienta utilitaria.",
+    exp: "La dignidad innata se tiene por la naturaleza humana: vale en sí y por sí, es fin y no instrumento o cosa."
   },
   {
-    id: 129, phase: 6,
-    q: "La 'Productividad' de una empresa se expresa matemáticamente según los apuntes como:",
+    id: 137, phase: 6,
+    q: "La 'Dignidad Adquirida' (auto-posesión o causa sui) consiste en:",
     options: [
-      "Productividad = Activos Fijos / Pasivos Circulantes",
-      "Productividad = Ingresos / Gastos (o Productos / Insumos)",
-      "Productividad = Margen Bruto - Impuestos Devengados",
-      "Productividad = Depreciación Acumulada / Horas Hombre"
+      "El nombramiento notarial como administrador de una firma",
+      "El señorío moral de sí mismo, siendo dueño de los propios actos",
+      "La acumulación de certificados y grados académicos superiores",
+      "El incremento sostenido de las remuneraciones en el puesto"
     ],
     ans: 1,
-    hint: "Fórmula explícita de aula: relación directa entre lo obtenido y lo gastado.",
-    exp: "Productividad: relación entre ingresos y gastos, o cociente entre productos logrados e insumos utilizados."
+    hint: "Ser dueño de tus actos y no esclavo de vicios o pasiones descontroladas.",
+    exp: "Dignidad adquirida es el autodominio moral; quien pierde el gobierno de sí puede actuar como la peor de las bestias."
   },
   {
-    id: 130, phase: 6,
-    q: "En innovación empresarial, el 'Pensamiento Inductivo' se orienta a:",
+    id: 138, phase: 6,
+    q: "La virtud de la 'Prudencia' (auriga virtutum) es la madre de las virtudes porque:",
     options: [
-      "Buscar tecnologías conocidas sólo cuando surge un problema urgente",
-      "Aprender a incorporar nuevas tecnologías para aumentar la productividad",
-      "Rechazar la digitalización para preservar los oficios tradicionales",
-      "Reducir las partidas presupuestarias del área de investigación fabril"
+      "Enseña a eludir cualquier decisión compleja para no arriesgar",
+      "Es la recta razón en el obrar que conecta el juicio con la realidad",
+      "Impone sanciones disciplinarias a quienes incumplen reglamentos",
+      "Asegura la rentabilidad financiera en cualquier proyecto mercantil"
     ],
     ans: 1,
-    hint: "Ver las tecnologías emergentes y descubrir cómo aprovecharlas para innovar.",
-    exp: "Pensamiento inductivo: explorar cómo incorporar nuevas tecnologías disponibles para crear valor y elevar la productividad."
+    hint: "Es la 'auriga' o conductora del carro de las virtudes: conecta la mente con la realidad objetiva.",
+    exp: "La prudencia guía a las demás virtudes: es pensar antes de actuar, enjuiciando la realidad con rectitud y verdad."
   },
   {
-    id: 131, phase: 6,
-    q: "Los atributos de valor de un producto se dividen técnicamente en:",
+    id: 139, phase: 6,
+    q: "Santo Tomás de Aquino define clásicamente la virtud de la 'Justicia' como:",
     options: [
-      "Atributos fiscales regulatorios y atributos de auditoría contable",
-      "Atributos Soft (cualitativos, emocionales) y Hard (técnicos, medibles)",
-      "Atributos de logística de entrada y atributos de posventa fabril",
-      "Atributos corporativos centrales y atributos periféricos de desecho"
+      "La aplicación inflexible de la fuerza en favor del más poderoso",
+      "La constante y perpetua voluntad de dar a cada cual su derecho",
+      "La condonación indiscriminada de todas las deudas exigibles",
+      "La fijación estatal de tarifas comerciales en los mercados"
     ],
     ans: 1,
-    hint: "Hard: tamaño, peso, precio objetivo. Soft: percepción, amabilidad, marca.",
-    exp: "Atributos Hard son técnicos, medibles y objetivos; atributos Soft son cualitativos, emocionales y de percepción."
+    hint: "Dar a cada uno lo que le corresponde, respetando sus derechos legítimos.",
+    exp: "Justicia es la constante y perpetua voluntad de dar a cada cual lo suyo (lo que le es debido)."
   },
   {
-    id: 132, phase: 6,
-    q: "El término 'Deontología' en la ética empresarial hace referencia a:",
+    id: 140, phase: 6,
+    q: "La 'Justicia Distributiva' se diferencia de la Conmutativa en que:",
     options: [
-      "La maximización del flujo de caja mediante arbitraje comercial",
-      "Los deberes y obligaciones morales que rigen el ejercicio profesional",
-      "El cálculo actuarial de indemnizaciones por desvinculación laboral",
-      "La especulación financiera en mercados cambiarios de divisas"
+      "La conmutativa reparte honores públicos y la distributiva castiga delitos",
+      "La conmutativa da igual en intercambios; la distributiva según mérito",
+      "Son figuras idénticas aplicadas exclusivamente al ámbito bancario",
+      "La distributiva rige sólo en contratos bilaterales de compraventa"
     ],
     ans: 1,
-    hint: "Ciencia o tratado de los deberes y normas morales de una profesión.",
-    exp: "Deontología: deberes, obligaciones y principios morales que rigen la conducta en el ejercicio de una profesión."
+    hint: "Conmutativa es equivalencia exacta en compras/ventas; distributiva reparte según el mérito de cada cual.",
+    exp: "Conmutativa rige intercambios igualitarios; distributiva reparte cargas y bienes comunes en función del mérito."
   },
   {
-    id: 133, phase: 6,
-    q: "¿Qué es la 'Sinergia' organizacional según los apuntes de clase?",
+    id: 141, phase: 6,
+    q: "Los dos actos constitutivos de la virtud de la 'Fortaleza' son:",
     options: [
-      "La pérdida inevitable de recursos provocada por el desgaste fabril",
-      "Efecto multiplicador donde el todo conjunto es superior a la suma individual",
-      "El estancamiento operativo originado por exceso de normas de control",
-      "La centralización de compras en una sola bodega de almacenamiento"
+      "Planificar y organizar los recursos antes de cada jornada",
+      "Resistir las dificultades y Acometer con iniciativa para vencerlas",
+      "Negociar condiciones favorables y declarar satisfacción al final",
+      "Moderar los apetitos sensibles y evitar excesos placenteros"
     ],
     ans: 1,
-    hint: "El efecto 2 + 2 = 5 cuando las áreas colaboran coordinadas.",
-    exp: "Sinergia: efecto multiplicador donde el resultado conjunto de áreas o unidades es superior a la suma de sus partes aisladas."
+    hint: "Primero soportar con temple el dolor o adversidad, y segundo tomar la iniciativa para atacar el problema.",
+    exp: "El primer acto de la fortaleza es resistir el dolor o molestia; el segundo es acometer con audacia la solución."
+  },
+  {
+    id: 142, phase: 6,
+    q: "La virtud de la 'Templanza' consiste moralmente en:",
+    options: [
+      "Soportar dolores físicos sin manifestar queja ni debilidad",
+      "La moderación que la razón impone sobre los apetitos pasionales",
+      "Distribuir recursos corporativos de acuerdo al mérito individual",
+      "Indagar con rigor metodológico los hechos antes de juzgarlos"
+    ],
+    ans: 1,
+    hint: "El justo medio: gobernar los placeres y apetitos con la razón en lugar de ser dominado por ellos.",
+    exp: "Templanza es buscar el justo medio racional frente a los apetitos y pasiones, evitando excesos y defectos."
+  },
+  {
+    id: 143, phase: 6,
+    q: "Para Aristóteles, la 'Amistad Incondicionada' se caracteriza porque:",
+    options: [
+      "Se fundamenta en la búsqueda de ventajas comerciales recíprocas",
+      "Quiere y hace el bien al amigo por el valor del amigo mismo",
+      "Se disuelve inmediatamente cuando concluye el beneficio material",
+      "Exige la firma de convenios contractuales de cooperación mutua"
+    ],
+    ans: 1,
+    hint: "La amistad auténtica ama al amigo por quién es; la utilitaria se acaba en cuanto se termina la conveniencia.",
+    exp: "La amistad incondicionada es un bien en sí misma: se ama al amigo por quién es y se procura su bien sin interés egoísta."
+  },
+  {
+    id: 144, phase: 6,
+    q: "En el ejercicio profesional, la virtud de la 'Veracidad' exige:",
+    options: [
+      "Ocultar errores operativos para proteger la reputación pública",
+      "La sinceridad honesta sustentada en la humildad de reconocer la realidad",
+      "Divulgar secretos industriales para democratizar la información",
+      "Imponer opiniones personales sin contrastarlas con evidencias"
+    ],
+    ans: 1,
+    hint: "Quien busca la verdad tiene la humildad de reconocer los hechos tal como son y admitir errores.",
+    exp: "Veracidad moral es sinceridad y honestidad, y está indisolublemente unida a la humildad de aceptar la realidad propia y ajena."
+  },
+  {
+    id: 145, phase: 6,
+    q: "¿Por qué el desenfreno verbal sin prudencia es una 'falsa sinceridad'?",
+    options: [
+      "Porque infringe los protocolos notariales de redacción de cartas",
+      "Porque degenera en agresión y descalificación, quebrando la confianza",
+      "Porque reduce las ventas de bienes al exponer debilidades fabriles",
+      "Porque contradice las normativas de seguridad e higiene de planta"
+    ],
+    ans: 1,
+    hint: "Decir cualquier cosa sin filtro ni compasión no es sinceridad, sino falta de tacto y agresión.",
+    exp: "La mal entendida sinceridad es crueldad o bravuconería; la verdadera sinceridad requiere prudencia y humildad."
+  },
+  {
+    id: 146, phase: 6,
+    q: "La 'Diligencia' en el desempeño laboral se vincula etimológicamente con:",
+    options: [
+      "La velocidad mecánica para terminar tareas sin revisar detalles",
+      "Hacer las cosas con esmero y aprecio (del latín diligo: amar)",
+      "La delegación de responsabilidades en subalternos de menor rango",
+      "La postergación de decisiones complejas hasta reunir más datos"
+    ],
+    ans: 1,
+    hint: "Proviene de 'diligo' (amar): esmero y cariño puesto en la terminación prolija de las labores.",
+    exp: "Diligencia proviene de diligo (amar, apreciar): hacer el trabajo con esmero, amor y vocación por la obra bien hecha."
+  },
+  {
+    id: 147, phase: 6,
+    q: "Completar la máxima de Aristóteles: 'Somos lo que hacemos día a día; de modo que la excelencia no es un acto, sino un ________.'",
+    options: [
+      "accidente afortunado de la coyuntura",
+      "hábito forjado por la constancia moral",
+      "decreto impuesto por la alta dirección",
+      "talento innato imposible de aprender"
+    ],
+    ans: 1,
+    hint: "No se es excelente por un golpe de suerte puntual, sino por la disciplina repetida a diario.",
+    exp: "La excelencia es un hábito: se forja en el ejercicio constante y virtuoso de las acciones cotidianas."
+  },
+  {
+    id: 148, phase: 6,
+    q: "En el Proceso de Coordinación de Negocios, el 'Suministrador' es:",
+    options: [
+      "El cliente que declara su satisfacción al término del servicio",
+      "El responsable formal de que se cumplan las promesas de valor",
+      "La entidad bancaria que custodia los fondos de la transacción",
+      "El regulador público que certifica el cumplimiento arancelario"
+    ],
+    ans: 1,
+    hint: "Es el agente que responde con su nombre de que la entrega o servicio se cumpla tal como se pactó.",
+    exp: "El suministrador o proveedor es el responsable con nombre y apellido de que se cumplan las promesas convenidas."
+  },
+  {
+    id: 149, phase: 6,
+    q: "La etapa final de un proceso de negocio donde se verifica el servicio se llama:",
+    options: [
+      "Etapa de solicitud formal de requerimientos de abastecimiento",
+      "Etapa de negociación de condiciones de cumplimiento de promesa",
+      "Etapa de ejecución física de la orden de producción en planta",
+      "Etapa de declaración de satisfacción o conformidad del usuario"
+    ],
+    ans: 3,
+    hint: "El cliente confirma si quedó conforme o insatisfecho con el bien o servicio entregado.",
+    exp: "La declaración es el cierre del ciclo donde el sujeto evalúa y declara su satisfacción con el valor recibido."
+  },
+  {
+    id: 150, phase: 6,
+    q: "¿Por qué las virtudes éticas son hoy un activo estratégico para la empresa?",
+    options: [
+      "Porque permiten justificar recortes salariales en periodos de crisis",
+      "Porque generan confianza, bajan costos de transacción y dan legitimidad",
+      "Porque eximen a la firma de presentar estados financieros auditados",
+      "Porque garantizan que no ingresen competidores sustitutos al sector"
+    ],
+    ans: 1,
+    hint: "Una empresa sin ética pierde clientes, es sancionada y ve dispararse sus costos legales y de supervisión.",
+    exp: "La ética forja reputación y confianza con stakeholders, reduciendo costos de control y asegurando sostenibilidad real."
   }
 ];
 
 /* =========================================================================
-   3. SISTEMA DE PROGRESO, GUARDADO, CARGA Y ALEATORIZACIÓN
+   3. SISTEMA DE PROGRESO, GUARDADO, CARGA, RESET Y ALEATORIZACIÓN
    ========================================================================= */
 let userProgress = {
   completedPhases: []
@@ -1524,6 +2217,19 @@ function loadProgressFromFile(event) {
         alert("Error al leer el archivo.");
       }
     };
+  }
+}
+
+// Función para reestablecer progreso a cero
+function resetProgress() {
+  const confirmReset = confirm("¿Estás seguro de que deseas reestablecer todo tu progreso? Volverás a empezar como si no hubieses hecho nada.");
+  if (confirmReset) {
+    userProgress = { completedPhases: [] };
+    try {
+      localStorage.removeItem('undertale_admin_progress');
+    } catch(e) {}
+    alert("Progreso reestablecido con éxito.");
+    renderMainMenu();
   }
 }
 
@@ -1596,9 +2302,9 @@ function renderMainMenu() {
   container.innerHTML = `
     <div class="screen-overlay">
       <div style="font-size:30px; margin-bottom:10px;">❤️</div>
-      <div class="screen-title">ADMINISTRACIÓN DE EMPRESAS<br><span style="font-size:10px; color:#fff;">UNIDADES Y PROGRESO GUARDADO</span></div>
+      <div class="screen-title">ADMINISTRACIÓN DE EMPRESAS<br><span style="font-size:10px; color:#fff;">BANCO COMPLETO DE 150 PREGUNTAS</span></div>
       <p style="font-size:9px; line-height:1.6; max-width:620px; color:#ccc;">
-        Las unidades completadas se marcan en <span style="color:var(--hp-green);">VERDE</span>. Guarda o carga tu progreso fácilmente con un archivo descargable.
+        Las unidades completadas se marcan en <span style="color:var(--hp-green);">VERDE</span>. Guarda, carga o reestablece tu progreso fácilmente.
       </p>
 
       <div class="menu-grid">
@@ -1646,14 +2352,16 @@ function renderMainMenu() {
         </button>
         <button class="option-btn ${isDone(8) ? 'completed-unit' : ''}" style="border-color:var(--ut-orange); color:var(--ut-orange);" onclick="startMarathonAll()">
           <span class="soul-icon">❤️</span>
-          <span>⭐ 8. MARATÓN TOTAL (Banco Completo)</span>
-          <span class="phase-badge ${isDone(8) ? 'done' : ''}" style="border-color:var(--ut-orange);">${isDone(8) ? '✓ COMPLETADA' : 'Completo'}</span>
+          <span>⭐ 8. MARATÓN TOTAL (150 Preguntas)</span>
+          <span class="phase-badge ${isDone(8) ? 'done' : ''}" style="border-color:var(--ut-orange);">${isDone(8) ? '✓ COMPLETADA' : '150 P.'}</span>
         </button>
       </div>
 
+      <!-- BOTONES DE GUARDAR, CARGAR Y REESTABLECER PROGRESO -->
       <div class="save-load-row">
-        <button class="save-load-btn" onclick="saveProgressToFile()">💾 Guardar / Descargar Progreso</button>
-        <button class="save-load-btn" onclick="document.getElementById('fileInputLoader').click()">📂 Cargar Archivo de Progreso</button>
+        <button class="save-load-btn" onclick="saveProgressToFile()">💾 Guardar</button>
+        <button class="save-load-btn" onclick="document.getElementById('fileInputLoader').click()">📂 Cargar</button>
+        <button class="save-load-btn reset-btn" onclick="resetProgress()">🔄 Reestablecer</button>
         <input type="file" id="fileInputLoader" style="display:none" accept=".json" onchange="loadProgressFromFile(event)">
       </div>
     </div>
@@ -1713,7 +2421,7 @@ function startMarathonAll() {
   gameState.currentPhase = 8;
   gameState.isSansBattle = false;
   gameState.isMarathon = true;
-  gameState.phaseQuestions = prepareShuffledQuiz(MASTER_QUESTION_BANK);
+  gameState.phaseQuestions = prepareShuffledQuiz(MASTER_QUESTION_BANK); // Exactamente 150 preguntas
   gameState.currentIndex = 0;
   gameState.score = 0;
   gameState.playerHP = 10;
@@ -1726,7 +2434,7 @@ function updateStatusUI() {
   const statusBar = document.getElementById("statusBar");
   statusBar.style.display = "flex";
   if (gameState.isMarathon) {
-    document.getElementById("currentPhaseLabel").innerText = "MARATÓN TOTAL";
+    document.getElementById("currentPhaseLabel").innerText = "MARATÓN TOTAL (150 P.)";
   } else {
     document.getElementById("currentPhaseLabel").innerText = PHASES_NAMES[gameState.currentPhase] || `FASE ${gameState.currentPhase}`;
   }
@@ -1757,7 +2465,7 @@ function renderQuestionUI() {
   container.innerHTML = `
     <div class="progress-section">
       <div style="display:flex; justify-content:space-between;">
-        <span>Progreso de Unidad (${totalQ >= 50 ? 'Modo Completo' : 'Unidad Actual'}):</span>
+        <span>Progreso (${totalQ >= 50 ? 'Modo Definitivo 150 P.' : 'Unidad Actual'}):</span>
         <span style="color:var(--hint-cyan);">${gameState.currentIndex} / ${totalQ}</span>
       </div>
       <div class="progress-bar-bg">

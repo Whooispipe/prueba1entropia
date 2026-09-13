@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>UNDERTALE: Administración de Empresas</title>
+  
+  <!-- CONFIGURACIÓN PWA Y COMPATIBILIDAD iOS SAFARI -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #000000;
+      --border-color: #ffffff;
+      --text-white: #ffffff;
+      --ut-yellow: #ffff00;
+      --ut-orange: #ff9800;
+      --ut-red: #c00000;
+      --soul-color: #ff0000;
+      --hint-cyan: #00ffff;
+      --hp-green: #00ff00;
+      --sobre-azul: #64c8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-color);
+      color: var(--text-white);
+      font-family: 'Press Start 2P', monospace, sans-serif;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: 100dvh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    #game-container {
+      width: 100%;
+      max-width: 860px;
+      background: #000;
+      border: 5px solid var(--border-color);
+      padding: 18px;
+      position: relative;
+      box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--border-color);
+    }
+
+    /* BARRA DE ESTADO UNIVERSAL */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 3px solid var(--border-color);
+      font-size: 11px;
+      gap: 8px;
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hp-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hp-label {
+      font-size: 10px;
+      color: #fff;
+    }
+
+    .hp-bar-bg {
+      width: 85px;
+      height: 16px;
+      background-color: var(--ut-red);
+      position: relative;
+      border: 1px solid #fff;
+    }
+
+    .hp-bar-fill {
+      height: 100%;
+      width: 100%;
+      background-color: var(--ut-yellow);
+      transition: width 0.2s ease-out;
+    }
+
+    .hp-num {
+      font-size: 10px;
+      min-width: 45px;
+    }
+
+    /* BARRA DE PROGRESO DE PREGUNTAS */
+    .progress-section {
+      margin-bottom: 14px;
+      font-size: 9.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background-color: #222;
+      border: 2px solid var(--border-color);
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var(--hint-cyan);
+      transition: width 0.3s ease;
+    }
+
+    /* CAJA DE PREGUNTA */
+    .dialogue-box {
+      border: 4px solid var(--border-color);
+      background: #000;
+      padding: 16px;
+      min-height: 90px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      line-height: 1.7;
+      letter-spacing: 0.5px;
+    }
+
+    .dialogue-prefix {
+      color: var(--ut-yellow);
+      margin-bottom: 8px;
+      display: block;
+      font-size: 11px;
+    }
+
+    /* CAJA DE PISTA */
+    .hint-box {
+      display: none;
+      border: 2px dashed var(--hint-cyan);
+      background: #041419;
+      color: var(--hint-cyan);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 10.5px;
+      line-height: 1.6;
+    }
+
+    /* ALTERNATIVAS A LO ANCHO (FULL WIDTH) */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .option-btn {
+      background: #000;
+      color: #fff;
+      border: 3px solid var(--border-color);
+      padding: 14px 14px;
+      font-family: inherit;
+      font-size: 10.5px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+      width: 100%;
+      min-height: 48px;
+      transition: border-color 0.1s;
+    }
+
+    .option-btn.completed-unit {
+      border-color: var(--hp-green);
+      color: var(--hp-green);
+    }
+
+    .option-btn:hover, .option-btn:active, .option-btn:focus {
+      border-color: var(--ut-yellow);
+      color: var(--ut-yellow);
+      outline: none;
+    }
+
+    .soul-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      color: var(--soul-color);
+      visibility: hidden;
+      font-size: 12px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .option-btn:hover .soul-icon,
+    .option-btn:active .soul-icon,
+    .action-btn:hover .soul-icon {
+      visibility: visible;
+    }
+
+    /* PANEL DE FEEDBACK */
+    .feedback-panel {
+      display: none;
+      border: 3px solid var(--border-color);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 10.5px;
+      line-height: 1.6;
+    }
+
+    .feedback-panel.correct {
+      border-color: var(--hp-green);
+      color: #98ff98;
+      background: #021a02;
+    }
+
+    .feedback-panel.incorrect {
+      border-color: var(--ut-red);
+      color: #ff8888;
+      background: #1a0202;
+    }
+
+    /* ACCIONES INFERIORES */
+    .footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 3px solid var(--border-color);
+      padding-top: 14px;
+    }
+
+    .action-btn {
+      background: #000;
+      color: var(--ut-orange);
+      border: 3px solid var(--ut-orange);
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 10px;
+      cursor: pointer;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+    }
+
+    .action-btn:active, .action-btn:hover {
+      background: var(--ut-orange);
+      color: #000;
+    }
+
+    .action-btn.hint-btn {
+      color: var(--hint-cyan);
+      border-color: var(--hint-cyan);
+    }
+
+    .action-btn.hint-btn:active, .action-btn.hint-btn:hover {
+      background: var(--hint-cyan);
+      color: #000;
+    }
+
+    /* PANTALLAS */
+    .screen-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px 4px;
+    }
+
+    .screen-title {
+      font-size: 15px;
+      color: var(--ut-yellow);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 620px;
+      margin-top: 14px;
+    }
+
+    .phase-badge {
+      font-size: 8px;
+      padding: 3px 5px;
+      border: 1px solid #fff;
+      color: var(--ut-yellow);
+      margin-left: auto;
+    }
+
+    .phase-badge.done {
+      border-color: var(--hp-green);
+      color: var(--hp-green);
+    }
+
+    .save-load-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 620px;
+      margin-top: 12px;
+    }
+
+    .save-load-btn {
+      flex: 1;
+      background: #000;
+      color: #fff;
+      border: 2px solid var(--border-color);
+      padding: 10px;
+      font-family: inherit;
+      font-size: 9px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .save-load-btn:hover {
+      background: #222;
+      border-color: var(--ut-yellow);
+      color: var(--ut-yellow);
+    }
+
+    /* ESTILO DEL SOBRE AZUL EN GAME OVER */
+    .game-over-envelope {
+      width: 130px;
+      max-width: 70%;
+      height: auto;
+      image-rendering: pixelated;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.8));
+    }
+
+    @media (max-width: 480px) {
+      #game-container {
+        padding: 12px 10px;
+        border-width: 3px;
+        box-shadow: 0 0 0 2px #000, 0 0 0 4px var(--border-color);
+      }
+      .dialogue-box {
+        font-size: 10px;
+        padding: 12px;
+      }
+      .option-btn {
+        font-size: 9.5px;
+        padding: 12px 10px;
+      }
+      .status-bar {
+        font-size: 9px;
+      }
+      .hp-bar-bg {
+        width: 70px;
+      }
+      .action-btn {
+        padding: 8px 10px;
+        font-size: 9px;
+      }
+      .screen-title {
+        font-size: 13px;
+      }
+      .game-over-envelope {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="game-container">
+  <!-- BARRA DE ESTADO -->
+  <div class="status-bar" id="statusBar" style="display:none;">
+    <div class="status-left">
+      <span>HUMANO</span>
+      <span>LV <span id="playerLV">1</span></span>
+    </div>
+    <div class="hp-container">
+      <span class="hp-label">HP</span>
+      <div class="hp-bar-bg">
+        <div class="hp-bar-fill" id="hpBarFill"></div>
+      </div>
+      <span class="hp-num" id="hpText">1/1</span>
+    </div>
+    <div>
+      <span id="currentPhaseLabel" style="color:var(--ut-yellow);">FASE 1</span>
+    </div>
+    <button id="muteBtn" onclick="toggleAudio()" style="background:#000; color:#fff; border:2px solid #fff; font-family:inherit; font-size:8px; cursor:pointer; padding:5px 7px;">SONIDO: ON</button>
+  </div>
+
+  <!-- PANTALLA DINÁMICA -->
+  <div id="screenContent"></div>
+</div>
+
+<script>
+/* =========================================================================
+   1. SISTEMA DE AUDIO BLINDADO PARA iOS WEBKIT
+   ========================================================================= */
+let audioCtx = null;
+let soundEnabled = true;
+
+function unlockAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted')) {
+    audioCtx.resume().catch(() => {});
+  }
+}
+
+['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => {
+  document.addEventListener(evt, unlockAudioContext, { passive: true, once: false });
+});
+
+function toggleAudio() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById("muteBtn");
+  if (btn) btn.innerText = soundEnabled ? "SONIDO: ON" : "SONIDO: OFF";
+}
+
+function playBleep(freq = 440, type = 'square', duration = 0.05) {
+  if (!soundEnabled) return;
+  try {
+    unlockAudioContext();
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch (e) {}
+}
+
+function playDamageSound() {
+  if (!soundEnabled) return;
+  try {
+    unlockAudioContext();
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.25);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.25);
+  } catch (e) {}
+}
+
+function playVictorySound() {
+  if (!soundEnabled) return;
+  const notes = [261.6, 329.6, 392.0, 523.3];
+  notes.forEach((freq, idx) => {
+    setTimeout(() => playBleep(freq, 'triangle', 0.16), idx * 120);
+  });
+}
+
+function playGameOverSting() {
+  if (!soundEnabled) return;
+  const notes = [220, 207.6, 196, 185];
+  notes.forEach((freq, idx) => {
+    setTimeout(() => playBleep(freq, 'sawtooth', 0.32), idx * 240);
+  });
+}
+
+/* =========================================================================
+   2. BANCO DE 150 PREGUNTAS
+   ========================================================================= */
+const MASTER_QUESTION_BANK = [
+  // FASE 1: CONCEPTOS DE EMPRESA, RECURSOS Y OPERACIONES (1 - 25)
+  {
+    id: 1, phase: 1,
+    q: "Según Peter Drucker, la empresa se define formalmente como:",
+    options: ["Un organismo del Estado para distribuir riqueza", "Una actividad económica organizada, dirigida a la producción de bienes y servicios para el mercado", "Una entidad sin fines de lucro enfocada en la caridad", "Una máquina extractiva de recursos naturales"],
+    ans: 1,
+    hint: "Drucker vincula la empresa directamente con la producción económica orientada al mercado.",
+    exp: "Drucker define la empresa como una actividad económica organizada dirigida a la producción de bienes y servicios para el mercado."
+  },
+  {
+    id: 2, phase: 1,
+    q: "¿Cuál es la diferencia fundamental del recurso humano frente a los recursos materiales de la empresa?",
+    options: ["No genera costos de operación", "Siente necesidades y se impulsa en base a ellas (pirámide de Maslow)", "Se deprecia contablemente cada año", "Es un activo fijo tangible"],
+    ans: 1,
+    hint: "Las personas poseen motivaciones psicológicas y jerarquía de necesidades.",
+    exp: "A diferencia de las máquinas, las personas experimentan necesidades y motivaciones dinámicas."
+  },
+  {
+    id: 3, phase: 1,
+    q: "Completar la frase: Los activos fijos de una empresa determinan y delimitan el ________ de operaciones de la misma.",
+    options: ["volumen o capacidad", "precio de venta", "deseo del cliente", "flujo de marketing"],
+    ans: 0,
+    hint: "Piensa en el límite físico que imponen el tamaño de las maquinarias y los metros cuadrados.",
+    exp: "Los activos fijos (maquinarias, plantas, terrenos) definen el volumen potencial y límite físico de operación."
+  },
+  {
+    id: 4, phase: 1,
+    q: "Verdadero o Falso: Los recursos materiales deben definir y limitar el contenido de la acción humana dentro de la organización.",
+    options: ["Verdadero", "Falso"],
+    ans: 1,
+    hint: "Lo material delimita el espacio físico, pero la inteligencia y estrategia dependen de las personas.",
+    exp: "Falso. Los recursos materiales delimitan el ámbito físico, pero la acción, estrategia e iniciativa humana trascienden lo material."
+  },
+  {
+    id: 5, phase: 1,
+    q: "¿En qué consiste primordialmente la función social de la empresa?",
+    options: ["Maximizar exclusivamente el pago de dividendos", "Satisfacer las reales necesidades de los consumidores y ser fuente de trabajo estable", "Evitar el pago de impuestos fiscales", "Operar sin regulación ambiental"],
+    ans: 1,
+    hint: "La empresa se legitima ante la sociedad resolviendo carencias comunitarias y generando empleo digno.",
+    exp: "La función social radica en satisfacer necesidades de la comunidad y crear fuentes de empleo dignas y sostenibles."
+  },
+  {
+    id: 6, phase: 1,
+    q: "La función económica de la empresa le impone la obligación ineludible de:",
+    options: ["Gastar todo el presupuesto anual", "Crear VALOR mediante la asignación eficiente de recursos escasos", "Fijar precios monopólicos", "Eliminar la mano de obra humana"],
+    ans: 1,
+    hint: "El problema económico implica utilizar factores escasos para generar un resultado de mayor valor.",
+    exp: "Administrar recursos escasos y de uso alternativo exige generar valor por sobre el costo de los factores empleados."
+  },
+  {
+    id: 7, phase: 1,
+    q: "Una industria primaria se caracteriza por centrar su producción en:",
+    options: ["La fabricación de software avanzado", "La transformación directa de recursos naturales (agricultura, minería, pesca)", "La consultoría financiera", "El comercio minorista"],
+    ans: 1,
+    hint: "Involucra actividades que extraen insumos directamente de la tierra, la agricultura o el mar.",
+    exp: "El sector primario extrae y aprovecha directamente los recursos de la naturaleza."
+  },
+  {
+    id: 8, phase: 1,
+    q: "En una Sociedad Anónima (S.A.), la responsabilidad de los socios está limitada a:",
+    options: ["El total de su patrimonio personal y familiar", "El monto del valor de su aporte o capital invertido", "Una cuota fijada por el tribunal laboral", "Cero responsabilidad ante deudas"],
+    ans: 1,
+    hint: "Los accionistas protegen su patrimonio personal; solo arriesgan las acciones suscritas.",
+    exp: "En las sociedades de capital (S.A.), la responsabilidad patrimonial del accionista se limita a sus acciones aportadas."
+  },
+  {
+    id: 9, phase: 1,
+    q: "En las sociedades colectivas o de personas, la responsabilidad legal de los socios es:",
+    options: ["Limitada al aporte de capital", "Ilimitada y solidaria (compromete bienes personales)", "Exclusiva del gerente general", "Regulada por el sindicato"],
+    ans: 1,
+    hint: "No existe separación patrimonial; los acreedores pueden cobrar sobre bienes personales.",
+    exp: "Los socios responden con su patrimonio personal de forma solidaria e ilimitada por los compromisos sociales."
+  },
+  {
+    id: 10, phase: 1,
+    q: "Una sociedad en comandita reúne a dos clases de socios:",
+    options: ["Públicos y Privados", "Gestores (administran con responsabilidad ilimitada) y Comanditarios (aportan capital con responsabilidad limitada)", "Nacionales y Extranjeros", "Sindicalizados y No sindicalizados"],
+    ans: 1,
+    hint: "Unos llevan la gestión asumiendo riesgo personal y otros aportan capital de forma pasiva.",
+    exp: "Estructura mixta: socios gestores administran; comanditarios aportan capital sin intervenir en la gestión directa."
+  },
+  {
+    id: 11, phase: 1,
+    q: "El concepto de 'Proyecto Greenfield' alude a:",
+    options: ["Pintar de verde una fábrica antigua", "Desarrollar una inversión desde cero en un sitio sin infraestructura previa", "Comprar una empresa en quiebra", "Modernizar una planta operativa"],
+    ans: 1,
+    hint: "Proviene de 'campo verde': construir sin limitaciones de instalaciones pasadas.",
+    exp: "Proviene de 'campo verde': construir desde cero sin limitaciones previas de diseño o infraestructura existente."
+  },
+  {
+    id: 12, phase: 1,
+    q: "A diferencia de un Greenfield, un proyecto 'Brownfield' consiste en:",
+    options: ["Ampliar, modernizar o reutilizar una instalación ya existente", "Cerrar definitivamente las operaciones", "Crear una sociedad anónima cerrada", "Sembrar áreas verdes"],
+    ans: 0,
+    hint: "Aprovecha naves, faenas o infraestructura previa para su modernización.",
+    exp: "Aprovecha parte de la infraestructura existente para remodelar, ampliar o reconvertir faenas."
+  },
+  {
+    id: 13, phase: 1,
+    q: "El área de 'Back Office' de una empresa se refiere a:",
+    options: ["El mostrador de atención al público", "El conjunto de funciones administrativas y de soporte que no ve directamente el cliente final", "La sala de ventas y publicidad en televisión", "El equipo de promotores de terreno"],
+    ans: 1,
+    hint: "Es la 'retaguardia': finanzas, legal, RRHH y TI que sostienen las operaciones tras bambalinas.",
+    exp: "Es la 'retaguardia' operativa: contabilidad, finanzas, legal, TI, compras y RRHH que sostienen al negocio."
+  },
+  {
+    id: 14, phase: 1,
+    q: "Completar la frase: Mientras el Front Office está en contacto directo con el usuario, el Back Office garantiza la ________ de los procesos internos.",
+    options: ["estandarización y soporte operativo", "eliminación de impuestos", "venta ambulante", "quiebra judicial"],
+    ans: 0,
+    hint: "El cliente es atendido gracias a que el soporte administrativo interno funciona coordinado.",
+    exp: "El back office proporciona el soporte estructural, financiero y documental para que la venta sea exitosa."
+  },
+  {
+    id: 15, phase: 1,
+    q: "¿Qué ventaja otorga un sistema BPMS (Business Process Management System) en el back office?",
+    options: ["Eliminar la necesidad de tener clientes", "Integrar y automatizar los procesos en un solo flujo en la nube", "Aumentar el consumo de papel impreso", "Cerrar el departamento contable"],
+    ans: 1,
+    hint: "Permite modelar, integrar y monitorear tareas corporativas de punta a punta de forma digital.",
+    exp: "Un BPMS integra flujos, monitorea tiempos, reduce errores y centraliza la información en tiempo real."
+  },
+  {
+    id: 16, phase: 1,
+    q: "Las empresas heterogestionadas son aquellas en donde las decisiones son tomadas por:",
+    options: ["Los trabajadores mediante asamblea unánime", "Personas o directores distintos e independientes de los trabajadores operativos", "El presidente del país", "Los clientes en redes sociales"],
+    ans: 1,
+    hint: "La administración y gobierno recaen en un directorio externo a la mano de obra operativa.",
+    exp: "En la heterogestión, la propiedad y la alta dirección están diferenciadas de la mano de obra directa."
+  },
+  {
+    id: 17, phase: 1,
+    q: "En una empresa descentralizada, la autoridad para tomar decisiones:",
+    options: ["Se concentra únicamente en el dueño", "Se delega a lo largo de los diversos niveles y áreas de la estructura", "Queda en manos de los proveedores", "No existe autoridad"],
+    ans: 1,
+    hint: "La toma de decisiones no está atrapada en la cúspide; se reparte hacia los mandos medios y operativos.",
+    exp: "La descentralización delega la facultad decisoria hacia niveles intermedios y operativos cercanos al problema."
+  },
+  {
+    id: 18, phase: 1,
+    q: "El capital de trabajo (activos circulantes) de una empresa tiene como función:",
+    options: ["Financiar compras a 30 años plazo", "Cubrir las operaciones del ciclo corriente de corto plazo (caja, inventarios, cuentas por cobrar)", "Comprar terrenos agrícolas para el retiro", "Pagar dividendos extraordinarios"],
+    ans: 1,
+    hint: "Es el recurso corriente para pagar sueldos, reponer inventarios y financiar cuentas del mes.",
+    exp: "El capital de trabajo financia el ciclo operacional cotidiano (comprar, producir, vender y cobrar)."
+  },
+  {
+    id: 19, phase: 1,
+    q: "¿Qué define a un bien de consumo intermedio?",
+    options: ["Un bien listo para su uso final en el hogar", "Un bien adquirido como materia prima para integrarse en un nuevo proceso productivo", "Un software descargado por un niño", "Un servicio de transporte de pasajeros"],
+    ans: 1,
+    hint: "Sirve como insumo para fabricar otro producto posterior.",
+    exp: "Bienes intermedios son insumos para fabricar otros bienes (ej. harina vendida a una panadería)."
+  },
+  {
+    id: 20, phase: 1,
+    q: "Verdadero o Falso: Un mismo producto (como la harina) puede ser bien final o intermedio según el destino que le dé el comprador.",
+    options: ["Verdadero", "Falso"],
+    ans: 0,
+    hint: "En el hogar es consumo final; en una fábrica de galletas es insumo intermedio.",
+    exp: "Verdadero. En el hogar para cocinar es consumo final; en una fábrica de galletas es insumo intermedio."
+  },
+  {
+    id: 21, phase: 1,
+    q: "Un Centro de Servicios Compartidos (CSC) se diferencia del back office tradicional en que:",
+    options: ["Es informal y no tiene jefatura", "Centraliza deliberadamente la prestación de servicios de soporte para múltiples unidades de negocio", "Solo atiende clientes externos", "Opera sin computadores"],
+    ans: 1,
+    hint: "Unifica y estandariza funciones comunes (como nóminas o cobranza) para todas las filiales de un grupo corporativo.",
+    exp: "El CSC unifica y estandariza servicios corporativos (facturación, nominas, soporte TI) para toda una corporación."
+  },
+  {
+    id: 22, phase: 1,
+    q: "¿Qué efecto produce la depreciación en el balance de una empresa?",
+    options: ["Aumenta el efectivo en caja de forma mágica", "Refleja contablemente el desgaste y pérdida de valor de los activos fijos en el tiempo", "Elimina las deudas bancarias", "Duplica el valor de los inventarios"],
+    ans: 1,
+    hint: "Reconoce que los bienes de uso sufren desgaste u obsolescencia a lo largo de su vida útil.",
+    exp: "La depreciación distribuye el costo del activo fijo a lo largo de su vida útil por desgaste u obsolescencia."
+  },
+  {
+    id: 23, phase: 1,
+    q: "Completar la frase: La circularización de saldos es un procedimiento de control que busca verificar externamente las cuentas por ________.",
+    options: ["cobrar o pagar con clientes y proveedores", "desechar en la basura", "evadir legalmente", "vender en subastas"],
+    ans: 0,
+    hint: "Es una técnica de auditoría donde se solicita a terceros que confirmen los saldos en libros.",
+    exp: "Técnica de auditoría consistente en pedir a clientes o proveedores que confirmen directamente el saldo adeudado."
+  },
+  {
+    id: 24, phase: 1,
+    q: "Las empresas públicas se justifican en un país bajo criterios de:",
+    options: ["Afán de lucro desmedido", "Soberanía estratégica, subsidiaridad, monopolios naturales o servicios básicos esenciales", "Capricho de corporaciones multinacionales", "Especulación de divisas"],
+    ans: 1,
+    hint: "El Estado cubre sectores estratégicos o donde el mercado privado no tiene incentivos de rentabilidad.",
+    exp: "El Estado asume roles estratégicos (Codelco, Enap) o cubre necesidades sociales donde los privados no tienen incentivos."
+  },
+  {
+    id: 25, phase: 1,
+    q: "El término 'Servucción' se refiere específicamente a:",
+    options: ["La producción en serie de automóviles", "El proceso de fabricación, ensamble y entrega de un servicio intangible", "La destrucción de activos fijos", "El pago de remuneraciones"],
+    ans: 1,
+    hint: "Es el análogo de la producción física, pero orientado al ciclo de vida y entrega de un servicio.",
+    exp: "Neologismo que describe la organización de recursos físicos y humanos para generar la prestación de un servicio."
+  },
+
+  // FASE 2: PROBLEMA ADMINISTRATIVO Y EL ADMINISTRADOR (26 - 50)
+  {
+    id: 26, phase: 2,
+    q: "¿Cuándo surge formalmente el 'problema administrativo'?",
+    options: ["Cuando una sola persona trabaja en soledad en su casa", "En toda cooperación organizada donde hay al menos dos personas en función de un objetivo común", "Cuando la empresa se declara en quiebra", "Únicamente cuando se instala un software contable"],
+    ans: 1,
+    hint: "Basta que exista una pequeña dupla cooperando para que nazca la necesidad de coordinar recursos.",
+    exp: "Basta que existan 2 personas cooperando por un fin común: esto exige coordinar voluntades y asignar recursos."
+  },
+  {
+    id: 27, phase: 2,
+    q: "La tarea esencial de la administración se sintetiza en:",
+    options: ["Vigilar a los trabajadores con cámaras de seguridad", "Interpretar los objetivos organizacionales y transformarlos en acción mediante planeación, organización, dirección y control", "Eliminar todo tipo de reunión interna", "Pagar el salario mínimo legal"],
+    ans: 1,
+    hint: "Transformar metas en acción coordinada mediante el proceso administrativo clásico.",
+    exp: "Es transformar metas abstractas en acción coordinada a través del proceso administrativo (POIDC)."
+  },
+  {
+    id: 28, phase: 2,
+    q: "Se afirma que la administración es una ciencia social porque:",
+    options: ["Se basa en fórmulas matemáticas exactas e inmutables", "Utiliza métodos de observación empírica sobre grupos humanos para explicar fenómenos y anticipar el devenir", "No requiere experimentación", "Es una disciplina esotérica"],
+    ans: 1,
+    hint: "No es una ciencia exacta; estudia colectivos humanos para prever su dinámica organizacional.",
+    exp: "Es social y no exacta porque estudia organizaciones y personas, buscando patrones explicativos y predictivos."
+  },
+  {
+    id: 29, phase: 2,
+    q: "La administración se considera un 'arte' debido a que:",
+    options: ["Requiere pintar cuadros en la oficina", "Exige la sabiduría, destreza y juicio práctico para aplicar principios científicos a situaciones reales singulares", "Carece de métodos lógicos", "Depende del azar"],
+    ans: 1,
+    hint: "El arte es el 'saber cómo' aplicar la teoría con criterio y prudencia ante casos particulares.",
+    exp: "El arte es el 'saber cómo' actuar eficazmente en la práctica concreta con pericia, intuición y sabiduría."
+  },
+  {
+    id: 30, phase: 2,
+    q: "Según Robert Katz, la habilidad técnica del administrador involucra:",
+    options: ["El carisma para dar discursos emotivos", "El conocimiento y destreza en métodos, técnicas, procesos y uso de herramientas específicas", "La visión global de la economía mundial", "La capacidad de meditar en silencio"],
+    ans: 1,
+    hint: "Es el conocimiento instrumental sobre cómo hacer tareas especializadas (métodos, máquinas, fórmulas).",
+    exp: "Habilidad técnica es el dominio especializado sobre un área operativa o profesional concreta."
+  },
+  {
+    id: 31, phase: 2,
+    q: "La habilidad humana en un directivo consiste fundamentalmente en:",
+    options: ["Saber programar algoritmos complejos", "La capacidad para trabajar eficazmente con personas, comprender motivaciones y liderar grupos", "Tener fuerza física para levantar cargas", "Manejar balances financieros"],
+    ans: 1,
+    hint: "Se enfoca en relaciones interpersonales, empatía, resolución de conflictos y liderazgo de equipos.",
+    exp: "Es el discernimiento interpersonal para motivar, comunicarse, resolver conflictos y generar confianza en equipo."
+  },
+  {
+    id: 32, phase: 2,
+    q: "La habilidad conceptual resulta vital especialmente en:",
+    options: ["Los puestos de operario de línea", "Los cargos de alta dirección estratégica", "El personal de vigilancia nocturna", "Los pasantes de verano"],
+    ans: 1,
+    hint: "La alta dirección requiere entender el sistema completo y cómo se relaciona con el entorno.",
+    exp: "Permite comprender la organización como un todo sistémico y anticipar cómo interactúa con el entorno global."
+  },
+  {
+    id: 33, phase: 2,
+    q: "A medida que un profesional asciende hacia la alta dirección, la importancia relativa de sus habilidades cambia de:",
+    options: ["Más conceptual a más técnica", "Más técnica hacia un fuerte predominio de la habilidad conceptual", "Exclusivamente humana a puramente técnica", "No cambia en ningún nivel"],
+    ans: 1,
+    hint: "En la base se exige ejecución técnica; en los cargos superiores se demanda visión abstracta y estratégica.",
+    exp: "Los supervisores requieren más técnica; los altos ejecutivos necesitan visión conceptual y estratégica."
+  },
+  {
+    id: 34, phase: 2,
+    q: "Completar la frase: La tarea básica del administrador contemporáneo es hacer las cosas ________ de las personas.",
+    options: ["a espaldas", "en contra", "a través", "sin la ayuda"],
+    ans: 2,
+    hint: "Un administrador lidera y canaliza el trabajo conjunto de los demás colaboradores.",
+    exp: "El administrador no produce todo por sí mismo; coordina, potencia y canaliza esfuerzos ajenos hacia el logro común."
+  },
+  {
+    id: 35, phase: 2,
+    q: "Daniel Goleman postula que ante altas exigencias cognitivas en cargos de liderazgo:",
+    options: ["El coeficiente intelectual (CI) garantiza el 100% del éxito", "La inteligencia emocional se vuelve el factor diferenciador crítico de excelencia", "Las emociones deben ser suprimidas por completo", "Solo importa el título universitario"],
+    ans: 1,
+    hint: "A iguales capacidades técnicas, las competencias emocionales marcan el desempeño sobresaliente.",
+    exp: "A igual preparación técnica, la empatía, autocontrol y manejo relacional determinan el desempeño sobresaliente."
+  },
+  {
+    id: 36, phase: 2,
+    q: "¿Cuáles son los pilares fundamentales de la Inteligencia Emocional?",
+    options: ["Matemáticas, física, química y contabilidad", "Autoconocimiento, autorregulación, motivación, empatía y destreza social", "Soberbia, intransigencia, egoísmo y astucia", "Velocidad de tipeo y memoria enciclopédica"],
+    ans: 1,
+    hint: "Son las cinco dimensiones intrapersonales e interpersonales sistematizadas por Goleman.",
+    exp: "Son las cinco dimensiones intrapersonales e interpersonales descritas por Goleman."
+  },
+  {
+    id: 37, phase: 2,
+    q: "Tener una elevada inteligencia emocional en potencia significa:",
+    options: ["Que automáticamente la persona es infalible en su puesto", "Que tiene un excelente potencial, pero debe desarrollarlo y traducirlo en aptitudes laborales reales", "Que nunca sentirá estrés ni cansancio", "Que puede ignorar las leyes de la empresa"],
+    ans: 1,
+    hint: "El potencial innato debe cultivarse mediante hábitos diarios para volverse destreza real.",
+    exp: "El potencial emocional no garantiza aptitud directa si no se entrena en la práctica y en los hábitos cotidianos."
+  },
+  {
+    id: 38, phase: 2,
+    q: "Según el estudio del BID y Marina Bassi sobre requerimientos laborales en Chile, ¿qué valoran más los empleadores?",
+    options: ["Conocimientos técnicos ultra específicos del rubro", "Habilidades socioemocionales (responsabilidad, trabajo en equipo, honestidad) y cognitivas de comunicación", "Dominio de cálculo diferencial avanzado", "Estar dispuesto a no descansar"],
+    ans: 1,
+    hint: "Lo técnico se enseña en la inducción; las actitudes morales y la comunicación son indispensables de origen.",
+    exp: "Lo técnico se enseña en la empresa; las actitudes éticas, adaptabilidad y comunicación son indispensables de origen."
+  },
+  {
+    id: 39, phase: 2,
+    q: "En el Índice de Actitud Innovadora y Emprendedora en Chile, ¿cuál fue el componente con puntaje más alto?",
+    options: ["Confianza en las instituciones", "Colaboración intersectorial", "Perseverancia (Resiliencia)", "Acceso a crédito bancario"],
+    ans: 2,
+    hint: "Superó el 85%: describe la tenacidad de continuar ante la adversidad.",
+    exp: "La perseverancia (88,5% en emprendedores y 85,5% país) es el rasgo más marcado del emprendedor chileno."
+  },
+  {
+    id: 40, phase: 2,
+    q: "La resiliencia en la actividad empresarial se define como:",
+    options: ["La capacidad de eludir impuestos de forma legal", "La perseverancia ante la adversidad, transformando tropiezos en oportunidades de aprendizaje", "La renuncia inmediata al primer problema", "El monopolio del mercado local"],
+    ans: 1,
+    hint: "Significa no rendirse y aprender de los reveses para volver a emprender.",
+    exp: "Resiliencia es la actitud de sobreponerse a crisis, ajustar el rumbo y persistir con tenacidad."
+  },
+  {
+    id: 41, phase: 2,
+    q: "El diagnóstico FODA clasifica el entorno de la siguiente manera:",
+    options: ["Interno: Oportunidades y Amenazas / Externo: Fortalezas y Debilidades", "Interno: Fortalezas y Debilidades / Externo: Oportunidades y Amenazas", "Todo es externo e incontrolable", "Todo es interno y controlable"],
+    ans: 1,
+    hint: "Lo propio de la firma son F y D; lo que ocurre en el mercado circundante son O y A.",
+    exp: "Fortalezas y debilidades radican dentro de la firma; oportunidades y amenazas provienen del entorno competitivo."
+  },
+  {
+    id: 42, phase: 2,
+    q: "Para el análisis del ambiente externo en el diagnóstico estratégico se utilizan comúnmente:",
+    options: ["Las 5 Fuerzas de Porter y el análisis PEST (Político, Económico, Social, Tecnológico)", "La ficha clínica del personal", "El inventario de materias primas", "El código tributario únicamente"],
+    ans: 0,
+    hint: "Dos modelos clásicos: atractivo industrial del sector y variables del macroentorno.",
+    exp: "Porter evalúa el atractivo de la industria y PEST el macroentorno general."
+  },
+  {
+    id: 43, phase: 2,
+    q: "Completar la frase: En la cadena de valor de Porter, la infraestructura de la firma, los RRHH y la tecnología son actividades de ________.",
+    options: ["apoyo o soporte", "producción directa", "desecho", "reparto"],
+    ans: 0,
+    hint: "Brindan el soporte indispensable para que las actividades primarias operen con eficacia.",
+    exp: "Son actividades de soporte que sustentan y fortalecen la ejecución de las actividades primarias."
+  },
+  {
+    id: 44, phase: 2,
+    q: "¿Qué persigue el principio de autorregulación emocional en un directivo?",
+    options: ["Gritar cuando esté enojado para liberar tensión", "Canalizar impulsos y emociones perjudiciales para mantener la serenidad y la lucidez decisional", "Ignorar las leyes laborales", "Tomar decisiones basándose en corazonadas"],
+    ans: 1,
+    hint: "Dominar impulsos destructivos para actuar con templanza y lucidez en momentos de crisis.",
+    exp: "La autorregulación evita reacciones viscerales y mantiene el autodominio en momentos de crisis."
+  },
+  {
+    id: 45, phase: 2,
+    q: "Verdadero o Falso: El trabajo del administrador consiste en proyectar a la organización desde una situación actual a una futura relativamente mejor.",
+    options: ["Verdadero", "Falso"],
+    ans: 0,
+    hint: "La esencia de la gestión es transformar y mejorar los resultados en el tiempo.",
+    exp: "Verdadero. La esencia de la gestión es movilizar voluntades y recursos para crear valor y progreso futuro."
+  },
+  {
+    id: 46, phase: 2,
+    q: "La 'pericia' profesional según Goleman resulta de:",
+    options: ["Nacer con un coeficiente intelectual superior a 140", "La combinación de sentido común con conocimientos especializados y la práctica constante", "Leer un libro resumen en una noche", "La suerte del azar"],
+    ans: 1,
+    hint: "Integra conocimientos técnicos internalizados con la práctica cotidiana constante.",
+    exp: "La pericia es competencia adquirida: conocimiento técnico internalizado y enriquecido por la experiencia cotidiana."
+  },
+  {
+    id: 47, phase: 2,
+    q: "¿Por qué el avance tecnológico por sí solo no garantiza el éxito de una empresa?",
+    options: ["Porque la tecnología es inherentemente defectuosa", "Porque requiere una adecuada administración humana que integre y aplique con eficacia dichos recursos", "Porque los clientes rechazan la innovación", "Porque el Estado prohíbe el software"],
+    ans: 1,
+    hint: "Las herramientas son neutras; su impacto depende del liderazgo y coordinación humana.",
+    exp: "Las máquinas y softwares son inertes; su rendimiento depende de la coordinación y liderazgo de las personas."
+  },
+  {
+    id: 48, phase: 2,
+    q: "Completar la frase: La empatía directiva consiste en la capacidad de comprender los ________ y puntos de vista de los demás colaboradores.",
+    options: ["sentimientos, necesidades", "planes de fraude", "correos personales", "horóscopos"],
+    ans: 0,
+    hint: "Comprender la perspectiva y emociones del prójimo para interactuar de forma constructiva.",
+    exp: "Empatía es calibrar las necesidades y estados emocionales de colegas y subordinados para interactuar mejor."
+  },
+  {
+    id: 49, phase: 2,
+    q: "En el ejercicio del liderazgo, las aptitudes emocionales:",
+    options: ["Vienen aisladas y solo se necesita una", "Vienen agrupadas y se requiere una combinación equilibrada de ellas", "Son perjudiciales para la autoridad", "Solo importan en empresas de beneficencia"],
+    ans: 1,
+    hint: "El liderazgo eficaz combina visión, autocontrol, iniciativa, empatía y trabajo colaborativo en equipo.",
+    exp: "El liderazgo eficaz combina visión, autocontrol, iniciativa, empatía y trabajo colaborativo en equipo."
+  },
+  {
+    id: 50, phase: 2,
+    q: "Verdadero o Falso: Las habilidades requeridas por un administrador se mantienen exactamente idénticas en proporción sin importar su rango jerárquico.",
+    options: ["Verdadero", "Falso"],
+    ans: 1,
+    hint: "En la base domina la técnica; en la alta dirección manda la conceptual.",
+    exp: "Falso. La proporción varía drásticamente: en la base domina la técnica; en la cumbre predomina la conceptual."
+  },
+
+  // FASE 3: TAYLOR Y FAYOL (51 - 75)
+  {
+    id: 51, phase: 3,
+    q: "¿En qué año y obra fundamental Frederick W. Taylor sentó las bases de la Administración Científica?",
+    options: ["1776 - La Riqueza de las Naciones", "1911 - Principios de la Administración Científica", "1936 - Teoría General del Empleo", "1980 - Estrategia Competitiva"],
+    ans: 1,
+    hint: "A comienzos del siglo XX (década de 1910) publicó su tratado en EE. UU.",
+    exp: "En 1911 Taylor publicó su obra cumbre buscando maximizar la eficiencia industrial mediante el método científico."
+  },
+  {
+    id: 52, phase: 3,
+    q: "La principal preocupación de Taylor en los talleres fabriles fue:",
+    options: ["Fomentar las vacaciones pagadas de verano", "Aumentar la eficiencia en la producción, reducir costos y elevar salarios según productividad", "Diseñar logotipos corporativos", "Promover las huelgas de obreros"],
+    ans: 1,
+    hint: "Buscaba eliminar el desperdicio operativo y vincular el salario directamente al rendimiento.",
+    exp: "Taylor atacó la holgazanería sistemática y el empirismo para lograr alta productividad y salarios justos."
+  },
+  {
+    id: 53, phase: 3,
+    q: "¿Qué técnica ideó Taylor para determinar la forma óptima de ejecutar una tarea?",
+    options: ["Encuestas de opinión anónimas", "El estudio sistemático de tiempos y movimientos", "El juego de roles en equipo", "Adivinanzas grupales"],
+    ans: 1,
+    hint: "Medición con cronómetro de cada gesto obrero para eliminar lo innecesario.",
+    exp: "Cronometró movimientos elementales eliminando pasos innecesarios para fijar el estándar óptimo ('the one best way')."
+  },
+  {
+    id: 54, phase: 3,
+    q: "Taylor consideraba al operario bajo una concepción mecanicista conocida como:",
+    options: ["Homo ludens (el hombre que juega)", "Homo economicus / hombre-máquina motivado exclusivamente por el salario a destajo", "Líder carismático natural", "Filósofo humanista"],
+    ans: 1,
+    hint: "Asumía al trabajador como un engranaje estimulado únicamente por retribución monetaria.",
+    exp: "Asumía al trabajador como un engranaje movido por el incentivo económico y medible en gasto de energía física."
+  },
+  {
+    id: 55, phase: 3,
+    q: "¿Qué sistema de remuneración implementó Taylor para ligar salario y productividad?",
+    options: ["Sueldo fijo mensual sin metas", "El pago a trato, a destajo o por pieza producida", "Pago en acciones de la bolsa", "Propinas voluntarias"],
+    ans: 1,
+    hint: "Cobrar por unidad producida o terminada para incentivar el rendimiento.",
+    exp: "Quien producía por sobre el estándar recibía una tarifa superior por unidad, premiando el rendimiento."
+  },
+  {
+    id: 56, phase: 3,
+    q: "Completar la frase de Taylor: 'En lugar de guiarse por la costumbre o el azar, siempre hay ________ de hacer las cosas.'",
+    options: ["una mejor forma", "una peor manera", "un camino idéntico", "una sola persona encargada"],
+    ans: 0,
+    hint: "Es el célebre concepto 'the one best way' de la administración científica.",
+    exp: "'Siempre hay una mejor forma (the best way)': premisa central de la estandarización y optimización tayloriana."
+  },
+  {
+    id: 57, phase: 3,
+    q: "¿Cuál de los siguientes es uno de los 5 principios enunciados por Taylor?",
+    options: ["Sustituir el conocimiento empírico y las reglas prácticas por la ciencia organizada", "Fomentar el individualismo caótico entre los operarios", "Restringir la producción para subir los precios", "Eliminar la capacitación laboral"],
+    ans: 0,
+    hint: "Reemplazar las reglas empíricas de los talleres por métodos científicos organizados.",
+    exp: "Taylor propuso reemplazar el criterio individual empírico por métodos rigurosamente cronometrados y científicos."
+  },
+  {
+    id: 58, phase: 3,
+    q: "En 1916, el ingeniero francés Henri Fayol publicó su trascendental obra titulada:",
+    options: ["El Capital", "Administración Industrial y General", "El Príncipe", "Estructura de las Revoluciones"],
+    ans: 1,
+    hint: "El libro francés que sistematizó la Teoría Clásica de la administración.",
+    exp: "Fayol publicó 'Administration Industrielle et Générale' en París, fundando la Teoría Clásica de la Administración."
+  },
+  {
+    id: 59, phase: 3,
+    q: "Fayol clasificó todas las operaciones de las empresas en seis funciones básicas:",
+    options: ["Políticas, religiosas, militares, civiles, penales y laborales", "Técnicas, comerciales, financieras, de seguridad, contables y administrativas", "Primarias, secundarias, terciarias, cuaternarias, globales y locales", "Marketing, ventas, bodega, despacho, cobranza y caja"],
+    ans: 1,
+    hint: "Producción técnica, compras/ventas, capital financiero, custodia, contabilidad y gestión de mando.",
+    exp: "Es el clásico sexteto de operaciones empresariales sistematizado por Fayol."
+  },
+  {
+    id: 60, phase: 3,
+    q: "Según Fayol, la función administrativa coordina a las demás y está compuesta por:",
+    options: ["Planear, Organizar, Dirigir, Coordinar y Controlar (PODCC)", "Comprar, Vender, Especular y Prestar", "Cobrar, Facturar, Pagar e Invertir", "Contratar, Despedir, Sancionar y Trasladar"],
+    ans: 0,
+    hint: "Prever, organizar, mandar, coordinar y controlar.",
+    exp: "Prever (planear), organizar, mandar (dirigir), coordinar y controlar constituyen el proceso administrativo fayoliano."
+  },
+  {
+    id: 61, phase: 3,
+    q: "¿Por qué muchos autores consideran a Fayol como el verdadero padre de la teoría administrativa moderna frente a Taylor?",
+    options: ["Porque Fayol inventó las máquinas a vapor", "Porque los postulados de Fayol son aplicables a toda la empresa y a la alta dirección, no solo al taller obrero", "Porque Fayol nació antes que Taylor", "Porque Fayol regalaba sus libros"],
+    ans: 1,
+    hint: "Taylor analizó el taller; Fayol estructuró la dirección general de toda la corporación.",
+    exp: "Taylor miró la base operativa (enfoque de abajo hacia arriba); Fayol analizó la dirección global y la anatomía corporativa."
+  },
+  {
+    id: 62, phase: 3,
+    q: "El principio fayoliano de 'Unidad de Mando' estipula que:",
+    options: ["Cada empleado debe recibir órdenes de un solo superior inmediato", "Varios jefes deben dar instrucciones contradictorias", "Todos los empleados son jefes simultáneos", "Nadie debe acatar órdenes de nadie"],
+    ans: 0,
+    hint: "Recibir órdenes de dos superiores causa desorden y evasión de responsabilidades.",
+    exp: "Evita la dualidad de órdenes, la confusión y la fuga de responsabilidades en la línea de jerarquía."
+  },
+  {
+    id: 63, phase: 3,
+    q: "¿En qué se diferencia la 'Unidad de Dirección' de la 'Unidad de Mando' según Fayol?",
+    options: ["Son exactamente lo mismo con dos nombres", "Unidad de mando se refiere a personas (un jefe); Unidad de dirección se refiere a un solo plan y objetivo para un grupo de actividades", "Unidad de dirección es exclusiva para obreros", "Unidad de mando solo rige en el ejército"],
+    ans: 1,
+    hint: "Un solo superior para un empleado frente a un solo plan para un grupo de actividades afines.",
+    exp: "Un solo jefe y un solo programa para un conjunto de operaciones que tienden al mismo fin corporativo."
+  },
+  {
+    id: 64, phase: 3,
+    q: "El principio de 'Cadena Escalar' (o línea de autoridad) en Fayol se define como:",
+    options: ["Una escalera mecánica para subir a la gerencia", "La serie de superiores que va desde la máxima autoridad hasta los niveles más bajos", "El aumento salarial automático por edad", "La rotación de personal entre filiales"],
+    ans: 1,
+    hint: "Es el canal formal de mando por donde bajan órdenes y suben reportes.",
+    exp: "Es la vía jerárquica obligada por donde transitan las comunicaciones y el ejercicio del mando."
+  },
+  {
+    id: 65, phase: 3,
+    q: "¿Qué permite el llamado 'Puente de Fayol' en la cadena escalar?",
+    options: ["Saltarse las normas de seguridad", "La comunicación horizontal directa entre pares de igual nivel para agilizar trámites si los jefes lo autorizan", "Pagar sueldos sin comprobante", "Despedir trabajadores sin aviso previo"],
+    ans: 1,
+    hint: "Permite que dos colegas de igual rango coordinen rápido sin subir toda la pirámide.",
+    exp: "Evita la lentitud burocrática permitiendo contacto lateral sin romper la subordinación básica."
+  },
+  {
+    id: 66, phase: 3,
+    q: "El principio de 'División del Trabajo' busca fundamentalmente:",
+    options: ["Hacer que todos hagan todas las labores a la vez", "La especialización de funciones para producir más y mejor con el mismo esfuerzo", "Dividir a los trabajadores para generar rivalidades", "Aumentar el cansancio de los empleados"],
+    ans: 1,
+    hint: "La especialización ahorra tiempo y afina la destreza del operario o técnico.",
+    exp: "Produce especialización y destreza tanto en tareas técnicas operativas como administrativas."
+  },
+  {
+    id: 67, phase: 3,
+    q: "Completar la frase: Según Fayol, la autoridad formal confiere el derecho a mandar, pero siempre genera una correspondiente ________.",
+    options: ["vacación pagada", "responsabilidad o rendición de cuentas", "promoción inmediata", "multa judicial"],
+    ans: 1,
+    hint: "Quien tiene la potestad de ordenar debe responder ineludiblemente por los resultados.",
+    exp: "Autoridad y responsabilidad son inseparables: quien ejerce el poder asume las consecuencias de sus actos."
+  },
+  {
+    id: 68, phase: 3,
+    q: "El principio de 'Subordinación del interés particular al interés general' exige que:",
+    options: ["Los intereses de un empleado o grupo no prevalezcan sobre las metas supremas de la organización", "El dueño se apropie del sueldo de los trabajadores", "Los clientes sacrifiquen su dinero sin recibir nada", "No existan metas colectivas"],
+    ans: 0,
+    hint: "El objetivo colectivo de la empresa debe estar por encima de ambiciones individuales.",
+    exp: "La administración debe conciliar diferencias asegurando que prime el bien común corporativo."
+  },
+  {
+    id: 69, phase: 3,
+    q: "¿Cómo definió Fayol el principio del 'Orden'?",
+    options: ["Gritar en el pasillo de la fábrica", "'Un lugar para cada cosa (y persona) y cada cosa (y persona) en su lugar'", "Comprar solo productos importados", "Prohibir hablar durante la jornada laboral"],
+    ans: 1,
+    hint: "Aplica tanto para herramientas e inventarios como para colocar a la persona idónea en su puesto.",
+    exp: "Orden material y orden social: evitar pérdidas de tiempo ubicando recursos físicos y personas en sus puestos adecuados."
+  },
+  {
+    id: 70, phase: 3,
+    q: "El principio de 'Equidad' en Fayol surge de combinar:",
+    options: ["Fuerza bruta y sanciones pecuniarias", "Justicia con benevolencia y amabilidad hacia los colaboradores", "Sueldo mínimo con horas extras impagas", "Reglas secretas con multas sorpresa"],
+    ans: 1,
+    hint: "Aplicar la justicia con bondad y comprensión para asegurar lealtad y buen clima.",
+    exp: "Tratar a los subordinados con justicia y bondad para asegurar lealtad, devoción y buen clima laboral."
+  },
+  {
+    id: 71, phase: 3,
+    q: "¿Por qué Fayol advertía sobre los graves peligros de la 'Inestabilidad del Personal'?",
+    options: ["Porque cambiar de puesto aburre a los gerentes", "Porque la alta rotación es causa y efecto de mala administración, incrementando costos de aprendizaje y desorganización", "Porque los sindicatos obligan a rotar", "Porque la estabilidad reduce las ventas"],
+    ans: 1,
+    hint: "Una alta rotación impide que los colaboradores maduren en sus puestos y dispara los costos de entrenamiento.",
+    exp: "Un trabajador requiere tiempo para aprender y rendir; la rotación excesiva arruina la eficiencia."
+  },
+  {
+    id: 72, phase: 3,
+    q: "El principio de 'Iniciativa' según Fayol exhorta a los administradores a:",
+    options: ["Impedir que los subordinados piensen por su cuenta", "Sacrificar la vanidad personal para permitir que los empleados conciban y ejecuten planes", "Cobrar por cada sugerencia recibida", "Copiar los planes de la competencia"],
+    ans: 1,
+    hint: "Un líder deja el ego de lado para motivar a su equipo a formular y ejecutar ideas.",
+    exp: "La iniciativa es motor de dinamismo e inteligencia: concebir y realizar un plan es una gran satisfacción humana."
+  },
+  {
+    id: 73, phase: 3,
+    q: "El principio de 'Espíritu de Equipo' (L'Union fait la force) postula:",
+    options: ["Fomentar el chisme interno", "La necesidad de armonía, comunicación abierta y cohesión grupal para el éxito organizacional", "Obligar a los empleados a vestir del mismo color", "Eliminar los descansos"],
+    ans: 1,
+    hint: "La unión hace la fuerza: evitar generar divisiones y promover la colaboración fluida.",
+    exp: "La unión hace la fuerza: evitar dividir al personal y fomentar la colaboración fluida entre áreas."
+  },
+  {
+    id: 74, phase: 3,
+    q: "Respecto a la 'Centralización', Fayol sostenía que:",
+    options: ["Debe ser absoluta al 100% en todas las empresas", "El grado óptimo de centralización o descentralización depende de las circunstancias concretas de cada empresa", "Debe eliminarse todo tipo de gerencia", "Solo funciona en instituciones militares"],
+    ans: 1,
+    hint: "No hay una receta fija; el nivel adecuado depende del tipo de negocio y de la capacidad del equipo.",
+    exp: "No hay receta fija: el grado óptimo es el que rinda el mejor resultado global según el negocio y el personal."
+  },
+  {
+    id: 75, phase: 3,
+    q: "Verdadero o Falso: Tanto Taylor como Fayol coincidían en que el derroche de recursos y la ineficiencia perjudicaban el progreso de la sociedad entera.",
+    options: ["Verdadero", "Falso"],
+    ans: 0,
+    hint: "Ambos ingenieros compartían que el despilfarro dañaba a los trabajadores, empresas y sociedad.",
+    exp: "Verdadero. Ambos ingenieros consideraban que el despilfarro dañaba a los trabajadores, empresas y sociedad civil."
+  },
+
+  // FASE 4: PLANIFICACIÓN EMPRESARIAL (76 - 100)
+  {
+    id: 76, phase: 4,
+    q: "La función administrativa de Planificación se define como:",
+    options: ["Esperar pasivamente a ver qué ocurre mañana", "Decidir de antemano qué hacer, cómo hacerlo, cuándo, con qué recursos y quién lo llevará a cabo", "Anotar en una pizarra los gastos de ayer", "Improvisar sobre la marcha"],
+    ans: 1,
+    hint: "Es anticipar el porvenir, trazando un puente desde la situación actual hasta la meta deseada.",
+    exp: "Planear es el puente que une el presente (diagnóstico) con el futuro deseado (visión)."
+  },
+  {
+    id: 77, phase: 4,
+    q: "Completar la frase: Planificar es decidir participar ________ en la construcción del propio futuro.",
+    options: ["activamente", "indiferentemente", "tarde", "ocasionalmente"],
+    ans: 0,
+    hint: "Significa no esperar a que los acontecimientos te pasen por encima, sino influir en ellos.",
+    exp: "Planificar es anticipar y modelar el porvenir, en vez de limitarse a sufrir los cambios externos de forma reactiva."
+  },
+  {
+    id: 78, phase: 4,
+    q: "La 'Misión' de una organización responde fundamentalmente a las preguntas:",
+    options: ["¿Cuánto dinero ganamos el año pasado?", "¿Qué somos, qué ofrecemos, a quién satisfacemos y cuál es nuestro modo de competir?", "¿Quién es el presidente de la república?", "¿Por qué subió el precio del dólar?"],
+    ans: 1,
+    hint: "Define la identidad presente: el ámbito de producto, cliente, geografía y cómo ganamos en el mercado.",
+    exp: "La misión declara el propósito actual y el ámbito de productos, mercados, geografía y ventaja competitiva."
+  },
+  {
+    id: 79, phase: 4,
+    q: "La 'Visión' corporativa se conceptualiza como:",
+    options: ["Un examen de agudeza visual para operarios", "El resultado de nuestros sueños puestos en acción: hacia dónde queremos llegar en el largo plazo", "El balance tributario del mes anterior", "El catálogo de precios de oferta"],
+    ans: 1,
+    hint: "Es el horizonte aspiracional de largo plazo que guía e inspira a la organización.",
+    exp: "La visión es la imagen compartida de futuro deseable, inspiradora y desafiante que orienta a la firma."
+  },
+  {
+    id: 80, phase: 4,
+    q: "En la tipología de planes, las 'Políticas' se definen como:",
+    options: ["Leyes aprobadas por el Congreso Nacional", "Enunciados o criterios generales que guían u orientan el pensamiento en la toma de decisiones", "Montos numéricos exactos de dinero", "Pasos cronológicos sin excepción"],
+    ans: 1,
+    hint: "Marcan pautas de criterio general dentro de las cuales los administradores deciden con criterio.",
+    exp: "Las políticas marcan los límites dentro de los cuales los administradores ejercen su discrecionalidad y criterio."
+  },
+  {
+    id: 81, phase: 4,
+    q: "A diferencia de las políticas, las 'Reglas' se caracterizan por:",
+    options: ["Permitir libertad absoluta de juicio a cada empleado", "Exponer acciones u omisiones específicas y tajantes, no sujetas a discrecionalidad", "Ser sugerencias poéticas", "Cambiar todos los días"],
+    ans: 1,
+    hint: "Mandatos directos como 'no fumar' o 'usar casco': no permiten interpretación ni excepciones.",
+    exp: "Las reglas ordenan o prohíben categóricamente sin admitir excepciones (ej. 'prohibido fumar')."
+  },
+  {
+    id: 82, phase: 4,
+    q: "Los 'Procedimientos' son planes que establecen:",
+    options: ["La nómina de directores de la empresa", "La secuencia cronológica y método exacto para ejecutar actividades futuras", "El estado de resultados del ejercicio", "El nombre de la marca comercial"],
+    ans: 1,
+    hint: "Guían la acción en forma de paso 1, paso 2 y paso 3 ordenados cronológicamente.",
+    exp: "Guían la acción detallando el paso 1, paso 2 y paso 3 en que debe ejecutarse un trámite o tarea técnica."
+  },
+  {
+    id: 83, phase: 4,
+    q: "Un 'Presupuesto' es un plan expresado formalmente en:",
+    options: ["Poemas épicos", "Términos numéricos y financieros de resultados esperados (ingresos, costos, flujos)", "Opiniones de pasillo", "Contratos de palabra"],
+    ans: 1,
+    hint: "La cuantificación numérica de los ingresos, egresos y flujos esperados para un periodo.",
+    exp: "Es la cuantificación monetaria o física de metas de ventas, operaciones o inversión de capital."
+  },
+  {
+    id: 84, phase: 4,
+    q: "¿Qué función cumplen los 'Programas' en la planeación?",
+    options: ["Son series de televisión para el casino de la empresa", "Complejos integrados de metas, políticas, procedimientos, pasos, recursos y plazos para cumplir un curso de acción", "El registro de asistencia matinal", "Las liquidaciones de sueldo"],
+    ans: 1,
+    hint: "Unifican metas, tiempos, responsables y presupuestos para llevar a cabo una iniciativa completa.",
+    exp: "Un programa articula metas, tareas, recursos, tiempos y responsables para un proyecto definido."
+  },
+  {
+    id: 85, phase: 4,
+    q: "El principio básico de 'Prevalencia de la Planeación' establece que:",
+    options: ["La planeación precede y fundamenta la ejecución de todas las demás funciones administrativas (organizar, dirigir, controlar)", "Planear se hace únicamente al final del año", "No se necesita planear si se tiene suerte", "La planeación solo la hace el contador"],
+    ans: 0,
+    hint: "No se puede organizar personal ni controlar resultados si primero no se han fijado las metas.",
+    exp: "Sin objetivos ni planes previos, no hay nada que organizar, dirigir ni controlar."
+  },
+  {
+    id: 86, phase: 4,
+    q: "El principio de 'Contribución a los Objetivos' señala que:",
+    options: ["Cada plan y subplan derivado debe facilitar positivamente la consecución de las metas empresariales", "Los empleados deben pagar cuotas al sindicato", "El Estado debe financiar los insumos", "La empresa debe gastar sin control"],
+    ans: 0,
+    hint: "Cualquier plan departamental debe apuntar a la misma meta compartida de la compañía.",
+    exp: "Todo plan existe en función de aportar coherentemente al logro del objetivo común corporativo."
+  },
+  {
+    id: 87, phase: 4,
+    q: "El principio de 'Eficiencia de los Planes' mide el valor de un plan en función de:",
+    options: ["El número de hojas impresas en el informe", "Su contribución a los objetivos en relación a los costos y consecuencias imprevistas de su implementación", "La complejidad de las palabras utilizadas", "El tiempo que duró la reunión de directorio"],
+    ans: 1,
+    hint: "Compara el beneficio obtenido en las metas contra lo que costó diseñar y ejecutar el plan.",
+    exp: "Un plan es eficiente si genera mayores beneficios y valor que los costos demandados para crearlo y ejecutarlo."
+  },
+  {
+    id: 88, phase: 4,
+    q: "El principio de 'Extensión de la Planeación' postula que:",
+    options: ["Planear es tarea exclusiva de un comité secreto", "Planear es función inherente de todo administrador, aunque varíe su amplitud y autoridad", "Solo el directorio puede pensar en el futuro", "Los supervisores están prohibidos de planificar"],
+    ans: 1,
+    hint: "Todos los jefes y administradores planifican en su nivel correspondiente, con mayor o menor alcance.",
+    exp: "Todo directivo, en su nivel correspondiente, planifica sus actividades y asigna recursos a su cargo."
+  },
+  {
+    id: 89, phase: 4,
+    q: "En planeación estratégica, el 'Principio de Compromiso' indica que el horizonte temporal del plan debe cubrir:",
+    options: ["Exactamente una semana hábil", "El tiempo necesario para prever el cumplimiento cabal de los compromisos que envuelve la decisión", "El período de mandato del presidente de turno", "Cien años fijos"],
+    ans: 1,
+    hint: "El plazo debe ser lo suficientemente largo como para amortizar la inversión y ver madurar las decisiones.",
+    exp: "Si una inversión tarda 5 años en madurar y amortizarse, el plan debe comprometer ese horizonte para ser lógico."
+  },
+  {
+    id: 90, phase: 4,
+    q: "El 'Principio de Flexibilidad' en la planeación advierte que:",
+    options: ["Los planes deben cambiarse a cada minuto sin motivo", "A mayor flexibilidad incorporada en los planes, menor riesgo de pérdidas ante eventos imprevistos (evaluando costo de oportunidad)", "Los contratos deben ser verbales", "La empresa no debe tener metas"],
+    ans: 1,
+    hint: "Diseñar planes con capacidad de maniobra reduce el impacto de sorpresas o crisis en el entorno.",
+    exp: "Permite cambiar de dirección ante contingencias sin perder la promesa de valor ni incurrir en pérdidas catastróficas."
+  },
+  {
+    id: 91, phase: 4,
+    q: "El 'Principio del Cambio de Rumbo' exige al administrador:",
+    options: ["Revisar periódicamente acontecimientos y expectativas para rediseñar planes manteniendo el curso hacia las metas deseadas", "Cambiar de rubro comercial cada mes", "Despedir al equipo ante la primera lluvia", "Ignorar las noticias del mercado"],
+    ans: 0,
+    hint: "Como un piloto de avión: recalcular la ruta periódicamente para asegurar llegar al destino fijado.",
+    exp: "Igual que un piloto de navegación, se revisa la ruta y se corrigen desviaciones para no errar el puerto de destino."
+  },
+  {
+    id: 92, phase: 4,
+    q: "Las 'premisas' o supuestos de la planeación pueden ser de tipo:",
+    options: ["Cuantitativas (consumo combustible, horas hombre, precios) y Cualitativas (política de personal, entorno social)", "Imaginarias y esotéricas", "Exclusivamente tributarias", "Solo rumores de pasillo"],
+    ans: 0,
+    hint: "Incluyen números y horas estimadas, así como variables de clima social y político.",
+    exp: "Los planes se sustentan en premisas medibles (números/métricas) y contextuales (escenario sociopolítico)."
+  },
+  {
+    id: 93, phase: 4,
+    q: "Completar la frase: En el proceso de control, el control preventivo se anticipa al hecho, mientras que el control ________ actúa cuando la desviación ya ocurrió.",
+    options: ["correctivo", "imaginario", "nulo", "tributario"],
+    ans: 0,
+    hint: "Se aplica después de que sucedió el desvío para reparar el daño y reorientar las tareas.",
+    exp: "El control correctivo interviene tras la ocurrencia del evento para corregir el desvío y reencauzar la meta."
+  },
+  {
+    id: 94, phase: 4,
+    q: "La relación entre Planificación Estratégica y Evaluación de Proyectos radica en que:",
+    options: ["Son materias enemigas que no se mezclan", "La planificación estratégica da origen a proyectos de inversión específicos para materializarse", "La evaluación de proyectos elimina la estrategia", "Los proyectos no requieren planes"],
+    ans: 1,
+    hint: "La estrategia general se aterriza en la realidad a través de proyectos de inversión concretos.",
+    exp: "Un proyecto es la célula ejecutiva de inversión mediante la cual la estrategia abstracta se vuelve realidad concreta."
+  },
+  {
+    id: 95, phase: 4,
+    q: "En una empresa, los tres niveles jerárquicos de planificación estratégica son:",
+    options: ["Operativo, táctico y de limpieza", "Corporativo (toda la firma), de Negocios/UEN y Funcional (finanzas, marketing, operaciones)", "Nacional, regional y comunal", "Diario, semanal y mensual"],
+    ans: 1,
+    hint: "Desde la cartera general de la corporación, pasando por cada unidad de negocio, hasta cada departamento.",
+    exp: "Nivel corporativo abarca la cartera global; de negocios compite en una industria; funcional apoya desde cada área."
+  },
+  {
+    id: 96, phase: 4,
+    q: "Una Unidad Estratégica de Negocios (UEN) se define como:",
+    options: ["Un camión de reparto", "Un foco de planeación con conjunto diferenciado de productos/servicios, clientes definidos y competidores específicos", "La oficina del contador", "Una cuenta corriente bancaria"],
+    ans: 1,
+    hint: "Unidad independiente dentro de un conglomerado con sus propios competidores, clientes y plan de negocio.",
+    exp: "Tiene misión propia, competidores directos y plan estratégico independiente dentro de una corporación."
+  },
+  {
+    id: 97, phase: 4,
+    q: "Verdadero o Falso: Los valores éticos de una empresa son un adorno cosmético y no influyen en la rectitud ni en la fijación de sus objetivos.",
+    options: ["Verdadero", "Falso"],
+    ans: 1,
+    hint: "Los valores fijan el marco moral y la rectitud sobre cómo y con qué límites se alcanzan las metas.",
+    exp: "Falso. Los valores corporativos definen la rectitud, el marco moral y la legitimidad de todos los objetivos."
+  },
+  {
+    id: 98, phase: 4,
+    q: "En el Plan de Desarrollo Estratégico 2023-2029 de la PUCV, ¿cuántos lineamientos estratégicos transversales y misionales se definieron?",
+    options: ["3 lineamientos", "9 lineamientos", "14 lineamientos", "20 lineamientos"],
+    ans: 1,
+    hint: "El documento oficial organiza sus desafíos en nueve ejes estratégicos.",
+    exp: "Se estructuró en torno a 9 lineamientos (Identidad, Investigación, Formación, Vinculación, Gobernanza, Calidad, Equidad, Internacionalización, Tecnología)."
+  },
+  {
+    id: 99, phase: 4,
+    q: "La nueva Visión Estratégica de la PUCV proyecta a la institución como:",
+    options: ["Una empresa de lucro financiero rápido", "Universidad católica, de excelencia y vocación pública que transforma vidas aportando al desarrollo sostenible", "Un instituto técnico de jornada vespertina", "Un centro recreativo de verano"],
+    ans: 1,
+    hint: "Destaca la excelencia, la identidad católica, la vocación pública y el desarrollo sostenible.",
+    exp: "Texto explícito de la visión aprobada por el Consejo Superior de cara al centenario institucional."
+  },
+  {
+    id: 100, phase: 4,
+    q: "Completar la frase: La metodología participativa utilizada para elaborar la visión del plan estratégico de la PUCV se denominó ________.",
+    options: ["Pensemos PUCV", "Operación Retorno", "Reunión Rápida", "Foro Virtual 1"],
+    ans: 0,
+    hint: "Instancia institucional de diálogo que integró a más de 8.000 miembros de la comunidad.",
+    exp: "'Pensemos PUCV': instancia de diálogo con más de 8.000 participantes de la comunidad universitaria y entorno social."
+  },
+
+  // FASE 5: ESTRATEGIA Y PORTER (101 - 125)
+  {
+    id: 101, phase: 5,
+    q: "Según Michael Porter, el atractivo y la rentabilidad potencial a largo plazo de una industria están determinados por:",
+    options: ["El optimismo de los avisos publicitarios", "La acción conjunta de las Cinco Fuerzas Competitivas", "El valor del petróleo en el mercado de futuros", "La tasa de natalidad del país"],
+    ans: 1,
+    hint: "Las cinco fuerzas estructurales determinan cómo se reparte el valor económico en cualquier sector.",
+    exp: "Las 5 fuerzas estructurales determinan cómo se distribuye el valor económico y el rendimiento del capital invertido."
+  },
+  {
+    id: 102, phase: 5,
+    q: "¿Cuáles son las Cinco Fuerzas que conforman el modelo estructural de Porter?",
+    options: ["Rivalidad interna, Nuevos entrantes, Productos sustitutos, Poder de compradores y Poder de proveedores", "Tierra, trabajo, capital, tecnología y gobierno", "Dólar, euro, yen, libra y peso", "Planear, organizar, mandar, coordinar y controlar"],
+    ans: 0,
+    hint: "Competidores directos, entrantes potenciales, productos de reemplazo, clientes y proveedores.",
+    exp: "Son las 5 fuerzas que determinan la competencia y el margen promedio de una industria."
+  },
+  {
+    id: 103, phase: 5,
+    q: "La amenaza de nuevos participantes disminuye considerablemente cuando en la industria existen:",
+    options: ["Altas barreras de entrada (economías de escala, altos requerimientos de capital, patentes)", "Precios desregulados", "Muchos clientes quejosos", "Bajos costos de cambio"],
+    ans: 0,
+    hint: "Obstáculos difíciles y costosos que impiden a forasteros entrar fácilmente a competir.",
+    exp: "Las barreras de entrada protegen a las empresas ya establecidas de la llegada de nuevos rivales."
+  },
+  {
+    id: 104, phase: 5,
+    q: "Una industria donde las barreras de entrada son ALTAS y las de salida son BAJAS genera típicamente:",
+    options: ["Rendimientos bajos y muy riesgosos", "Rendimientos elevados y estables", "Rendimientos caóticos e impredecibles", "Pérdidas permanentes"],
+    ans: 1,
+    hint: "Pocos pueden ingresar a disputar clientes y si a alguien le va mal, puede retirarse sin perder su fortuna.",
+    exp: "Entran pocos competidores (altas barreras de entrada) y si a alguno le va mal puede salir fácil (baja barrera de salida)."
+  },
+  {
+    id: 105, phase: 5,
+    q: "Por el contrario, una industria con barreras de entrada BAJAS y de salida ALTAS se caracteriza por:",
+    options: ["Rendimientos elevados y seguros", "Rendimientos bajos y riesgosos (guerra de precios y exceso de capacidad ociosa)", "Monopolio garantizado", "Paz comercial duradera"],
+    ans: 1,
+    hint: "Cualquiera entra a saturar el mercado, pero nadie puede cerrar por culpa de activos atrapados.",
+    exp: "Entran muchos rivales fácilmente y nadie puede salir por altos costos de liquidación, destruyendo el margen."
+  },
+  {
+    id: 106, phase: 5,
+    q: "El poder negociador de los Compradores (clientes) es ALTO cuando:",
+    options: ["Los compradores son miles y están atomizados", "Los compradores están concentrados, compran grandes volúmenes y enfrentan costos de cambio casi nulos", "El producto no tiene sustitutos posibles", "La empresa vendedora es un monopolio"],
+    ans: 1,
+    hint: "Unos pocos clientes se llevan casi toda tu producción y pueden cambiarse a otro proveedor sin costo alguno.",
+    exp: "Grandes volúmenes y facilidad para cambiarse de proveedor permiten al cliente exigir precios bajos y condiciones duras."
+  },
+  {
+    id: 107, phase: 5,
+    q: "El concepto de 'Integración hacia Atrás' significa que una empresa:",
+    options: ["Devuelve productos a la tienda", "Pasa a producir o controlar sus propios insumos y materias primas (ej. supermercado con marcas propias)", "Contrata a sus exempleados", "Vende a crédito vencido"],
+    ans: 1,
+    hint: "La empresa se convierte en su propio proveedor para no depender de suministros externos.",
+    exp: "Avanza hacia la cadena de suministros para abastecerse internamente y no depender del poder de los proveedores."
+  },
+  {
+    id: 108, phase: 5,
+    q: "El concepto de 'Integración hacia Adelante' implica que la empresa:",
+    options: ["Cierra la fábrica los fines de semana", "Pasa a controlar sus propios canales de distribución, logística de despacho o venta directa al consumidor", "Compra terrenos sin destino", "Aumenta la tasa de interés"],
+    ans: 1,
+    hint: "Una fábrica abre sus propias tiendas para vender directamente al consumidor sin intermediarios.",
+    exp: "Un fabricante que abre sus propias tiendas comerciales se está integrando verticalmente hacia adelante."
+  },
+  {
+    id: 109, phase: 5,
+    q: "El caso extremo de intensidad competitiva donde las empresas no tienen ningún poder negociador ni sobreprecio se conoce como:",
+    options: ["Monopolio puro", "Competencia perfecta", "Oligopolio colusorio", "Cártel internacional"],
+    ans: 1,
+    hint: "Mercado donde los productos son idénticos, la entrada es libre y el precio lo fija fríamente la oferta y demanda.",
+    exp: "Mercado atomizado con productos idénticos e ingreso irrestricto, donde el precio viene dado por el mercado."
+  },
+  {
+    id: 110, phase: 5,
+    q: "En la Cadena de Valor de Porter, las 5 actividades primarias son:",
+    options: ["Compras, contabilidad, leyes, seguros e informática", "Logística interna, Operaciones, Logística externa, Marketing/Ventas y Servicio", "Siembra, cosecha, riego, poda y transporte", "Dirección, supervisión, secretaría, tesorería y guardia"],
+    ans: 1,
+    hint: "Desde que entra la materia prima, pasando por la fábrica, despacho, publicidad y soporte postventa.",
+    exp: "Flujo secuencial de transformación física, entrega al mercado, comercialización y postventa del producto."
+  },
+  {
+    id: 111, phase: 5,
+    q: "¿Qué actividad primaria de la cadena de valor incluye recepción, almacenaje de insumos y control de inventarios?",
+    options: ["Operaciones", "Logística interna (o de entrada)", "Marketing", "Servicio postventa"],
+    ans: 1,
+    hint: "Recibe los suministros en el muelle de descarga antes de que entren a la línea de ensamblaje.",
+    exp: "La logística interna gestiona la entrada de materias primas antes de entrar al proceso fabril."
+  },
+  {
+    id: 112, phase: 5,
+    q: "Completar la frase: La diferencia entre el valor total que los clientes están dispuestos a pagar y los costos acumulados en la cadena de valor constituye el ________ de la empresa.",
+    options: ["margen de utilidad o beneficio", "déficit fiscal", "costo hundido", "salario obrero"],
+    ans: 0,
+    hint: "Es el beneficio neto que queda tras restar todos los costos del valor pagado por los compradores.",
+    exp: "Margen = Valor percibido y capturado menos costo total de ejecutar todas las actividades de la cadena."
+  },
+  {
+    id: 113, phase: 5,
+    q: "Las dos estrategias competitivas genéricas principales de Porter son:",
+    options: ["Especulación e inflación", "Liderazgo en Costos y Diferenciación", "Compra y venta", "Exportación e importación"],
+    ans: 1,
+    hint: "O eres el productor más barato de la industria o vendes algo percibido como único y exclusivo.",
+    exp: "O compites teniendo la estructura de costos más baja del sector o creando un atributo percibido como único."
+  },
+  {
+    id: 114, phase: 5,
+    q: "La estrategia de Liderazgo en Costos exige fundamentalmente:",
+    options: ["Subir los precios al máximo", "Construir instalaciones a escala eficiente, estricto control de gastos y minimizar costos en I+D, ventas y servicios", "Ofrecer productos de lujo con joyas", "Evitar vender a grandes volúmenes"],
+    ans: 1,
+    hint: "Economías de escala y disciplina austera en todos los departamentos para bajar el costo unitario.",
+    exp: "El margen se obtiene bajando el costo unitario mediante economías de escala y disciplina operativa."
+  },
+  {
+    id: 115, phase: 5,
+    q: "En la estrategia de Diferenciación, el margen superior de ganancia se obtiene a través de:",
+    options: ["Pagar sueldos miserables a los obreros", "Crear atributos singulares (marca, calidad, diseño, servicio) que permiten cobrar un sobreprecio (precio premium)", "Vender bajo el costo de producción", "Cerrar las bodegas"],
+    ans: 1,
+    hint: "El cliente reconoce un diseño o prestigio único y está feliz de pagar un precio más alto.",
+    exp: "El cliente reconoce un valor único y está dispuesto a pagar un precio más elevado que compensa los costos."
+  },
+  {
+    id: 116, phase: 5,
+    q: "La estrategia de 'Focalización' o Enfoque consiste en:",
+    options: ["Venderle a todo el planeta el mismo producto", "Concentrarse en las necesidades específicas de un nicho o segmento particular de mercado, geografía o clientes", "Eliminar la publicidad", "No definir clientes objetivos"],
+    ans: 1,
+    hint: "Elegir un segmento estrecho (un grupo particular de clientes o zona) y atenderlo de manera especializada.",
+    exp: "Especializarse en un segmento concreto (pudiendo focalizarse en costos o en diferenciación dentro de ese nicho)."
+  },
+  {
+    id: 117, phase: 5,
+    q: "En el caso analizado en clases sobre D&S (Supermercados Líder), su ventaja competitiva histórica se sustentó en:",
+    options: ["Vender artículos de joyería exclusiva para millonarios", "Liderazgo en costos mediante megamercados, marcas propias, compras centralizadas y poder negociador", "Cerrar locales en la Región Metropolitana", "No ofrecer tarjeta de crédito"],
+    ans: 1,
+    hint: "Megamercados de gran volumen, marcas privadas y su centro de distribución centralizado para bajar precios.",
+    exp: "Economías de escala, formato 'precios bajos siempre', tarjeta Presto y centro de distribución centralizado."
+  },
+  {
+    id: 118, phase: 5,
+    q: "En el 'Diamante de la Ventaja Nacional' de Porter, los determinantes de competitividad de un país incluyen:",
+    options: ["Estrategia/estructura/rivalidad de las empresas, Condiciones de los factores, Condiciones de la demanda y Sectores conexos/de apoyo", "El número de volcanes y ríos", "La distancia al polo sur", "El número de embajadas en Europa"],
+    ans: 0,
+    hint: "Los cuatro vértices analizan empresas rivales, mano de obra/recursos, clientes exigentes y proveedores locales.",
+    exp: "Los cuatro vértices del Diamante explican por qué ciertas naciones triunfan en industrias particulares."
+  },
+  {
+    id: 119, phase: 5,
+    q: "En el Diamante de Porter, un 'factor avanzado' se diferencia de uno 'básico' en que:",
+    options: ["El básico requiere inversión en científicos y universidades", "El avanzado es creado deliberadamente (mano de obra calificada, I+D, infraestructura digital), no heredado de la naturaleza", "El avanzado es el cobre en bruto", "No existe diferencia económica"],
+    ans: 1,
+    hint: "No viene dado por la geografía o el clima; se crea con investigación científica, universidades y tecnología.",
+    exp: "Factores básicos son recursos naturales o clima; avanzados son capital humano, tecnología y conocimiento."
+  },
+  {
+    id: 120, phase: 5,
+    q: "¿Cómo impacta una fuerte rivalidad entre competidores locales en la competitividad de las empresas de un país?",
+    options: ["Destruye para siempre a las empresas haciéndolas débiles", "Las presiona e incentiva a innovar, reducir costos y perfeccionarse, preparándolas para triunfar en el exterior", "Elimina la necesidad de exportar", "Provoca la quiebra inmediata de la nación"],
+    ans: 1,
+    hint: "Tener rivales agresivos en tu propio patio te impide dormirte en los laureles y te forja para competir afuera.",
+    exp: "Tener competidores domésticos agresivos obliga a no dormirse y forja ventajas competitivas de nivel mundial."
+  },
+  {
+    id: 121, phase: 5,
+    q: "La globalización económica contemporánea surgió primordialmente de:",
+    options: ["El aislamiento político de los países", "El sector privado activo, la reducción de barreras arancelarias y el rol del Estado garantizando equilibrios macroeconómicos", "La prohibición del comercio marítimo", "El regreso a la economía feudal"],
+    ans: 1,
+    hint: "Apertura de fronteras, acuerdos comerciales y fluidez para el comercio y las inversiones mundiales.",
+    exp: "Apertura de fronteras, flujo de capitales, acuerdos de libre comercio y convergencia de mercados globales."
+  },
+  {
+    id: 122, phase: 5,
+    q: "Completar la frase: La esencia de la estrategia corporativa radica en la gestión deliberada del cambio hacia la conquista de una ventaja competitiva ________ en el tiempo.",
+    options: ["sostenible y defendible", "pasajera de una hora", "ilegal y oculta", "copiada de la televisión"],
+    ans: 0,
+    hint: "Una verdadera ventaja no dura 5 minutos; debe ser duradera y difícil de copiar por los rivales.",
+    exp: "Una ventaja competitiva real debe sostenerse en el largo plazo resistiendo los embates de los rivales."
+  },
+  {
+    id: 123, phase: 5,
+    q: "En el análisis de competidores relevantes, una empresa debe vigilar prioritariamente a aquellos que:",
+    options: ["Tienen la estructura de costos más baja, alta participación de mercado o agresividad competitiva probada", "Tienen el logotipo más colorido", "No tienen oficinas en el país", "Nunca han vendido nada"],
+    ans: 0,
+    hint: "Preocúpate por los rivales que tienen costos mínimos o una gran tajada del mercado.",
+    exp: "Los competidores relevantes son los que poseen fortalezas funcionales críticas o amenazan directamente tus ventas."
+  },
+  {
+    id: 124, phase: 5,
+    q: "Verdadero o Falso: Los competidores mundiales líderes realizan todas sus actividades exclusivamente dentro de las fronteras de su propio país de origen.",
+    options: ["Verdadero", "Falso"],
+    ans: 1,
+    hint: "Las grandes multinacionales ubican la fábrica en un país, el diseño en otro y las finanzas donde sea más eficiente.",
+    exp: "Falso. Deslocalizan actividades de su cadena de valor hacia donde sea más eficiente producir, diseñar o vender."
+  },
+  {
+    id: 125, phase: 5,
+    q: "¿Por qué el producto sustituto impone un 'techo' a los precios de una industria?",
+    options: ["Porque el Estado fija el precio por decreto", "Porque si la industria sube demasiado sus precios, los clientes migrarán de inmediato hacia el producto sustituto", "Porque los sustitutos no tienen costo", "Porque los sustitutos son ilegales"],
+    ans: 1,
+    hint: "Si el boleto de avión sube al doble, la gente decide viajar en autobús o tren.",
+    exp: "La relación precio-rendimiento del sustituto limita la rentabilidad máxima que las firmas del sector pueden cobrar."
+  },
+
+  // FASE 6: SISTEMAS, SERVUCCIÓN Y VIRTUDES (126 - 150)
+  {
+    id: 126, phase: 6,
+    q: "Desde el enfoque de la Teoría General de Sistemas, una organización se concibe como:",
+    options: ["Un montón desordenado de papeles", "Un sistema abierto en interacción dinámica con su entorno, operando con entradas, transformaciones, salidas y retroalimentación", "Una entidad cerrada e impermeable", "Un mecanismo relojero sin fallas"],
+    ans: 1,
+    hint: "Toma recursos de afuera, los transforma adentro, entrega productos al mercado y aprende de la retroalimentación.",
+    exp: "Toma recursos del ambiente (entradas), los transforma operativamente, genera bienes/servicios (salidas) y se retroalimenta."
+  },
+  {
+    id: 127, phase: 6,
+    q: "El concepto termodinámico de 'Entropía' aplicado a las organizaciones empresariales se refiere a:",
+    options: ["La felicidad absoluta del personal", "La tendencia natural al desgaste, la desorganización, el relajamiento de estándares y la desintegración interna", "El aumento de utilidades en la bolsa", "La compra de computadores nuevos"],
+    ans: 1,
+    hint: "La tendencia natural de todo sistema a degradarse y volverse caótico si nadie se ocupa de ordenarlo.",
+    exp: "Todo sistema abandonado a sí mismo tiende al desorden y degradación sin una inyección constante de control y energía."
+  },
+  {
+    id: 128, phase: 6,
+    q: "¿Qué es la 'Negentropía' (o entropía negativa) en un sistema empresarial?",
+    options: ["Un virus computacional", "La captación deliberada de información, orden y energía del entorno para contrarrestar el desgaste y mantener la viabilidad", "La quiebra de la empresa", "El despido masivo de directores"],
+    ans: 1,
+    hint: "Inyectar información, directrices y orden para combatir la descomposición del sistema.",
+    exp: "Información y control que ordenan el sistema evitando su desintegración."
+  },
+  {
+    id: 129, phase: 6,
+    q: "La 'Homeostasis' en una organización consiste en:",
+    options: ["La paralización de las ventas", "El equilibrio dinámico interno mediante la autorregulación y adaptación constante ante cambios del ambiente", "La fusión con el competidor", "Un trámite notarial"],
+    ans: 1,
+    hint: "Capacidad de mantenerse en equilibrio y adaptarse internamente cuando el clima exterior cambia.",
+    exp: "Capacidad adaptativa para mantener estables sus variables esenciales pese a las turbulencias externas."
+  },
+  {
+    id: 130, phase: 6,
+    q: "¿Cuáles son los componentes clave del modelo de 'Servucción'?",
+    options: ["Petróleo, carbón, gas y electricidad", "El Cliente, el Personal en Contacto (PEC), el Soporte Físico, el Sistema de Organización Interna y el Servicio resultante", "El juez, el fiscal, el abogado y el acusado", "Acciones, bonos, pagarés y letras"],
+    ans: 1,
+    hint: "El cliente presente, el empleado visible que lo atiende, el local/equipos y la organización invisible detrás.",
+    exp: "La servucción combina soporte tangible y personal visible con la organización invisible para atender al cliente en vivo."
+  },
+  {
+    id: 131, phase: 6,
+    q: "El concepto de 'Valor Compartido' (Porter y Kramer) propone que las empresas deben:",
+    options: ["Regalar dinero a beneficencia para limpiar su imagen", "Crear valor económico de forma que genere simultáneamente valor para la sociedad y resuelva problemas del entorno", "Cobrar el doble a los clientes pobres", "Operar sin pagar remuneraciones"],
+    ans: 1,
+    hint: "No es caridad aislada; es generar rentabilidad resolviendo problemas reales de las comunidades y proveedores.",
+    exp: "No es filantropía cosmética: es vincular la rentabilidad del negocio con el progreso social y ambiental sostenible."
+  },
+  {
+    id: 132, phase: 6,
+    q: "En el 'Salto Estratégico', el Mejoramiento Continuo (Kaizen) se aplica típicamente en condiciones de:",
+    options: ["Baja incertidumbre con productos viejos", "Alta incertidumbre en etapas de introducción y crecimiento para perfeccionar el valor de forma constante", "Quiebra inminente", "Monopolio estatal absoluto"],
+    ans: 1,
+    hint: "Ajustes rápidos y constantes en fases dinámicas de lanzamiento y crecimiento del producto.",
+    exp: "Kaizen crea valor gradual y continuo en entornos dinámicos de aprendizaje y crecimiento de producto."
+  },
+  {
+    id: 133, phase: 6,
+    q: "En el Proceso de Coordinación de Negocios, una negociación se considera 'Burocrática' cuando:",
+    options: ["El cliente inventa las reglas en el momento", "Las condiciones, plazos y promesas de valor se cumplen de acuerdo a procedimientos previamente estandarizados", "No existe contrato", "Se decide lanzando una moneda al aire"],
+    ans: 1,
+    hint: "Lo opuesto a laxista: las reglas de entrega y precios están fijadas en un protocolo predeterminado.",
+    exp: "Contrasta con la negociación laxista (a la medida): la burocrática sigue estrictamente normas y condiciones prestablecidas."
+  },
+  {
+    id: 134, phase: 6,
+    q: "En filosofía ética, el concepto de 'Êthos' significa originariamente:",
+    options: ["El dinero en el banco", "La morada interior o carácter singular que la persona va forjando con sus decisiones y actos cotidianos", "La vestimenta elegante", "La nacionalidad legal"],
+    ans: 1,
+    hint: "Del griego: la 'morada' interior o personalidad moral construida a lo largo de la vida.",
+    exp: "Del griego ethos: la morada o forja del carácter interior construido acto tras acto."
+  },
+  {
+    id: 135, phase: 6,
+    q: "¿Cómo se adquiere el Êthos según Aristóteles?",
+    options: ["Por herencia genética inmediata", "A través de la héxis, es decir, mediante el hábito constante y la reiteración reflexiva de actos buenos", "Comprándolo con dinero", "A través de una ley escrita"],
+    ans: 1,
+    hint: "A través del hábito (héxis): la práctica constante y repetida de decisiones correctas.",
+    exp: "El hábito (héxis) consolida la disposición moral: somos lo que hacemos repetidamente día a día."
+  },
+  {
+    id: 136, phase: 6,
+    q: "La 'Dignidad Innata' de la persona humana radica en que:",
+    options: ["Tiene un título nobiliario", "Vale en sí y por sí, por su propia naturaleza humana; es fin en sí misma y nunca mero medio o cosa", "Tiene mucho dinero en su cuenta bancaria", "Ocupa un cargo de gerencia"],
+    ans: 1,
+    hint: "Es el fundamento de los Derechos Humanos: todo ser humano vale por lo que es, nunca como una herramienta utilitaria.",
+    exp: "Fundamento de los Derechos Humanos: la persona humana tiene valor intrínseco sagrado, no precio utilitario."
+  },
+  {
+    id: 137, phase: 6,
+    q: "La 'Dignidad Adquirida' (auto-posesión o causa sui) se logra mediante:",
+    options: ["Comprar acciones de una corporación", "El señorío de sí mismo y el dominio moral sobre los propios actos, pasiones e impulsos", "Ganar una elección política", "Tener más de 50 años de edad"],
+    ans: 1,
+    hint: "Ser dueño de tus actos y no esclavo de vicios o pasiones descontroladas.",
+    exp: "Es el crecimiento moral: ser dueño de sí mismo evitando la esclavitud de las pasiones y los vicios."
+  },
+  {
+    id: 138, phase: 6,
+    q: "La virtud de la 'Prudencia' (auriga virtutum) es considerada la madre de las virtudes porque:",
+    options: ["Es la más cobarde", "Es la 'recta razón en el obrar', facilita reflexionar y ponderar la realidad antes de juzgar y decidir con acierto", "Significa no hacer nada nunca", "Solo la tienen los ancianos"],
+    ans: 1,
+    hint: "Es la 'auriga' o conductora del carro de las virtudes: conecta la mente con la realidad objetiva.",
+    exp: "La prudencia conecta la mente con la realidad objetiva guiando y gobernando a todas las demás virtudes."
+  },
+  {
+    id: 139, phase: 6,
+    q: "Santo Tomás de Aquino define clásicamente la virtud de la 'Justicia' como:",
+    options: ["La ley del más fuerte", "La constante y perpetua voluntad de dar a cada cual lo suyo (lo que le es debido en derecho)", "El perdón indiscriminado de todas las deudas", "Cobrar el precio más caro posible"],
+    ans: 1,
+    hint: "Dar a cada uno lo que le corresponde, respetando sus derechos legítimos.",
+    exp: "'Constans et perpetua voluntas ius suum cuique tribuendi': dar a cada quien su derecho con equidad objetiva."
+  },
+  {
+    id: 140, phase: 6,
+    q: "La 'Justicia Distributiva' se diferencia de la 'Justicia Conmutativa' en que:",
+    options: ["La conmutativa reparte según el mérito y la necesidad", "La conmutativa da igual a igual en intercambios; la distributiva reparte cargas y bienes comunes según el mérito y proporción", "Son conceptos tributarios idénticos", "La distributiva solo rige en bancos"],
+    ans: 1,
+    hint: "Conmutativa es equivalencia exacta en compras/ventas; distributiva reparte según el mérito de cada cual.",
+    exp: "Conmutativa: equivalencia aritmética en contratos. Distributiva: proporción geométrica según mérito y responsabilidad."
+  },
+  {
+    id: 141, phase: 6,
+    q: "Los dos actos constitutivos de la virtud de la 'Fortaleza' son:",
+    options: ["Mentir y ocultar", "Resistir (soportar con serenidad molestias o dolores) y Acometer (iniciativa valiente para enfrentar la dificultad)", "Huir y quejarse", "Golpear e insultar"],
+    ans: 1,
+    hint: "Primero soportar con temple el dolor o adversidad, y segundo tomar la iniciativa para atacar el problema.",
+    exp: "El primer acto y más difícil es resistir el sufrimiento; el segundo es acometer la empresa valientemente."
+  },
+  {
+    id: 142, phase: 6,
+    q: "La 'Templanza' consiste en la virtud moral de:",
+    options: ["Comer y beber sin ningún límite", "Buscar el justo medio y la moderación impuesta por la razón sobre los apetitos corporales y pasiones", "Ser frío como el hielo", "No hablar con los clientes"],
+    ans: 1,
+    hint: "El justo medio: gobernar los placeres y apetitos con la razón en lugar de ser dominado por ellos.",
+    exp: "Modera los impulsos y placeres sensibles manteniendo el equilibrio armónico de la persona."
+  },
+  {
+    id: 143, phase: 6,
+    q: "Para Aristóteles, ¿cuál es la diferencia entre la amistad incondicionada y la amistad por interés?",
+    options: ["La incondicionada busca que el amigo exista y viva por el bien del amigo mismo; la por interés dura solo mientras dure el provecho mutuo", "La incondicionada se paga con cheques", "La de interés es la única válida en la sociedad", "No hay diferencia alguna"],
+    ans: 0,
+    hint: "La amistad auténtica ama al amigo por quién es; la utilitaria se acaba en cuanto se termina la conveniencia.",
+    exp: "La amistad verdadera ama la virtud y la persona del amigo en sí; la instrumental se extingue al acabarse la conveniencia."
+  },
+  {
+    id: 144, phase: 6,
+    q: "En el ámbito directivo, la virtud de la 'Veracidad' se relaciona indisolublemente con:",
+    options: ["La arrogancia intelectual", "La sinceridad honesta y la humildad para reconocer la propia realidad y límites", "El secreto corporativo malicioso", "La adulación a los jefes"],
+    ans: 1,
+    hint: "Quien busca la verdad tiene la humildad de reconocer los hechos tal como son y admitir errores.",
+    exp: "Quien ama la verdad reconoce sus fallas con humildad y comunica hechos verídicos para generar confianza."
+  },
+  {
+    id: 145, phase: 6,
+    q: "¿Por qué el desenfreno verbal sin prudencia es considerado una 'falsa sinceridad'?",
+    options: ["Porque no está escrita en papel notarial", "Porque se transforma en agresión, crueldad y fanfarronería, destruyendo el respeto y la confianza interpersonal", "Porque revela secretos militares", "Porque es muy cara"],
+    ans: 1,
+    hint: "Decir cualquier cosa sin filtro ni compasión no es sinceridad, sino falta de tacto y agresión.",
+    exp: "Decir cualquier cosa sin tacto ni prudencia no es sinceridad, sino falta de templanza y respeto al prójimo."
+  },
+  {
+    id: 146, phase: 6,
+    q: "La 'Diligencia' (del latín diligo, amar/apreciar) como componente de la excelencia laboral implica:",
+    options: ["Hacer las cosas con desgano y lentitud", "Hacer las tareas con esmero, cuidado y amor por el trabajo bien ejecutado", "Trabajar 24 horas sin comer", "Delegar todo en terceros"],
+    ans: 1,
+    hint: "Proviene de 'diligo' (amar): esmero y cariño puesto en la terminación prolija de las labores.",
+    exp: "La diligencia nace de la vocación y el aprecio por la obra bien hecha, cuidando los detalles."
+  },
+  {
+    id: 147, phase: 6,
+    q: "Completar la frase de Aristóteles sobre la excelencia: 'Somos lo que hacemos cada día. De modo que la excelencia no es un acto, sino un ________.'",
+    options: ["hábito", "accidente", "castigo", "sueño"],
+    ans: 0,
+    hint: "No se es excelente por un golpe de suerte puntual, sino por la disciplina repetida a diario.",
+    exp: "Célebre máxima aristotélica: la excelencia se forja en la disciplina reiterada de hábitos virtuosos cotidianos."
+  },
+  {
+    id: 148, phase: 6,
+    q: "En el Proceso de Coordinación de Negocios, el 'Suministrador' es:",
+    options: ["El cliente que paga la factura", "El responsable con nombre y apellido de que se cumplan íntegramente las promesas de valor contraídas", "El banco que cobra la comisión", "El cartero que deja la correspondencia"],
+    ans: 1,
+    hint: "Es el agente que responde con su nombre de que la entrega o servicio se cumpla tal como se pactó.",
+    exp: "Es el responsable con nombre y apellido de que se cumplan las promesas de valor acordadas."
+  },
+  {
+    id: 149, phase: 6,
+    q: "La etapa final de un proceso de negocio donde se evalúa la promesa cumplida se denomina:",
+    options: ["Solicitud", "Negociación", "Ejecución", "Declaración de satisfacción"],
+    ans: 3,
+    hint: "El cliente confirma si quedó conforme o insatisfecho con el bien o servicio entregado.",
+    exp: "Cierra el bucle: el usuario declara si su necesidad fue resuelta a cabalidad o si existen reclamos y brechas."
+  },
+  {
+    id: 150, phase: 6,
+    q: "¿Por qué la ética y las virtudes cardinales son hoy un activo estratégico para la sostenibilidad de las empresas?",
+    options: ["Porque permiten pagar menos impuestos al Estado", "Porque construyen reputación, confianza entre stakeholders, reducen costos de transacción y garantizan legitimidad social de largo plazo", "Porque eliminan la necesidad de tener estados contables", "Porque son exigidas exclusivamente por sacerdotes"],
+    ans: 1,
+    hint: "Una empresa sin ética pierde clientes, es sancionada y ve dispararse sus costos legales y de supervisión.",
+    exp: "Sin confianza, prudencia y justicia, los costos de supervisión se disparan y las organizaciones colapsan socialmente."
+  }
+];
+
+/* =========================================================================
+   3. SISTEMA DE PROGRESO, GUARDADO, CARGA Y ALEATORIZACIÓN
+   ========================================================================= */
+let userProgress = {
+  completedPhases: [] // Ej: [1, 2, 3...]
+};
+
+// Cargar progreso guardado localmente si existe
+try {
+  const saved = localStorage.getItem('undertale_admin_progress');
+  if (saved) {
+    userProgress = JSON.parse(saved);
+  }
+} catch(e) {}
+
+function saveProgressToFile() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userProgress));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `progreso_admin_undertale_${Date.now()}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function loadProgressFromFile(event) {
+  const fileReader = new FileReader();
+  if (event.target.files && event.target.files[0]) {
+    fileReader.readAsText(event.target.files[0], "UTF-8");
+    fileReader.onload = (e) => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (parsed && Array.isArray(parsed.completedPhases)) {
+          userProgress = parsed;
+          localStorage.setItem('undertale_admin_progress', JSON.stringify(userProgress));
+          alert("¡Progreso cargado con éxito!");
+          renderMainMenu();
+        } else {
+          alert("Archivo de progreso inválido.");
+        }
+      } catch (err) {
+        alert("Error al leer el archivo.");
+      }
+    };
+  }
+}
+
+function prepareShuffledQuiz(rawList) {
+  const cloned = rawList.map(item => {
+    const optionsWithMeta = item.options.map((optText, origIdx) => ({
+      text: optText,
+      isCorrect: origIdx === item.ans
+    }));
+
+    for (let i = optionsWithMeta.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [optionsWithMeta[i], optionsWithMeta[j]] = [optionsWithMeta[j], optionsWithMeta[i]];
+    }
+
+    const newCorrectIdx = optionsWithMeta.findIndex(o => o.isCorrect);
+
+    return {
+      id: item.id,
+      phase: item.phase,
+      q: item.q,
+      options: optionsWithMeta.map(o => o.text),
+      ans: newCorrectIdx,
+      hint: item.hint,
+      exp: item.exp
+    };
+  });
+
+  for (let i = cloned.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+  }
+
+  return cloned;
+}
+
+/* =========================================================================
+   4. CONTROL DE ESTADO Y PANTALLAS
+   ========================================================================= */
+let gameState = {
+  currentPhase: 1,
+  phaseQuestions: [],
+  currentIndex: 0,
+  playerHP: 1,
+  maxHP: 1,
+  score: 0,
+  isSansBattle: false,
+  isMarathon: false
+};
+
+const PHASES_NAMES = {
+  1: "FASE 1: Empresa, Recursos y Operaciones",
+  2: "FASE 2: El Problema Administrativo",
+  3: "FASE 3: Escuelas Clásicas (Taylor y Fayol)",
+  4: "FASE 4: Planificación Empresarial",
+  5: "FASE 5: Estrategia Competitiva (Porter)",
+  6: "FASE 6: Sistemas, Servucción y Virtudes",
+  7: "EL JUICIO FINAL (Modo Sans: 1 Vida)"
+};
+
+renderMainMenu();
+
+function renderMainMenu() {
+  document.getElementById("statusBar").style.display = "none";
+  const container = document.getElementById("screenContent");
+
+  const isDone = (p) => userProgress.completedPhases.includes(p);
+
+  container.innerHTML = `
+    <div class="screen-overlay">
+      <div style="font-size:30px; margin-bottom:10px;">❤️</div>
+      <div class="screen-title">ADMINISTRACIÓN DE EMPRESAS<br><span style="font-size:10px; color:#fff;">UNIDADES Y PROGRESO GUARDADO</span></div>
+      <p style="font-size:9px; line-height:1.6; max-width:620px; color:#ccc;">
+        Las unidades completadas se marcan en <span style="color:var(--hp-green);">VERDE</span>. Guarda o carga tu progreso fácilmente con un archivo descargable.
+      </p>
+
+      <div class="menu-grid">
+        <button class="option-btn ${isDone(1) ? 'completed-unit' : ''}" onclick="startAdventure(1)">
+          <span class="soul-icon">❤️</span>
+          <span>1. FASE 1: Empresa y Operaciones</span>
+          <span class="phase-badge ${isDone(1) ? 'done' : ''}">${isDone(1) ? '✓ COMPLETADA' : 'Fase 1'}</span>
+        </button>
+        <button class="option-btn ${isDone(2) ? 'completed-unit' : ''}" onclick="startAdventure(2)">
+          <span class="soul-icon">❤️</span>
+          <span>2. FASE 2: Problema y Administrador</span>
+          <span class="phase-badge ${isDone(2) ? 'done' : ''}">${isDone(2) ? '✓ COMPLETADA' : 'Fase 2'}</span>
+        </button>
+        <button class="option-btn ${isDone(3) ? 'completed-unit' : ''}" onclick="startAdventure(3)">
+          <span class="soul-icon">❤️</span>
+          <span>3. FASE 3: Taylor y Fayol</span>
+          <span class="phase-badge ${isDone(3) ? 'done' : ''}">${isDone(3) ? '✓ COMPLETADA' : 'Fase 3'}</span>
+        </button>
+        <button class="option-btn ${isDone(4) ? 'completed-unit' : ''}" onclick="startAdventure(4)">
+          <span class="soul-icon">❤️</span>
+          <span>4. FASE 4: Planificación Empresarial</span>
+          <span class="phase-badge ${isDone(4) ? 'done' : ''}">${isDone(4) ? '✓ COMPLETADA' : 'Fase 4'}</span>
+        </button>
+        <button class="option-btn ${isDone(5) ? 'completed-unit' : ''}" onclick="startAdventure(5)">
+          <span class="soul-icon">❤️</span>
+          <span>5. FASE 5: Estrategia y Porter</span>
+          <span class="phase-badge ${isDone(5) ? 'done' : ''}">${isDone(5) ? '✓ COMPLETADA' : 'Fase 5'}</span>
+        </button>
+        <button class="option-btn ${isDone(6) ? 'completed-unit' : ''}" onclick="startAdventure(6)">
+          <span class="soul-icon">❤️</span>
+          <span>6. FASE 6: Sistemas y Virtudes</span>
+          <span class="phase-badge ${isDone(6) ? 'done' : ''}">${isDone(6) ? '✓ COMPLETADA' : 'Fase 6'}</span>
+        </button>
+        <button class="option-btn" style="border-color:#00ffff; color:#00ffff;" onclick="startSansTrial()">
+          <span class="soul-icon">❤️</span>
+          <span>💀 7. MODO SANS (1 Vida / Muerte Súbita)</span>
+          <span class="phase-badge" style="border-color:#00ffff;">1 Vida</span>
+        </button>
+        <button class="option-btn ${isDone(8) ? 'completed-unit' : ''}" style="border-color:var(--ut-orange); color:var(--ut-orange);" onclick="startMarathonAll()">
+          <span class="soul-icon">❤️</span>
+          <span>⭐ 8. MARATÓN TOTAL (150 Preguntas)</span>
+          <span class="phase-badge ${isDone(8) ? 'done' : ''}" style="border-color:var(--ut-orange);">${isDone(8) ? '✓ COMPLETADA' : 'Completo'}</span>
+        </button>
+      </div>
+
+      <!-- BOTONES DE GUARDAR Y CARGAR PROCESO -->
+      <div class="save-load-row">
+        <button class="save-load-btn" onclick="saveProgressToFile()">💾 Guardar / Descargar Progreso</button>
+        <button class="save-load-btn" onclick="document.getElementById('fileInputLoader').click()">📂 Cargar Archivo de Progreso</button>
+        <input type="file" id="fileInputLoader" style="display:none" accept=".json" onchange="loadProgressFromFile(event)">
+      </div>
+    </div>
+  `;
+}
+
+function startAdventure(phaseNum) {
+  unlockAudioContext();
+  playBleep(523.3, 'square', 0.1);
+  gameState.currentPhase = phaseNum;
+  gameState.isSansBattle = false;
+  gameState.isMarathon = false;
+  const filtered = MASTER_QUESTION_BANK.filter(q => q.phase === phaseNum);
+  gameState.phaseQuestions = prepareShuffledQuiz(filtered);
+  gameState.currentIndex = 0;
+  gameState.score = 0;
+  gameState.playerHP = 5;
+  gameState.maxHP = 5;
+  updateStatusUI();
+  renderQuestionUI();
+}
+
+function startSansTrial() {
+  unlockAudioContext();
+  playBleep(140, 'sawtooth', 0.2);
+  gameState.currentPhase = 7;
+  gameState.isSansBattle = true;
+  gameState.isMarathon = false;
+  gameState.phaseQuestions = prepareShuffledQuiz(MASTER_QUESTION_BANK).slice(0, 35);
+  gameState.currentIndex = 0;
+  gameState.score = 0;
+  gameState.playerHP = 1;
+  gameState.maxHP = 1;
+  updateStatusUI();
+  renderQuestionUI();
+}
+
+function startMarathonAll() {
+  unlockAudioContext();
+  playBleep(659, 'triangle', 0.15);
+  gameState.currentPhase = 8;
+  gameState.isSansBattle = false;
+  gameState.isMarathon = true;
+  gameState.phaseQuestions = prepareShuffledQuiz(MASTER_QUESTION_BANK); // Las 150 preguntas
+  gameState.currentIndex = 0;
+  gameState.score = 0;
+  gameState.playerHP = 10;
+  gameState.maxHP = 10;
+  updateStatusUI();
+  renderQuestionUI();
+}
+
+function updateStatusUI() {
+  const statusBar = document.getElementById("statusBar");
+  statusBar.style.display = "flex";
+  if (gameState.isMarathon) {
+    document.getElementById("currentPhaseLabel").innerText = "MARATÓN TOTAL (150 P.)";
+  } else {
+    document.getElementById("currentPhaseLabel").innerText = PHASES_NAMES[gameState.currentPhase] || `FASE ${gameState.currentPhase}`;
+  }
+  document.getElementById("hpText").innerText = `${gameState.playerHP}/${gameState.maxHP}`;
+  
+  const fillPct = (gameState.playerHP / gameState.maxHP) * 100;
+  document.getElementById("hpBarFill").style.width = `${Math.max(0, fillPct)}%`;
+}
+
+function renderQuestionUI() {
+  const container = document.getElementById("screenContent");
+  const qData = gameState.phaseQuestions[gameState.currentIndex];
+
+  let optionsHTML = "";
+  qData.options.forEach((opt, idx) => {
+    optionsHTML += `
+      <button class="option-btn" onclick="checkAnswer(${idx})" onmouseover="playBleep(320, 'sine', 0.02)">
+        <span class="soul-icon">❤️</span>
+        <span>${String.fromCharCode(65 + idx)}) ${opt}</span>
+      </button>
+    `;
+  });
+
+  // Cálculo de la barra de progreso
+  const totalQ = gameState.phaseQuestions.length;
+  const currentQNum = gameState.currentIndex + 1;
+  const progressPct = (gameState.currentIndex / totalQ) * 100;
+
+  container.innerHTML = `
+    <!-- BARRA DE PROGRESO -->
+    <div class="progress-section">
+      <div style="display:flex; justify-content:space-between;">
+        <span>Progreso de Unidad (${totalQ === 150 ? 'Modo Definitivo 150 P.' : 'Unidad Actual'}):</span>
+        <span style="color:var(--hint-cyan);">${gameState.currentIndex} / ${totalQ}</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: ${progressPct}%;"></div>
+      </div>
+    </div>
+
+    <!-- CUADRO DE PREGUNTA DIRECTO -->
+    <div class="dialogue-box" id="questionTextBox">
+      <span class="dialogue-prefix">* PREGUNTA ${currentQNum} DE ${totalQ}:</span>
+      ${qData.q}
+    </div>
+
+    <!-- PISTA CONCEPTUAL -->
+    <div class="hint-box" id="hintBox"></div>
+
+    <!-- RETROALIMENTACIÓN TRAS RESPONDER -->
+    <div class="feedback-panel" id="feedbackPanel"></div>
+
+    <!-- ALTERNATIVAS HORIZONTALES (FULL WIDTH) -->
+    <div class="options-container" id="optionsContainer">
+      ${optionsHTML}
+    </div>
+
+    <!-- BOTONES DE ACCIÓN INFERIOR -->
+    <div class="footer-actions">
+      <button class="action-btn" onclick="renderMainMenu()">
+        <span class="soul-icon">❤️</span>
+        <span>MENÚ</span>
+      </button>
+      <button class="action-btn hint-btn" id="hintBtn" onclick="toggleHint()">
+        <span class="soul-icon">❤️</span>
+        <span>PISTA</span>
+      </button>
+      <div style="font-size:10px; color:#888;">CORRECTAS: ${gameState.score}</div>
+      <button class="action-btn" id="nextQuestionBtn" style="display:none;" onclick="nextQuestion()">
+        <span class="soul-icon">❤️</span>
+        <span>SIGUIENTE ➔</span>
+      </button>
+    </div>
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleHint() {
+  unlockAudioContext();
+  playBleep(440, 'triangle', 0.08);
+  const hintBox = document.getElementById("hintBox");
+  const qData = gameState.phaseQuestions[gameState.currentIndex];
+  if (!hintBox) return;
+
+  if (hintBox.style.display === "none" || hintBox.style.display === "") {
+    hintBox.style.display = "block";
+    hintBox.innerHTML = `💡 <strong>PISTA:</strong><br>${qData.hint || "Analiza los conceptos clave vistos en las diapositivas y textos de clase."}`;
+  } else {
+    hintBox.style.display = "none";
+  }
+}
+
+function checkAnswer(selectedIdx) {
+  unlockAudioContext();
+  const qData = gameState.phaseQuestions[gameState.currentIndex];
+  const feedback = document.getElementById("feedbackPanel");
+  const nextBtn = document.getElementById("nextQuestionBtn");
+  const optionsContainer = document.getElementById("optionsContainer");
+
+  const buttons = optionsContainer.getElementsByTagName("button");
+  for (let b of buttons) {
+    b.disabled = true;
+    b.style.opacity = "0.65";
+    b.style.cursor = "default";
+  }
+
+  if (selectedIdx === qData.ans) {
+    playBleep(587.3, 'triangle', 0.15);
+    gameState.score++;
+    feedback.className = "feedback-panel correct";
+    feedback.style.display = "block";
+    feedback.innerHTML = `
+      <strong>¡CORRECTO!</strong><br>
+      ${qData.exp}
+    `;
+    nextBtn.style.display = "flex";
+  } else {
+    playDamageSound();
+    gameState.playerHP--;
+    updateStatusUI();
+
+    feedback.className = "feedback-panel incorrect";
+    feedback.style.display = "block";
+    feedback.innerHTML = `
+      <strong>¡RESPUESTA INCORRECTA!</strong><br>
+      Opción correcta: <strong>${String.fromCharCode(65 + qData.ans)}) ${qData.options[qData.ans]}</strong><br>
+      <em>${qData.exp}</em>
+    `;
+
+    if (gameState.playerHP <= 0) {
+      setTimeout(() => triggerGameOver(), 800);
+      return;
+    } else {
+      nextBtn.style.display = "flex";
+    }
+  }
+}
+
+function nextQuestion() {
+  unlockAudioContext();
+  gameState.currentIndex++;
+  if (gameState.currentIndex < gameState.phaseQuestions.length) {
+    renderQuestionUI();
+  } else {
+    // Registrar fase como completada en verde
+    const targetPhase = gameState.isMarathon ? 8 : gameState.currentPhase;
+    if (targetPhase >= 1 && targetPhase <= 8) {
+      if (!userProgress.completedPhases.includes(targetPhase)) {
+        userProgress.completedPhases.push(targetPhase);
+        try {
+          localStorage.setItem('undertale_admin_progress', JSON.stringify(userProgress));
+        } catch(e){}
+      }
+    }
+    triggerVictory();
+  }
+}
+
+/* =========================================================================
+   PANTALLA DE GAME OVER CON EL SOBRE AZUL INCRUSTADO
+   ========================================================================= */
+function triggerGameOver() {
+  playGameOverSting();
+  document.getElementById("statusBar").style.display = "none";
+  const container = document.getElementById("screenContent");
+
+  const svgFallback = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 12" shape-rendering="crispEdges"><rect width="16" height="12" fill="%23000"/><rect x="1" y="1" width="14" height="10" fill="%23cbf0ff"/><rect x="1" y="1" width="14" height="1" fill="%23000"/><rect x="1" y="10" width="14" height="1" fill="%23000"/><rect x="1" y="1" width="1" height="10" fill="%23000"/><rect x="14" y="1" width="1" height="10" fill="%23000"/><path d="M2 2 L8 7 L14 2 M2 10 L6 6 M14 10 L10 6" stroke="%23000" stroke-width="1" fill="none"/></svg>`;
+
+  container.innerHTML = `
+    <div class="screen-overlay">
+      <img src="arte-del-pixel-sobre-116109126-removebg-preview.png" 
+           class="game-over-envelope" 
+           alt="Sobre Azul Pixel Art"
+           onerror="this.onerror=null; this.src='${svgFallback}';">
+      
+      <div class="screen-title" style="color:red; font-size:20px; margin-bottom:12px;">GAME OVER</div>
+      
+      <div style="font-size:11px; line-height:1.7; color:var(--sobre-azul); margin-bottom:16px; border:2px dashed var(--sobre-azul); padding:12px 14px; background:#04131d; max-width:580px;">
+        ✉️ "Acabas de recibir un sobre Azul...te renunciaron"
+      </div>
+
+      <p style="font-size:9.5px; line-height:1.7; max-width:540px; color:#ddd;">
+        "Tu contrato ha finalizado por necesidades de la empresa.<br>
+        Revisa tus apuntes, optimiza tus procesos y mantén tu <strong>DETERMINACIÓN</strong>."
+      </p>
+      
+      <div style="margin-top:14px; font-size:10px; color:var(--ut-yellow);">
+        Preguntas superadas: ${gameState.currentIndex} de ${gameState.phaseQuestions.length}
+      </div>
+      
+      <div class="menu-grid" style="margin-top:20px;">
+        <button class="option-btn" onclick="retryCurrentPhase()">
+          <span class="soul-icon">❤️</span>
+          <span>REINTENTAR (NUEVO ORDEN DE PREGUNTAS Y OPCIONES)</span>
+        </button>
+        <button class="option-btn" onclick="renderMainMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>VOLVER AL MENÚ PRINCIPAL</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function retryCurrentPhase() {
+  unlockAudioContext();
+  if (gameState.isSansBattle) {
+    startSansTrial();
+  } else if (gameState.isMarathon) {
+    startMarathonAll();
+  } else {
+    startAdventure(gameState.currentPhase);
+  }
+}
+
+function triggerVictory() {
+  playVictorySound();
+  document.getElementById("statusBar").style.display = "none";
+  const container = document.getElementById("screenContent");
+  
+  let rank = "C - Administrador Junior";
+  if (gameState.score >= gameState.phaseQuestions.length * 0.9) rank = "S - ADMINISTRADOR LEGENDARIO";
+  else if (gameState.score >= gameState.phaseQuestions.length * 0.75) rank = "A - GERENTE ESTRATÉGICO";
+  else if (gameState.score >= gameState.phaseQuestions.length * 0.5) rank = "B - ANALISTA SENIOR";
+
+  container.innerHTML = `
+    <div class="screen-overlay">
+      <div style="font-size:38px; margin-bottom:14px;">🏆❤️</div>
+      <div class="screen-title" style="color:#00ff00;">¡UNIDAD COMPLETADA CON ÉXITO!</div>
+      <p style="font-size:10.5px; line-height:1.8; max-width:580px; color:#eee;">
+        Has superado este módulo. ¡Su estado se ha marcado en verde en el menú!
+      </p>
+      <div style="margin:16px 0; border:3px solid var(--ut-yellow); padding:14px; font-size:10.5px; line-height:1.6;">
+        PUNTUACIÓN FINAL: ${gameState.score} / ${gameState.phaseQuestions.length}<br>
+        RANGO ALCANZADO: <span style="color:var(--ut-yellow);">${rank}</span>
+      </div>
+      <div class="menu-grid">
+        <button class="option-btn" onclick="renderMainMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>VOLVER AL MENÚ PRINCIPAL</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

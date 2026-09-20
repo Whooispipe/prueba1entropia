@@ -25,6 +25,7 @@
       --hint-cyan: #00ffff;
       --hp-green: #00ff00;
       --sobre-azul: #64c8ff;
+      --self-pink: #ff77dd;
     }
 
     * {
@@ -447,6 +448,251 @@
         min-width: 100%;
       }
     }
+
+    /* =====================================================================
+       FASE 9: COMPLETA LA FRASE Y PREGUNTAS DE DESARROLLO
+       ===================================================================== */
+
+    /* Los campos de texto deben permitir escribir y seleccionar (el * global lo bloquea) */
+    input, textarea {
+      -webkit-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
+    }
+
+    .topic-tag {
+      display: block;
+      margin-top: 6px;
+      font-size: 9px;
+      color: #aaa;
+    }
+
+    .blank-slot {
+      display: inline-block;
+      min-width: 110px;
+      border-bottom: 3px solid var(--ut-yellow);
+      margin: 0 4px;
+      vertical-align: bottom;
+    }
+
+    .blank-filled {
+      display: inline-block;
+      margin: 0 3px;
+      padding: 0 4px;
+      color: #000;
+      background: var(--hp-green);
+    }
+
+    .self-input {
+      display: block;
+      width: 100%;
+      background: #000;
+      color: #fff;
+      border: 3px solid var(--border-color);
+      border-radius: 0;
+      padding: 14px;
+      margin-bottom: 12px;
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 1.7;
+      outline: none;
+      caret-color: var(--ut-yellow);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .self-input::placeholder {
+      color: #666;
+    }
+
+    .self-input:focus {
+      border-color: var(--ut-yellow);
+    }
+
+    .self-input[readonly] {
+      border-color: #777;
+      color: #ccc;
+    }
+
+    textarea.self-input {
+      min-height: 190px;
+      resize: vertical;
+    }
+
+    .action-btn.check-btn {
+      width: 100%;
+      justify-content: center;
+      color: var(--self-pink);
+      border-color: var(--self-pink);
+      margin-bottom: 14px;
+      font-size: 11px;
+    }
+
+    .action-btn.check-btn:hover,
+    .action-btn.check-btn:active {
+      background: var(--self-pink);
+      color: #000;
+    }
+
+    .reveal-panel {
+      display: none;
+      border: 3px dashed var(--self-pink);
+      background: #150410;
+      color: #ffd6f3;
+      padding: 14px;
+      margin-bottom: 14px;
+      font-size: 10.5px;
+      line-height: 1.9;
+    }
+
+    .reveal-title {
+      color: var(--self-pink);
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+
+    .reveal-answer {
+      color: var(--hp-green);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+
+    .reveal-mine {
+      color: #ddd;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .reveal-mine em {
+      color: var(--ut-yellow);
+      font-style: normal;
+    }
+
+    .reveal-exp {
+      color: #ffd6f3;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 2px solid #4a1a40;
+    }
+
+    .reveal-model {
+      color: #fff;
+      line-height: 2;
+    }
+
+    .verdict {
+      font-size: 10px;
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+
+    .verdict.ok { color: var(--hp-green); }
+    .verdict.warn { color: var(--ut-orange); }
+
+    .key-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .key-list li {
+      position: relative;
+      padding-left: 18px;
+      color: #ffd6f3;
+    }
+
+    .key-list li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: var(--ut-yellow);
+    }
+
+    .mark-zone {
+      display: none;
+      margin-bottom: 14px;
+    }
+
+    .mark-title {
+      font-size: 10px;
+      line-height: 1.6;
+      color: var(--ut-yellow);
+      margin-bottom: 10px;
+    }
+
+    .mark-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mark-btn {
+      flex: 1;
+      min-width: 140px;
+      min-height: 50px;
+      background: #000;
+      border: 3px solid;
+      padding: 12px 10px;
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .mark-btn.good { color: var(--hp-green); border-color: var(--hp-green); }
+    .mark-btn.bad  { color: #ff6666; border-color: var(--ut-red); }
+
+    .mark-btn.good:hover, .mark-btn.good:active, .mark-btn.good.chosen {
+      background: var(--hp-green);
+      color: #000;
+    }
+
+    .mark-btn.bad:hover, .mark-btn.bad:active, .mark-btn.bad.chosen {
+      background: var(--ut-red);
+      color: #fff;
+    }
+
+    .mark-btn:disabled {
+      cursor: default;
+    }
+
+    .mark-btn:disabled:not(.chosen) {
+      opacity: 0.35;
+      background: #000;
+    }
+
+    .review-list {
+      width: 100%;
+      max-width: 620px;
+      text-align: left;
+      border: 3px solid var(--ut-red);
+      background: #1a0202;
+      padding: 12px 14px;
+      margin: 6px 0 4px;
+      font-size: 9.5px;
+      line-height: 1.8;
+      color: #ffb3b3;
+    }
+
+    .review-list .review-head {
+      color: #ff6666;
+      margin-bottom: 8px;
+    }
+
+    .review-list .review-item {
+      padding: 8px 0;
+      border-top: 2px solid #4a1010;
+    }
+
+    @media (max-width: 480px) {
+      .self-input { font-size: 11px; padding: 12px; }
+      .reveal-panel { font-size: 9.5px; padding: 12px; }
+      .reveal-answer { font-size: 12px; }
+      .mark-btn { font-size: 10px; min-width: 100%; }
+      .blank-slot { min-width: 80px; }
+    }
   </style>
 </head>
 <body>
@@ -457,13 +703,14 @@
       <span>HUMANO</span>
       <span>LV <span id="playerLV">1</span></span>
     </div>
-    <div class="hp-container">
+    <div class="hp-container" id="hpContainer">
       <span class="hp-label">HP</span>
       <div class="hp-bar-bg">
         <div class="hp-bar-fill" id="hpBarFill"></div>
       </div>
       <span class="hp-num" id="hpText">1/1</span>
     </div>
+    <span id="selfScore" style="display:none; font-size:10px;"></span>
     <button id="muteBtn" onclick="toggleAudio()" style="background:#000; color:#fff; border:2px solid #fff; font-family:inherit; font-size:8px; cursor:pointer; padding:5px 7px;">SONIDO: ON</button>
   </div>
 
@@ -485,7 +732,8 @@ document.addEventListener('touchmove', (e) => {
 let lastTouchEnd = 0;
 document.addEventListener('touchend', (e) => {
   const now = Date.now();
-  if (now - lastTouchEnd <= 300) e.preventDefault();
+  const onField = e.target && e.target.closest && e.target.closest('input, textarea');
+  if (now - lastTouchEnd <= 300 && !onField) e.preventDefault();
   lastTouchEnd = now;
 }, { passive: false });
 
@@ -2176,6 +2424,12 @@ function renderMainMenu() {
           <span>⭐ 8. MARATÓN TOTAL (${totalCount} Preguntas Únicas)</span>
           <span class="phase-badge ${isDone(8) ? 'done' : ''}" style="border-color:var(--ut-orange);">${isDone(8) ? '✓ COMPLETADA' : `${totalCount} P.`}</span>
         </button>
+
+        <button class="option-btn ${isDone(91) && isDone(92) ? 'completed-unit' : ''}" style="${isDone(91) && isDone(92) ? '' : 'border-color:var(--self-pink); color:var(--self-pink);'}" onclick="renderSelfMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>✍️ 9. FASE 9: Completa la frase y Preguntas de desarrollo</span>
+          <span class="phase-badge ${isDone(91) && isDone(92) ? 'done' : ''}" ${isDone(91) && isDone(92) ? '' : 'style="border-color:var(--self-pink); color:var(--self-pink);"'}>${isDone(91) && isDone(92) ? '✓ COMPLETADA' : `${CLOZE_BANK.length + DEV_BANK.length} P.`}</span>
+        </button>
       </div>
 
       <div class="save-load-row">
@@ -2254,6 +2508,11 @@ function updateStatusUI() {
   const statusBar = document.getElementById("statusBar");
   if (statusBar) statusBar.style.display = "flex";
   
+  const hpContainerEl = document.getElementById("hpContainer");
+  if (hpContainerEl) hpContainerEl.style.display = "flex";
+  const selfScoreEl = document.getElementById("selfScore");
+  if (selfScoreEl) selfScoreEl.style.display = "none";
+
   const hpFill = document.getElementById("hpBarFill");
   const hpText = document.getElementById("hpText");
   
@@ -2498,6 +2757,992 @@ function triggerVictory() {
       </div>
     </div>
   `;
+}
+
+/* =========================================================================
+   5. FASE 9: COMPLETA LA FRASE Y PREGUNTAS DE DESARROLLO (AUTOEVALUACIÓN)
+   - Escribes tu respuesta, pulsas COMPROBAR y ves la respuesta correcta.
+   - Luego tú decides con honestidad si fue BUENA o MALA.
+   - Las malas quedan guardadas para repasarlas después.
+   ========================================================================= */
+
+// Cada frase: s = frase con "___" donde falta la palabra, a = respuestas aceptadas (la 1ª es la que se muestra)
+const CLOZE_BANK = [
+  // ---- EMPRESA Y SU ENTORNO ----
+  { id: 'c01', topic: 'Concepto de empresa',
+    s: "Según la RAE, una empresa es una unidad de organización dedicada a actividades industriales, mercantiles o de prestación de servicios con fines ___.",
+    a: ['lucrativos', 'de lucro', 'lucro'],
+    exp: "Definición RAE: lo que distingue a la empresa es su fin lucrativo." },
+  { id: 'c02', topic: 'Concepto de empresa',
+    s: "En la definición vista en clases, el capital y los trabajadores corren un cierto riesgo y asumen una ___, lo que les da derecho a una retribución económica.",
+    a: ['responsabilidad'],
+    exp: "Riesgo y responsabilidad justifican la retribución económica de capital y trabajadores." },
+  { id: 'c03', topic: 'Concepto de empresa',
+    s: "El ___ de bienes consiste en comprar un producto en un mercado donde su precio es bajo y venderlo de inmediato en otro donde se cotiza más alto.",
+    a: ['arbitraje'],
+    exp: "Se aprovecha la diferencia de valor entre dos mercados para obtener un beneficio." },
+  { id: 'c04', topic: 'Concepto de empresa',
+    s: "La ___ es el conjunto de procesos para planificar, manejar y controlar el traslado y almacenamiento de bienes y servicios.",
+    a: ['logística', 'logistica'],
+    exp: "Logística: planificar, manejar y controlar el traslado y el almacenamiento." },
+  { id: 'c05', topic: 'Concepto de empresa',
+    s: "La ___ legal es el conjunto de leyes, reglamentos, códigos y disposiciones jurídicas obligatorias que rigen la creación, el funcionamiento y el término de una organización.",
+    a: ['normativa'],
+    exp: "Normativa legal: reglas obligatorias dentro de un país, desde que la organización nace hasta que termina." },
+  { id: 'c06', topic: 'Concepto de empresa',
+    s: "La infraestructura es el conjunto de recursos físicos, tecnológicos, organizativos y ___ que forman la base necesaria para operar el negocio día a día.",
+    a: ['humanos'],
+    exp: "Infraestructura = recursos físicos + tecnológicos + organizativos + humanos." },
+  { id: 'c07', topic: 'Concepto de empresa',
+    s: "El medio ___ es el impacto de la actividad comercial sobre la naturaleza y los recursos naturales.",
+    a: ['ambiente'],
+    exp: "Medio ambiente: efecto de la actividad comercial sobre la naturaleza y los recursos naturales." },
+  { id: 'c08', topic: 'Elementos constitutivos',
+    s: "Los elementos constitutivos de una empresa son los recursos humanos y los recursos ___.",
+    a: ['materiales'],
+    exp: "Recursos materiales: maquinaria, instalaciones, terrenos y fondos líquidos o de caja." },
+  { id: 'c09', topic: 'Elementos constitutivos',
+    s: "Abraham ___ organizó en 1943 las necesidades humanas en una jerarquía de 5 niveles.",
+    a: ['Maslow'],
+    exp: "Teoría psicológica de Maslow: las personas sienten necesidades y se impulsan en base a ellas." },
+  { id: 'c10', topic: 'Elementos constitutivos',
+    s: "La maquinaria, las instalaciones y los terrenos forman parte del activo ___ de la empresa, que sufre depreciación.",
+    a: ['fijo'],
+    exp: "Activo fijo: se deprecia con el uso; junto a los inventarios y los fondos líquidos forma parte de los recursos materiales." },
+  { id: 'c11', topic: 'Valor y productividad',
+    s: "El valor es el conjunto de ___ de un producto o servicio.",
+    a: ['atributos'],
+    exp: "Definición de la pauta: Valor = conjunto de atributos de un producto." },
+  { id: 'c12', topic: 'Valor y productividad',
+    s: "Productividad = (P × q) / (CF + ___), donde CF son los costos fijos.",
+    a: ['CV', 'costos variables', 'costo variable'],
+    exp: "P × q es el ingreso (precio por cantidad); CF + CV son los costos totales (fijos + variables)." },
+  { id: 'c13', topic: 'Valor y productividad',
+    s: "La promesa de valor de una empresa es entregar un producto o servicio de ___.",
+    a: ['calidad'],
+    exp: "Promesa de valor = servicio o producto de calidad." },
+
+  // ---- PARADIGMAS Y ESTRATEGIAS COLABORATIVAS ----
+  { id: 'c14', topic: 'Paradigmas',
+    s: "La globalización de la economía es un fenómeno social y económico que, según los apuntes, genera ___.",
+    a: ['conflicto', 'conflictos'],
+    exp: "Globalización → conflicto (también se vincula con lo geopolítico y la voluntad de ejercer el poder)." },
+  { id: 'c15', topic: 'Paradigmas',
+    s: "El paradigma 'Nosotros-Nosotros' propone una visión ___, asociada a la Responsabilidad Social Empresarial.",
+    a: ['holística', 'holistica'],
+    exp: "Visión holística: RSE y crecimiento económico sustentable." },
+  { id: 'c16', topic: 'Competir-Colaborar',
+    s: "Un joint ___ es una alianza estratégica entre empresas.",
+    a: ['venture'],
+    exp: "Joint venture = alianza estratégica." },
+  { id: 'c17', topic: 'Competir-Colaborar',
+    s: "El ___ consiste en externalizar una función de la empresa, contratando a terceros externos.",
+    a: ['outsourcing', 'externalización', 'externalizacion'],
+    exp: "Outsourcing = externalización. No confundir con joint venture ni con benchmarking." },
+  { id: 'c18', topic: 'Competir-Colaborar',
+    s: "El ___ consiste en aprender del mejor, tomando como referencia a los líderes.",
+    a: ['benchmarking'],
+    exp: "Benchmarking = aprender del mejor." },
+  { id: 'c19', topic: 'Competir-Colaborar',
+    s: "El ___ es la venta de servicios a través de plataformas electrónicas fuera de las fronteras nacionales, como un call center.",
+    a: ['off shoring', 'offshoring'],
+    exp: "Off shoring: ejemplos de los apuntes, data center y call center." },
+  { id: 'c20', topic: 'Competir-Colaborar',
+    s: "Además del outsourcing, otras estrategias mencionadas en clase son el insourcing y el ___.",
+    a: ['nearshoring', 'near shoring'],
+    exp: "Los apuntes agregan insourcing y nearshoring como 'otros'." },
+
+  // ---- SISTEMAS ----
+  { id: 'c21', topic: 'Sistemas y entropía',
+    s: "La empresa es un sistema ___ porque funciona como un ciclo que interactúa con su entorno.",
+    a: ['abierto'],
+    exp: "Sistema abierto: intercambia recursos e información con la sociedad." },
+  { id: 'c22', topic: 'Sistemas y entropía',
+    s: "La ___ es la tendencia de los sistemas al desgaste, a la desintegración y al relajamiento de los estándares.",
+    a: ['entropía', 'entropia'],
+    exp: "Entropía: desgaste, desintegración, relajamiento de estándares y aumento de la aleatoriedad." },
+  { id: 'c23', topic: 'Sistemas y entropía',
+    s: "Una entropía alta significa mayor aleatoriedad, es decir, mayor ___.",
+    a: ['incertidumbre'],
+    exp: "En los apuntes: aumento de la aleatoriedad (incertidumbre). Lo ideal es una baja entropía." },
+  { id: 'c24', topic: 'Sistemas y entropía',
+    s: "La ___ es la propiedad de un sistema de mantener un estado firme y estable.",
+    a: ['homeostasis'],
+    exp: "Homeostasis = 'estado firme / estable'." },
+  { id: 'c25', topic: 'Sistemas y entropía',
+    s: "La ___ es el antónimo de entropía y expresa la capacidad de enfrentarla.",
+    a: ['negentropía', 'neguentropía', 'negentropia', 'neguentropia'],
+    exp: "Neguentropía: se enfrenta la entropía; es su antónimo." },
+  { id: 'c26', topic: 'Sistemas y entropía',
+    s: "Ser ___ es usar la menor cantidad de recursos con la menor cantidad de imprevistos, cumpliendo los estándares.",
+    a: ['eficiente'],
+    exp: "Eficiente: menor cantidad de recursos + menor cantidad de imprevistos → cumplir con los estándares." },
+  { id: 'c27', topic: 'Sistemas y entropía',
+    s: "La ___ es la falta de respeto por las normas sociales y aumenta la entropía de una organización.",
+    a: ['anomía', 'anomia'],
+    exp: "Anomía: no tener respeto por las normas sociales." },
+  { id: 'c28', topic: 'Sistemas y entropía',
+    s: "El ___, que consiste en favorecer a familiares o cercanos, aumenta la entropía y es un problema para el administrador.",
+    a: ['nepotismo'],
+    exp: "En los apuntes: Nepotismo → entropía, y es un problema del administrador." },
+
+  // ---- SERVUCCIÓN ----
+  { id: 'c29', topic: 'Servucción',
+    s: "En la servucción, la sigla PEC significa Personal en ___.",
+    a: ['contacto'],
+    exp: "PEC = Personal en contacto (siempre se pregunta o evalúa)." },
+  { id: 'c30', topic: 'Servucción',
+    s: "STA significa Soporte Técnico ___ e incluye informática, auxiliares y mantención.",
+    a: ['administrativo'],
+    exp: "STA = Soporte técnico administrativo (el back office del servicio)." },
+  { id: 'c31', topic: 'Servucción',
+    s: "En la servucción, el cliente puede ser un participante activo o ___.",
+    a: ['pasivo'],
+    exp: "Cliente: participante activo o pasivo." },
+  { id: 'c32', topic: 'Servucción',
+    s: "La zona de ___ (ZA) de la servucción puede ser de tipo 'la vista' o burocrático.",
+    a: ['arbitraje'],
+    exp: "ZA = zona de arbitraje." },
+  { id: 'c33', topic: 'Servucción',
+    s: "El soporte físico (SF) es la infraestructura de la servucción y puede ser física o ___.",
+    a: ['virtual'],
+    exp: "SF = soporte físico: infraestructura física o virtual." },
+  { id: 'c34', topic: 'Servucción',
+    s: "El Momento de la ___ (MV) es el encuentro entre el cliente y el servicio de la empresa.",
+    a: ['verdad'],
+    exp: "MV = momento de la verdad; en los apuntes se asocia a una matriz y un protocolo." },
+
+  // ---- ADMINISTRADOR Y PROBLEMA ADMINISTRATIVO ----
+  { id: 'c35', topic: 'El administrador',
+    s: "La tarea del administrador es lograr que las cosas se hagan a través de las ___.",
+    a: ['personas'],
+    exp: "Administrador: para que las personas avancen y cada una contribuya." },
+  { id: 'c36', topic: 'El administrador',
+    s: "El administrador debe llevar a la empresa hacia un mejor ___.",
+    a: ['futuro'],
+    exp: "Proyectar a la empresa de una situación actual a una futura relativamente mejor." },
+  { id: 'c37', topic: 'El administrador',
+    s: "En el diagnóstico FODA, el ambiente externo se analiza mediante amenazas y ___.",
+    a: ['oportunidades'],
+    exp: "Ambiente externo: amenazas y oportunidades." },
+  { id: 'c38', topic: 'El administrador',
+    s: "En el diagnóstico FODA, el ambiente interno se analiza mediante fortalezas y ___.",
+    a: ['debilidades'],
+    exp: "Ambiente interno: fortalezas y debilidades (ej.: un conflicto con el personal es una debilidad)." },
+  { id: 'c39', topic: 'El administrador',
+    s: "La inteligencia emocional determina el potencial de una persona para aprender habilidades ___.",
+    a: ['prácticas', 'practicas'],
+    exp: "Inteligencia emocional → potencial para aprender habilidades prácticas." },
+  { id: 'c40', topic: 'El administrador',
+    s: "La aptitud emocional se asocia en los apuntes con la ___.",
+    a: ['autorregulación', 'autorregulacion'],
+    exp: "Aptitud emocional → autorregulación." },
+  { id: 'c41', topic: 'Problema administrativo',
+    s: "El problema administrativo surge en toda forma de cooperación organizada donde hay como mínimo ___ personas en función de un objetivo común.",
+    a: ['dos', '2'],
+    exp: "Mínimo 2 personas con un objetivo común: exige coordinación y requiere recursos." },
+  { id: 'c42', topic: 'Problema administrativo',
+    s: "La administración es una ciencia ___ (no exacta) que nos permite usarla en el problema administrativo y buscar resolverlo.",
+    a: ['social'],
+    exp: "Ciencia social, no exacta." },
+  { id: 'c43', topic: 'Problema administrativo',
+    s: "El ___ de la administración consiste en saber cómo aplicar en la realidad el conjunto de principios y conceptos para lograr un resultado positivo.",
+    a: ['arte'],
+    exp: "La administración es ciencia y arte: combina una teoría con el saber." },
+
+  // ---- TAYLOR ----
+  { id: 'c44', topic: 'Taylor',
+    s: "Frederick Taylor es el precursor de la administración ___.",
+    a: ['científica', 'cientifica'],
+    exp: "Libro: Administración Científica." },
+  { id: 'c45', topic: 'Taylor',
+    s: "Taylor incorporó el pago a ___, que remunera por pieza producida o terminada.",
+    a: ['trato', 'destajo'],
+    exp: "Pago a trato: salario más justo, directamente relacionado con la productividad." },
+  { id: 'c46', topic: 'Taylor',
+    s: "El primer principio de Taylor es sustituir las reglas ___ por la ciencia.",
+    a: ['prácticas', 'practicas', 'empíricas', 'empiricas'],
+    exp: "Principio 1: sustituir las reglas prácticas." },
+  { id: 'c47', topic: 'Taylor',
+    s: "El tercer principio de Taylor busca lograr la ___ entre los seres humanos, no el individualismo.",
+    a: ['cooperación', 'cooperacion'],
+    exp: "Principio 3: cooperación, no individualismo. El principio 2 es obtener armonía." },
+
+  // ---- FAYOL ----
+  { id: 'c48', topic: 'Fayol',
+    s: "En 1916 Henri Fayol publicó 'Administración Industrial y ___'.",
+    a: ['general'],
+    exp: "Fayol (1841-1925): Administración Industrial y General." },
+  { id: 'c49', topic: 'Fayol',
+    s: "Fayol clasificó las actividades de la empresa en técnicas, seguridad, financieras, comerciales, contables y ___.",
+    a: ['administrativas', 'directivas'],
+    exp: "Seis actividades; están integradas por las funciones administrativas." },
+  { id: 'c50', topic: 'Fayol',
+    s: "Las funciones administrativas de Fayol son planeación, organización, dirección, coordinación y ___.",
+    a: ['control'],
+    exp: "Planeación, organización, dirección, coordinación y control." },
+  { id: 'c51', topic: 'Fayol',
+    s: "Según el principio de unidad de ___, cada persona debe recibir órdenes de un solo jefe.",
+    a: ['mando'],
+    exp: "Unidad de mando = un solo jefe. Unidad de dirección = un solo plan." },
+  { id: 'c52', topic: 'Fayol',
+    s: "Según el principio de unidad de ___, las actividades con un mismo objetivo se guían por un solo jefe y un solo plan.",
+    a: ['dirección', 'direccion'],
+    exp: "No confundir con unidad de mando." },
+  { id: 'c53', topic: 'Fayol',
+    s: "La cadena ___ es la vía jerárquica de autoridad y comunicación de la organización.",
+    a: ['escalar'],
+    exp: "Principio 9 de Fayol: cadena escalar." },
+  { id: 'c54', topic: 'Fayol',
+    s: "El primero de los 14 principios de Fayol es la ___ del trabajo.",
+    a: ['división', 'division'],
+    exp: "División del trabajo: especialización para aumentar la eficiencia." },
+
+  // ---- PLANIFICACIÓN ----
+  { id: 'c55', topic: 'Planificación',
+    s: "La ___ es la función fundamental de la administración: define objetivos, estrategias, políticas, programas y procedimientos para alcanzarlos.",
+    a: ['planificación', 'planeación', 'planificacion', 'planeacion'],
+    exp: "Planificación: función fundamental; es trabajo de anticipar el futuro." },
+  { id: 'c56', topic: 'Planificación',
+    s: "Planificar es anticipar el ___.",
+    a: ['futuro'],
+    exp: "Planificar → crear futuro." },
+  { id: 'c57', topic: 'Planificación',
+    s: "La ___ responde a qué, cómo y cuándo queremos ser en el futuro.",
+    a: ['visión', 'vision'],
+    exp: "Tipos de planes: visión (qué, cómo, cuándo); propósitos o misión; objetivos y metas; estrategias." },
+  { id: 'c58', topic: 'Planificación',
+    s: "Los propósitos de una organización también se conocen como ___.",
+    a: ['misión', 'mision'],
+    exp: "Propósitos o Misión." },
+  { id: 'c59', topic: 'Planificación',
+    s: "Los supuestos de planificación pueden ser de tipo cuantitativos o ___.",
+    a: ['cualitativos'],
+    exp: "Supuestos cuantitativos (cifras) y cualitativos (imagen, clima, etc.)." },
+  { id: 'c60', topic: 'Planificación',
+    s: "Las políticas pueden ser explícitas o ___.",
+    a: ['implícitas', 'implicitas'],
+    exp: "Políticas explícitas e implícitas; además: procedimientos y reglas/protocolo." },
+  { id: 'c61', topic: 'Planificación',
+    s: "Según el principio de ___, se define qué tan flexibles se pueden hacer los planes.",
+    a: ['flexibilidad'],
+    exp: "Flexibilidad: adaptarse a imprevistos." },
+  { id: 'c62', topic: 'Planificación',
+    s: "Para lograr una ventaja sostenible se deben neutralizar amenazas, corregir debilidades, aprovechar oportunidades y explotar ___.",
+    a: ['fortalezas'],
+    exp: "Ventaja sostenible: usa el FODA completo." },
+  { id: 'c63', topic: 'Plan de desarrollo',
+    s: "Los objetivos de largo plazo definen el ___ de la empresa.",
+    a: ['rumbo'],
+    exp: "Largo plazo = el rumbo; mediano plazo = fecha; corto plazo = metas y planes de acción." },
+  { id: 'c64', topic: 'Plan de desarrollo',
+    s: "Los objetivos de mediano plazo se asocian a una ___, y los de corto plazo a metas y planes de acción.",
+    a: ['fecha'],
+    exp: "Mediano plazo: fecha." },
+  { id: 'c65', topic: 'Plan de desarrollo',
+    s: "Las estrategias genéricas buscan menos tiempo y menos ___.",
+    a: ['gastos'],
+    exp: "Estrategias: genéricas (- tiempo, - gastos), colaborativas e internet." },
+  { id: 'c66', topic: 'Plan de desarrollo',
+    s: "En la integración de personal, las empresas priorizan la ___.",
+    a: ['pericia'],
+    exp: "Las empresas priorizan la pericia." },
+  { id: 'c67', topic: 'Plan de desarrollo',
+    s: "El control puede ser operacional o de ___.",
+    a: ['gestión', 'gestion'],
+    exp: "Control operacional y control de gestión." },
+
+  // ---- ESTRUCTURA Y ORGANIZACIÓN ----
+  { id: 'c68', topic: 'Estructura y organización',
+    s: "La organización es el marco de coherencia ___ de la empresa.",
+    a: ['estratégica', 'estrategica'],
+    exp: "Organización: marco de coherencia estratégica." },
+  { id: 'c69', topic: 'Estructura y organización',
+    s: "En la organización ___, las personas se pueden comunicar entre sí, están dispuestas a actuar y comparten un propósito común.",
+    a: ['formal'],
+    exp: "Organización formal: comunicación, disposición a actuar y propósito común." },
+  { id: 'c70', topic: 'Estructura y organización',
+    s: "Lo informal lo ___ la empresa, y así los trabajadores sienten pertenencia.",
+    a: ['formaliza', 'formalizan'],
+    exp: "La empresa formaliza lo informal → sentido de pertenencia." },
+  { id: 'c71', topic: 'Estructura y organización',
+    s: "Los principios de una organización formal efectiva son la unidad de ___ y la eficiencia.",
+    a: ['objetivo'],
+    exp: "Principio de unidad de objetivo y principio de eficiencia." }
+];
+
+// Cada desarrollo: q = pregunta, hint = pista, model = respuesta correcta, keys = ideas clave que debía incluir
+const DEV_BANK = [
+  { id: 'd01', topic: 'Concepto de empresa',
+    q: "Defina el concepto de empresa según la RAE y según la definición vista en clases. ¿Por qué el capital y los trabajadores tienen derecho a una retribución económica?",
+    hint: "Piensa en tres piezas: fin lucrativo, comunidad de personas con objetivo común y riesgo compartido.",
+    model: "Según la RAE, una empresa es una unidad de organización dedicada a actividades industriales, mercantiles o de prestación de servicios con fines lucrativos.\nEn clases se definió también como una comunidad de personas que trabajan manual y/o intelectualmente, que tienen un objetivo común: la producción de un bien y/o servicio, para lo cual se requiere capital.\nTanto el capital como los trabajadores corren un cierto riesgo y asumen una responsabilidad, y por eso tienen derecho a una retribución económica.",
+    keys: [
+      "Definición RAE: actividades industriales, mercantiles o de servicios con fines lucrativos",
+      "Comunidad de personas que trabajan manual y/o intelectualmente con un objetivo común",
+      "Producción de un bien y/o servicio, que requiere capital",
+      "Capital y trabajadores corren riesgo y asumen responsabilidad",
+      "Por eso les corresponde una retribución económica"
+    ] },
+
+  { id: 'd02', topic: 'Elementos constitutivos',
+    q: "Explique los elementos constitutivos de la empresa y qué aporta la teoría de Maslow a la comprensión de los recursos humanos.",
+    hint: "Son dos elementos. Uno siente necesidades; el otro incluye maquinaria, activo fijo y fondos líquidos.",
+    model: "Los elementos constitutivos de la empresa son los recursos humanos y los recursos materiales.\nRecursos humanos: la empresa es una comunidad de personas; todas las funciones que se desarrollan en su interior las desempeñan personas, que sienten necesidades y se impulsan en base a ellas. Maslow (1943) organizó esas necesidades humanas en una jerarquía de 5 niveles.\nRecursos materiales: maquinaria, instalaciones, terrenos, etc. (activo fijo, con depreciación, e inventarios) y los fondos líquidos o de caja.",
+    keys: [
+      "Elementos constitutivos: recursos humanos y recursos materiales",
+      "Personas: desempeñan todas las funciones, sienten necesidades y se impulsan en base a ellas",
+      "Maslow (1943): jerarquía de necesidades en 5 niveles",
+      "Materiales: maquinaria, instalaciones y terrenos (activo fijo, depreciación, inventarios)",
+      "Fondos líquidos o de caja"
+    ] },
+
+  { id: 'd03', topic: 'Paradigmas',
+    q: "Explique los paradigmas vistos en clases: la globalización de la economía, 'Nosotros-Nosotros' y 'Competir-Colaborar'.",
+    hint: "Globalización = conflicto; Nosotros-Nosotros = visión holística y RSE; Competir-Colaborar = alianzas y otras formas de cooperar.",
+    model: "Globalización de la economía: es un fenómeno social y económico que, según los apuntes, trae conflicto; también se vincula con lo geopolítico y con la voluntad de ejercer el poder.\nNosotros-Nosotros: propone una visión holística, con Responsabilidad Social Empresarial y crecimiento económico sustentable.\nCompetir-Colaborar: las empresas además de competir colaboran, mediante joint venture (alianzas estratégicas), outsourcing (externalización), benchmarking (aprender del mejor) y off shoring (venta de servicios por plataformas electrónicas fuera de las fronteras), además de insourcing y nearshoring.",
+    keys: [
+      "Globalización: fenómeno social y económico que genera conflicto (geopolítico)",
+      "Nosotros-Nosotros: visión holística",
+      "Responsabilidad Social Empresarial y crecimiento económico sustentable",
+      "Competir-Colaborar: joint venture, outsourcing, benchmarking, off shoring",
+      "Otros: insourcing y nearshoring"
+    ] },
+
+  { id: 'd04', topic: 'Competir-Colaborar',
+    q: "Diferencie joint venture, outsourcing, benchmarking y off shoring. Dé un ejemplo breve de cada uno.",
+    hint: "Alianza, externalizar, aprender del mejor, vender servicios fuera de las fronteras.",
+    model: "Joint venture: alianza estratégica entre empresas. Ej.: dos empresas se asocian para entrar juntas a un nuevo mercado.\nOutsourcing: externalización; se contrata a un tercero para realizar una función. Ej.: contratar a una empresa externa para el servicio de informática o de aseo.\nBenchmarking: aprender del mejor. Ej.: una empresa estudia los procesos de la líder de su rubro para adoptar sus mejores prácticas.\nOff shoring: venta de servicios a través de plataformas electrónicas fuera de las fronteras nacionales. Ej.: un call center o data center que atiende clientes de otros países.",
+    keys: [
+      "Joint venture = alianza estratégica",
+      "Outsourcing = externalización (contratar trabajadores o servicios externos)",
+      "Benchmarking = aprender del mejor",
+      "Off shoring = vender servicios por plataformas electrónicas fuera de las fronteras nacionales",
+      "Un ejemplo coherente para cada uno"
+    ] },
+
+  { id: 'd05', topic: 'Sistemas y entropía',
+    q: "Explique por qué la empresa es un sistema abierto y relacione los conceptos de entropía, homeostasis y negentropía. ¿Por qué una baja entropía es lo ideal?",
+    hint: "Sistema abierto = ciclo con el entorno. Entropía es desgaste; homeostasis es estabilidad; negentropía es lo contrario a la entropía.",
+    model: "La empresa es un sistema abierto porque funciona como un ciclo en constante intercambio con su entorno: recibe recursos y exigencias de la sociedad y entrega productos o servicios.\nLa entropía es la tendencia de los sistemas al desgaste, a la desintegración, al relajamiento de los estándares y a un aumento de la aleatoriedad (incertidumbre).\nLa homeostasis es el estado firme o estable que la empresa busca mantener; la negentropía (antónimo de entropía) es enfrentar ese desgaste.\nUna baja entropía es lo ideal porque significa orden, estándares cumplidos y uso eficiente de los recursos, lo que permite cumplir la promesa de valor (un producto o servicio de calidad).",
+    keys: [
+      "Sistema abierto: ciclo que interactúa con el entorno",
+      "Entropía: desgaste, desintegración, relajamiento de estándares, aleatoriedad (incertidumbre)",
+      "Homeostasis: estado firme / estable",
+      "Negentropía: antónimo de entropía; se enfrenta la entropía",
+      "Baja entropía es lo ideal: estándares, eficiencia y promesa de valor"
+    ] },
+
+  { id: 'd06', topic: 'Sistemas y entropía',
+    q: "Explique cómo el nepotismo y la anomía aumentan la entropía de una organización y qué puede hacer el administrador frente a ellos.",
+    hint: "Ambos deterioran estándares y normas. El administrador debe orientar hacia la baja entropía.",
+    model: "El nepotismo (favorecer a familiares o cercanos) reemplaza la pericia y el mérito por vínculos personales, lo que deteriora los estándares y el clima laboral.\nLa anomía es no tener respeto por las normas sociales: cunde la indiferencia y da lo mismo lo que se hace.\nAmbos aumentan la aleatoriedad e incertidumbre, es decir, la entropía, y son un problema que el administrador debe enfrentar.\nEl administrador puede hacerlo reforzando normas y estándares, priorizando la pericia en la integración de personal, controlando la gestión y liderando con aptitud emocional (autorregulación) para tender a la negentropía.",
+    keys: [
+      "Nepotismo: favorecer a cercanos, aumenta la entropía",
+      "Anomía: falta de respeto por las normas sociales",
+      "Ambos aumentan la aleatoriedad / incertidumbre",
+      "Son un problema del administrador",
+      "Respuesta: normas y estándares, pericia, control, liderazgo con aptitud emocional"
+    ] },
+
+  { id: 'd07', topic: 'Servucción',
+    q: "Describa los siete elementos de la servucción según los apuntes y ejemplifíquelos con un servicio a su elección (por ejemplo, una clínica o un restaurante).",
+    hint: "PEC, STA, Cliente, ZA, SF, RC, MV.",
+    model: "1) PEC (personal en contacto): quienes atienden directamente al cliente; siempre se pregunta o evalúa. Ej.: el garzón o la recepcionista.\n2) STA (soporte técnico administrativo): informática, auxiliares y mantención. Ej.: sistema de reservas, cocina, personal de aseo.\n3) Cliente: participante activo o pasivo del servicio.\n4) ZA (zona de arbitraje): puede ser 'la vista' o burocrático.\n5) SF (soporte físico): la infraestructura, física o virtual. Ej.: el local o la página web.\n6) RC (relaciones de concomitancia): en los apuntes quedó con signo de pregunta; conviene repasarla en el material de clases.\n7) MV (momento de la verdad): el encuentro entre el cliente y el servicio; se apoya en una matriz y un protocolo.",
+    keys: [
+      "PEC: personal en contacto",
+      "STA: soporte técnico administrativo (informática, auxiliares, mantención)",
+      "Cliente: activo o pasivo",
+      "ZA: zona de arbitraje (la vista / burocrático)",
+      "SF: soporte físico (infraestructura física o virtual)",
+      "RC: relaciones de concomitancia",
+      "MV: momento de la verdad (matriz y protocolo)"
+    ] },
+
+  { id: 'd08', topic: 'Problema administrativo',
+    q: "¿Qué es el problema administrativo? ¿Por qué se afirma que la administración es una ciencia social y a la vez un arte?",
+    hint: "Mínimo dos personas, un objetivo común, coordinación y recursos. Ciencia social no exacta + saber aplicar la teoría.",
+    model: "El problema administrativo aparece en toda forma de cooperación organizada: hay como mínimo dos personas en función de un objetivo común, lo que exige coordinación y requiere recursos.\nLa administración es una ciencia social (no exacta) porque permite usar teoría y método para abordar ese problema y buscar resolverlo.\nEs también un arte porque implica saber cómo aplicar en la realidad el conjunto de principios y conceptos para lograr un resultado positivo: combina una teoría con el saber, e involucra aptitudes emocionales.",
+    keys: [
+      "Toda forma de cooperación organizada tiene problema administrativo",
+      "Mínimo 2 personas con un objetivo común; exige coordinación y recursos",
+      "Ciencia social (no exacta): se usa en el problema administrativo para resolverlo",
+      "Arte: saber aplicar la teoría en la realidad para un resultado positivo",
+      "Combina teoría con saber (y aptitudes emocionales)"
+    ] },
+
+  { id: 'd09', topic: 'El administrador',
+    q: "Explique cuál es el trabajo principal del administrador y cómo se apoya en el diagnóstico (FODA). Clasifique como fortaleza, debilidad, oportunidad o amenaza un conflicto con el personal de la empresa.",
+    hint: "Lleva a la empresa de una situación actual a una mejor. FODA: externo (A y O), interno (F y D).",
+    model: "El administrador interpreta los objetivos propuestos por la organización y logra que las cosas se hagan a través de las personas, para que las personas avancen y cada una contribuya. Su trabajo principal es proyectar a la empresa de una situación actual a una futura relativamente mejor.\nSe apoya en el diagnóstico FODA: el ambiente externo se analiza con amenazas y oportunidades, y el ambiente interno con fortalezas y debilidades.\nUn conflicto con el personal ocurre dentro de la organización, por lo tanto es una debilidad (factor interno desfavorable).",
+    keys: [
+      "Interpreta los objetivos propuestos por la organización",
+      "Las cosas se hacen a través de las personas",
+      "Lleva a la empresa a un mejor futuro",
+      "FODA: externo = amenazas y oportunidades; interno = fortalezas y debilidades",
+      "Conflicto con el personal = debilidad"
+    ] },
+
+  { id: 'd10', topic: 'El administrador',
+    q: "Diferencie inteligencia emocional y aptitud emocional. ¿Por qué son importantes para un administrador?",
+    hint: "Una es potencial para aprender habilidades prácticas; la otra se asocia a la autorregulación.",
+    model: "La inteligencia emocional determina el potencial de una persona para aprender habilidades prácticas.\nLa aptitud emocional es una capacidad aprendida a partir de ese potencial; en los apuntes se asocia a la autorregulación.\nSon importantes para el administrador porque su tarea es lograr que las cosas se hagan a través de las personas: necesita autorregular sus emociones, liderar y evitar conductas que aumentan la entropía (por ejemplo, el nepotismo).",
+    keys: [
+      "Inteligencia emocional: potencial para aprender habilidades prácticas",
+      "Aptitud emocional: se asocia a la autorregulación",
+      "El administrador trabaja a través de personas",
+      "Aporta al liderazgo y a un mejor clima de trabajo"
+    ] },
+
+  { id: 'd11', topic: 'Taylor',
+    q: "Explique el aporte de Frederick Taylor: su principal preocupación, el pago a trato y sus principios.",
+    hint: "Eficiencia en la producción, métodos científicos en vez de costumbre, salario justo ligado a la productividad.",
+    model: "Su principal preocupación fue aumentar la eficiencia en la producción, no solo disminuyendo costos y usando más eficientemente los recursos, sino también pagando un salario más justo a los trabajadores, directamente relacionado con su productividad.\nIncorporó el pago a trato: pago por pieza producida o terminada. Creía que en los talleres de producción debían utilizarse métodos científicos y no la costumbre.\nPrincipios: 1) sustituir las reglas prácticas por la ciencia; 2) obtener armonía; 3) lograr la cooperación entre los seres humanos, no el individualismo; 4) buscar la producción máxima en vez de la limitada; 5) desarrollar a cada trabajador al grado más alto. (Los principios 4 y 5 quedaron en blanco en tus apuntes; van tomados del banco de preguntas.)",
+    keys: [
+      "Preocupación: eficiencia en la producción con costos menores y salario más justo",
+      "Pago a trato: por pieza producida o terminada",
+      "Métodos científicos y no la costumbre",
+      "Principio 1: sustituir las reglas prácticas",
+      "Principio 2: armonía. Principio 3: cooperación, no individualismo"
+    ] },
+
+  { id: 'd12', topic: 'Fayol',
+    q: "Explique el aporte de Henri Fayol: las seis actividades de la empresa, las funciones administrativas y al menos cinco de sus 14 principios.",
+    hint: "Técnicas, seguridad, financieras, comerciales, contables y administrativas; planeación, organización, dirección, coordinación y control.",
+    model: "Fayol (1841-1925) publicó en 1916 'Administración Industrial y General'. Clasificó las actividades de las empresas en técnicas, seguridad, financieras, comerciales, contables y administrativas, integradas por las funciones administrativas de planeación, organización, dirección, coordinación y control.\nSus 14 principios son: división del trabajo, autoridad y responsabilidad, disciplina, unidad de mando, unidad de dirección, subordinación del interés individual al general, remuneración, centralización, cadena escalar, orden, equidad, estabilidad, iniciativa y espíritu de equipo.\nEjemplos: unidad de mando (cada persona recibe órdenes de un solo jefe); unidad de dirección (un solo plan para actividades con un mismo objetivo); división del trabajo (especialización para aumentar la eficiencia); cadena escalar (vía jerárquica de autoridad y comunicación); equidad (trato justo).",
+    keys: [
+      "1916: Administración Industrial y General",
+      "6 actividades: técnicas, seguridad, financieras, comerciales, contables y administrativas",
+      "5 funciones: planeación, organización, dirección, coordinación y control",
+      "Nombra al menos 5 de los 14 principios",
+      "Explica correctamente al menos algunos (p. ej. unidad de mando vs. unidad de dirección)"
+    ] },
+
+  { id: 'd13', topic: 'Taylor y Fayol',
+    q: "Compare a Taylor y Fayol y explique qué se entiende por 'buena administración' a partir de ambos.",
+    hint: "Taylor mira el taller; Fayol mira la dirección general. Juntos: principios + proceso administrativo.",
+    model: "Taylor miró la empresa desde el taller: se centró en la eficiencia de la producción y del trabajo operativo con métodos científicos (pago a trato, sustituir la costumbre por la ciencia).\nFayol la miró desde la alta dirección: definió las actividades de la empresa, las funciones administrativas y principios generales de administración.\nEn conjunto aportan principios y proceso administrativo (planificar, organizar, dirigir, coordinar, controlar). Una buena administración usa esos principios y aplica el proceso administrativo para enfrentar el problema administrativo.",
+    keys: [
+      "Taylor: taller, eficiencia de la producción, métodos científicos",
+      "Fayol: alta dirección, actividades, funciones y principios",
+      "Buena administración = principios + proceso administrativo",
+      "Ambos ayudan a enfrentar el problema administrativo"
+    ] },
+
+  { id: 'd14', topic: 'Planificación',
+    q: "Defina planificación y explique por qué es la función fundamental de la administración. Describa los tipos de planes vistos en clases.",
+    hint: "Anticipar el futuro. Tipos: visión, misión, objetivos y metas, estrategias; políticas, procedimientos, reglas/protocolo.",
+    model: "Planificar es anticipar el futuro (crear futuro): definir objetivos y estrategias, políticas, programas y procedimientos para alcanzarlos. Es la función fundamental de la administración porque antecede a las demás: sin metas y planes no se puede organizar, dirigir ni controlar. Además, la empresa es de mejora continua, es decir, un proceso.\nTipos de planes: visión (qué, cómo y cuándo queremos ser); propósitos o misión; objetivos y metas; estrategias; políticas (explícitas e implícitas); procedimientos (secuencia paso a paso); y reglas o protocolo (acciones específicas obligatorias).",
+    keys: [
+      "Planificar: anticipar / crear el futuro",
+      "Define objetivos, estrategias, políticas, programas y procedimientos",
+      "Función fundamental: antecede a organizar, dirigir y controlar",
+      "Visión (qué, cómo, cuándo), misión, objetivos y metas, estrategias",
+      "Políticas (explícitas e implícitas), procedimientos, reglas/protocolo"
+    ] },
+
+  { id: 'd15', topic: 'Planificación',
+    q: "Explique los principios que deben considerarse al planificar: contribución a los objetivos, prevalencia, extensión, eficiencia de los planes, compromiso y flexibilidad.",
+    hint: "Recuerda que el tiempo (corto y largo plazo) y qué tan flexibles son los planes son temas centrales.",
+    model: "Contribución a los objetivos: todo plan debe aportar al logro de los objetivos de la organización.\nPrevalencia de la planeación: planificar antecede a organizar, dirigir y controlar.\nExtensión de la planeación: planifican todos los niveles de administración, según su ámbito.\nEficiencia de los planes: deben lograr su propósito con el menor costo e imprevistos posibles.\nCompromiso: el plazo del plan (corto o largo) debe ser lo bastante extenso para cumplir y recuperar lo que hoy se compromete.\nFlexibilidad: qué tan flexibles se pueden hacer los planes para adaptarse a los imprevistos.",
+    keys: [
+      "Contribución a los objetivos",
+      "Prevalencia: la planificación va primero",
+      "Extensión: todos los niveles planifican",
+      "Eficiencia de los planes",
+      "Compromiso (plazo) y flexibilidad"
+    ] },
+
+  { id: 'd16', topic: 'Plan de desarrollo',
+    q: "Explique el plan de desarrollo: la actualidad, el futuro, los objetivos a largo, mediano y corto plazo, y el rol de las estrategias.",
+    hint: "Actualidad: visión, misión y diagnóstico. Futuro: objetivos. Estrategias: ¿cómo?",
+    model: "Planificar es crear futuro. En la actualidad gestión ≡ planificación: se declara la visión y la misión y se hace el diagnóstico.\nEn el futuro se fijan los objetivos: de largo plazo (el rumbo), de mediano plazo (una fecha) y de corto plazo (metas y planes de acción).\nLas estrategias responden al ¿cómo? y pueden ser genéricas (menos tiempo, menos gastos), colaborativas o vía internet.\nLuego siguen la integración de personal (las empresas priorizan la pericia), la dirección (¿a qué directivo contrato?) y el control (operacional y de gestión).",
+    keys: [
+      "Actualidad: visión, misión y diagnóstico",
+      "Objetivos: largo plazo = rumbo; mediano = fecha; corto = metas / planes de acción",
+      "Estrategias = el cómo (genéricas, colaborativas, internet)",
+      "Integración de personal: pericia",
+      "Dirección y control (operacional y de gestión)"
+    ] },
+
+  { id: 'd17', topic: 'Planificación',
+    q: "¿Qué debe hacer una empresa para lograr una ventaja sostenible? Relacione su respuesta con el FODA.",
+    hint: "Cuatro verbos: neutralizar, corregir, aprovechar, explotar.",
+    model: "Para lograr una ventaja sostenible la empresa debe neutralizar las amenazas, corregir las debilidades, aprovechar las oportunidades y explotar las fortalezas.\nEsto se relaciona con el FODA: las amenazas y oportunidades pertenecen al ambiente externo, y las fortalezas y debilidades al ambiente interno. El diagnóstico es el punto de partida para definir estrategias que generen esa ventaja.",
+    keys: [
+      "Neutralizar amenazas",
+      "Corregir debilidades",
+      "Aprovechar oportunidades",
+      "Explotar fortalezas",
+      "FODA: externo (A y O) e interno (F y D)"
+    ] },
+
+  { id: 'd18', topic: 'Estructura y organización',
+    q: "Explique la organización como marco de coherencia estratégica y diferencie la organización formal de la informal. ¿Qué principios tiene una organización formal efectiva?",
+    hint: "Formal: comunicación, disposición a actuar y propósito común. Principios: unidad de objetivo y eficiencia.",
+    model: "La organización es el marco de coherencia estratégica de la empresa.\nEn la organización formal las personas se pueden comunicar entre sí, están dispuestas a actuar y comparten un propósito común.\nLa organización informal es una actividad de grupo que no tiene un objetivo formal; la empresa formaliza lo informal y así los trabajadores sienten pertenencia.\nLos principios de una organización formal efectiva son el principio de unidad de objetivo y el principio de eficiencia.",
+    keys: [
+      "Organización = marco de coherencia estratégica",
+      "Formal: comunicación, disposición a actuar, propósito común",
+      "Informal: actividad de grupo sin objetivo formal",
+      "La empresa formaliza lo informal: sentido de pertenencia",
+      "Principios: unidad de objetivo y eficiencia"
+    ] },
+
+  { id: 'd19', topic: 'Productividad',
+    q: "Explique qué es la productividad, cómo se calcula según los apuntes y en qué casos aumenta o disminuye.",
+    hint: "Productividad = (P × q) / (CF + CV). Piensa en productos e insumos.",
+    model: "La productividad relaciona lo que la empresa produce con lo que utiliza para producirlo (ingresos frente a gastos). Se calcula como (P × q) / (CF + CV): precio por cantidad, dividido por los costos fijos más los costos variables.\nAumenta cuando se incrementan los productos con los mismos insumos (o se usan menos insumos para los mismos productos).\nDisminuye cuando se reducen los productos con los mismos insumos, o cuando aumentan los insumos manteniendo los mismos productos.",
+    keys: [
+      "Relación entre productos (ingresos) e insumos (gastos)",
+      "Fórmula: (P × q) / (CF + CV)",
+      "Aumenta: más productos con los mismos insumos",
+      "Disminuye: menos productos con los mismos insumos"
+    ] },
+
+  { id: 'd20', topic: 'Trabajo grupal',
+    q: "Según lo pedido para el trabajo grupal, ¿qué debe contener la declaración? Redacte un ejemplo breve para una empresa imaginaria.",
+    hint: "Son cinco puntos: describir, valores (3), visión de futuro positivo, misión y FODA.",
+    model: "La declaración (a presentar en Word) debe contener: 1) descripción de la empresa o negocio; 2) declaración de los valores que entregan (3); 3) visión de futuro positivo; 4) misión; 5) FODA.\nEjemplo (cafetería 'Grano Local'): Descripción: cafetería de barrio que vende café de especialidad y pastelería. Valores: calidad, cercanía y sustentabilidad. Visión: ser la cafetería de referencia de la comuna, con un impacto positivo en su comunidad. Misión: servir café de calidad con un trato cercano y prácticas responsables con el medio ambiente. FODA: fortalezas y debilidades internas; oportunidades y amenazas externas.",
+    keys: [
+      "Describir la empresa / negocio",
+      "Declarar 3 valores (conjunto de atributos que entregan)",
+      "Visión de futuro positivo",
+      "Misión",
+      "FODA (externo: A y O; interno: F y D)"
+    ] }
+];
+
+/* ---------- Utilidades ---------- */
+function persistProgress() {
+  try { localStorage.setItem('undertale_admin_progress', JSON.stringify(userProgress)); } catch (e) {}
+}
+
+function getMarks() {
+  if (!userProgress.selfMarks || typeof userProgress.selfMarks !== 'object') userProgress.selfMarks = {};
+  return userProgress.selfMarks;
+}
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Ignora mayúsculas, tildes, espacios, signos y artículos iniciales
+function normalizeAnswer(str) {
+  let s = String(str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  s = s.replace(/[^a-z0-9\s]/g, ' ');
+  const words = s.split(/\s+/).filter(Boolean);
+  while (words.length > 1 && ['el', 'la', 'los', 'las', 'un', 'una'].includes(words[0])) words.shift();
+  return words.join('');
+}
+
+function matchesCloze(userText, variants) {
+  const n = normalizeAnswer(userText);
+  if (!n) return false;
+  return variants.some(v => normalizeAnswer(v) === n);
+}
+
+function clozeSentenceHTML(item, filled) {
+  const parts = item.s.split('___').map(escapeHTML);
+  const blank = filled
+    ? `<span class="blank-filled">${escapeHTML(item.a[0])}</span>`
+    : `<span class="blank-slot">&nbsp;</span>`;
+  return parts.join(blank);
+}
+
+function clozeHint(item) {
+  const first = item.a[0];
+  const words = first.split(/\s+/);
+  const size = words.length === 1 ? `${first.length} letras` : `${words.length} palabras`;
+  return `Empieza con «${escapeHTML(first.charAt(0).toUpperCase())}» y tiene ${size}.<br>Tema: ${escapeHTML(item.topic)}.`;
+}
+
+function scrollToTopSafe() {
+  try { document.body.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+}
+
+/* ---------- Estado de la sesión ---------- */
+let selfState = null;
+
+function setSelfStatus() {
+  const bar = document.getElementById('statusBar');
+  if (bar) bar.style.display = 'flex';
+  const hpc = document.getElementById('hpContainer');
+  if (hpc) hpc.style.display = 'none';
+  const ss = document.getElementById('selfScore');
+  if (ss && selfState) {
+    ss.style.display = 'inline';
+    ss.innerHTML = `<span style="color:var(--hp-green);">✔ ${selfState.good}</span> &nbsp; <span style="color:#ff6666;">✘ ${selfState.bad}</span>`;
+  }
+}
+
+/* ---------- Submenú de la fase 9 ---------- */
+function renderSelfMenu() {
+  unlockAudioContext();
+  const bar = document.getElementById('statusBar');
+  if (bar) bar.style.display = 'none';
+  const container = document.getElementById('screenContent');
+  if (!container) return;
+
+  const marks = getMarks();
+  const count = (bank, v) => bank.filter(i => marks[i.id] === v).length;
+  const cGood = count(CLOZE_BANK, 'good'), cBad = count(CLOZE_BANK, 'bad');
+  const dGood = count(DEV_BANK, 'good'), dBad = count(DEV_BANK, 'bad');
+  const doneC = userProgress.completedPhases.includes(91);
+  const doneD = userProgress.completedPhases.includes(92);
+
+  const reviewButtons = `
+    ${cBad > 0 ? `
+    <button class="option-btn" style="border-color:#ff6666; color:#ff6666;" onclick="startSelfSession('cloze', true)">
+      <span class="soul-icon">❤️</span>
+      <span>🔁 Repasar frases que marqué MALAS</span>
+      <span class="phase-badge" style="border-color:#ff6666; color:#ff6666;">${cBad}</span>
+    </button>` : ''}
+    ${dBad > 0 ? `
+    <button class="option-btn" style="border-color:#ff6666; color:#ff6666;" onclick="startSelfSession('dev', true)">
+      <span class="soul-icon">❤️</span>
+      <span>🔁 Repasar desarrollos que marqué MALOS</span>
+      <span class="phase-badge" style="border-color:#ff6666; color:#ff6666;">${dBad}</span>
+    </button>` : ''}
+  `;
+
+  container.innerHTML = `
+    <div class="screen-overlay">
+      <div style="font-size:30px; margin-bottom:10px;">✍️</div>
+      <div class="screen-title" style="color:var(--self-pink);">FASE 9<br><span style="font-size:11px; color:#fff;">COMPLETA LA FRASE Y PREGUNTAS DE DESARROLLO</span></div>
+      <p style="font-size:9px; line-height:1.8; max-width:620px; color:#ccc;">
+        Escribe tu respuesta, pulsa <span style="color:var(--self-pink);">COMPROBAR</span> y compárala con la correcta.
+        Después califícate con honestidad: <span style="color:var(--hp-green);">BUENA</span> o <span style="color:#ff6666;">MALA</span>.
+        Las malas quedan guardadas para repasarlas.
+      </p>
+
+      <div class="menu-grid">
+        <button class="option-btn ${doneC ? 'completed-unit' : ''}" style="${doneC ? '' : 'border-color:var(--self-pink); color:var(--self-pink);'}" onclick="startSelfSession('cloze', false)">
+          <span class="soul-icon">❤️</span>
+          <span>✍️ 9A. COMPLETA LA FRASE (${CLOZE_BANK.length} frases)</span>
+          <span class="phase-badge ${doneC ? 'done' : ''}" ${doneC ? '' : 'style="border-color:var(--self-pink); color:var(--self-pink);"'}>${cGood}/${CLOZE_BANK.length} ✔</span>
+        </button>
+        <button class="option-btn ${doneD ? 'completed-unit' : ''}" style="${doneD ? '' : 'border-color:var(--self-pink); color:var(--self-pink);'}" onclick="startSelfSession('dev', false)">
+          <span class="soul-icon">❤️</span>
+          <span>📝 9B. PREGUNTAS DE DESARROLLO (${DEV_BANK.length} preguntas)</span>
+          <span class="phase-badge ${doneD ? 'done' : ''}" ${doneD ? '' : 'style="border-color:var(--self-pink); color:var(--self-pink);"'}>${dGood}/${DEV_BANK.length} ✔</span>
+        </button>
+        ${reviewButtons}
+        <button class="option-btn" onclick="renderMainMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>⬅ VOLVER AL MENÚ PRINCIPAL</span>
+        </button>
+      </div>
+    </div>
+  `;
+  scrollToTopSafe();
+}
+
+/* ---------- Inicio de sesión ---------- */
+function startSelfSession(kind, onlyBad) {
+  unlockAudioContext();
+  playBleep(kind === 'cloze' ? 698 : 784, 'square', 0.1);
+  const bank = kind === 'cloze' ? CLOZE_BANK : DEV_BANK;
+  const marks = getMarks();
+  let pool = bank.slice();
+  if (onlyBad) pool = pool.filter(it => marks[it.id] === 'bad');
+  if (pool.length === 0) {
+    alert('No tienes preguntas marcadas como malas en esta sección.');
+    return;
+  }
+  selfState = {
+    kind: kind,
+    items: shuffleArray(pool),
+    idx: 0,
+    good: 0,
+    bad: 0,
+    failedIds: [],
+    review: !!onlyBad,
+    checked: false,
+    marked: false
+  };
+  renderSelfQuestion();
+}
+
+/* ---------- Pantalla de pregunta ---------- */
+function renderSelfQuestion() {
+  const container = document.getElementById('screenContent');
+  if (!container || !selfState) return;
+  const st = selfState;
+  st.checked = false;
+  st.marked = false;
+  setSelfStatus();
+
+  const item = st.items[st.idx];
+  const total = st.items.length;
+  const isCloze = st.kind === 'cloze';
+  const progressPct = (st.idx / total) * 100;
+  const isLast = st.idx === total - 1;
+
+  const bodyHTML = isCloze
+    ? `<div id="selfSentence">${clozeSentenceHTML(item, false)}</div>`
+    : `<div>${escapeHTML(item.q)}</div>`;
+
+  const inputHTML = isCloze
+    ? `<input id="selfInput" class="self-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+              placeholder="Escribe la palabra que falta..." onkeydown="if(event.key==='Enter'){checkSelf();}">`
+    : `<textarea id="selfInput" class="self-input" rows="8" placeholder="Escribe aquí tu respuesta de desarrollo..."></textarea>`;
+
+  container.innerHTML = `
+    <div class="progress-section">
+      <div style="display:flex; justify-content:space-between;">
+        <span>${isCloze ? 'Completa la frase' : 'Desarrollo'}${st.review ? ' (repaso)' : ''}:</span>
+        <span style="color:var(--hint-cyan);">${st.idx} / ${total}</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: ${progressPct}%;"></div>
+      </div>
+    </div>
+
+    <div class="dialogue-box">
+      <span class="dialogue-prefix">* ${isCloze ? 'COMPLETA LA FRASE' : 'DESARROLLO'} ${st.idx + 1} DE ${total}:
+        <span class="topic-tag">Tema: ${escapeHTML(item.topic)}</span>
+      </span>
+      ${bodyHTML}
+    </div>
+
+    <div class="hint-box" id="hintBox"></div>
+
+    ${inputHTML}
+
+    <button class="action-btn check-btn" id="checkBtn" onclick="checkSelf()">
+      <span>COMPROBAR</span>
+    </button>
+
+    <div class="reveal-panel" id="revealPanel"></div>
+
+    <div class="mark-zone" id="markZone">
+      <div class="mark-title">Sé honesto: ¿tu respuesta estaba buena o mala?</div>
+      <div class="mark-row">
+        <button class="mark-btn good" id="markGood" onclick="markSelf('good')">✔ BUENA</button>
+        <button class="mark-btn bad" id="markBad" onclick="markSelf('bad')">✘ MALA</button>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="action-btn" onclick="renderSelfMenu()">
+        <span class="soul-icon">❤️</span>
+        <span>FASE 9</span>
+      </button>
+      <button class="action-btn hint-btn" onclick="toggleSelfHint()">
+        <span class="soul-icon">❤️</span>
+        <span>PISTA</span>
+      </button>
+      <button class="action-btn" id="selfNextBtn" style="display:none;" onclick="nextSelf()">
+        <span class="soul-icon">❤️</span>
+        <span>${isLast ? 'VER RESULTADOS' : 'SIGUIENTE'} ➔</span>
+      </button>
+    </div>
+  `;
+
+  scrollToTopSafe();
+  const field = document.getElementById('selfInput');
+  if (field && isCloze) {
+    // En escritorio se enfoca solo; en móvil evitamos abrir el teclado sin que lo pidas
+    if (window.matchMedia && window.matchMedia('(hover: hover)').matches) field.focus();
+  }
+}
+
+function toggleSelfHint() {
+  unlockAudioContext();
+  playBleep(440, 'triangle', 0.08);
+  const hintBox = document.getElementById('hintBox');
+  if (!hintBox || !selfState) return;
+  const item = selfState.items[selfState.idx];
+  if (hintBox.style.display === 'block') {
+    hintBox.style.display = 'none';
+    return;
+  }
+  hintBox.style.display = 'block';
+  hintBox.innerHTML = selfState.kind === 'cloze'
+    ? `💡 <strong>PISTA:</strong><br>${clozeHint(item)}`
+    : `💡 <strong>PISTA:</strong><br>${escapeHTML(item.hint)}`;
+}
+
+/* ---------- Comprobar ---------- */
+function checkSelf() {
+  unlockAudioContext();
+  const st = selfState;
+  if (!st || st.checked) return;
+  const item = st.items[st.idx];
+  const field = document.getElementById('selfInput');
+  const panel = document.getElementById('revealPanel');
+  const checkBtn = document.getElementById('checkBtn');
+  const markZone = document.getElementById('markZone');
+  if (!field || !panel) return;
+
+  const userText = field.value.trim();
+  st.checked = true;
+  field.readOnly = true;
+  field.blur();
+  if (checkBtn) checkBtn.style.display = 'none';
+
+  if (st.kind === 'cloze') {
+    const sentence = document.getElementById('selfSentence');
+    if (sentence) sentence.innerHTML = clozeSentenceHTML(item, true);
+
+    let verdict;
+    if (!userText) {
+      verdict = `<div class="verdict warn">🔎 No escribiste ninguna respuesta.</div>`;
+    } else if (matchesCloze(userText, item.a)) {
+      verdict = `<div class="verdict ok">🔎 Tu respuesta coincide con la esperada.</div>`;
+    } else {
+      verdict = `<div class="verdict warn">🔎 No coincide palabra por palabra. Si significa lo mismo, tú decides si cuenta como buena.</div>`;
+    }
+
+    panel.innerHTML = `
+      <div class="reveal-title">RESPUESTA CORRECTA</div>
+      <div class="reveal-answer">${escapeHTML(item.a[0])}</div>
+      <div class="reveal-mine">Tu respuesta: <em>${userText ? escapeHTML(userText) : '(en blanco)'}</em></div>
+      ${verdict}
+      <div class="reveal-exp">${escapeHTML(item.exp)}</div>
+    `;
+  } else {
+    const blankNote = userText ? '' : `<div class="verdict warn" style="margin-bottom:10px;">🔎 No escribiste ninguna respuesta.</div>`;
+    panel.innerHTML = `
+      ${blankNote}
+      <div class="reveal-title">RESPUESTA DE DESARROLLO CORRECTA</div>
+      <div class="reveal-model">${escapeHTML(item.model).replace(/\n/g, '<br><br>')}</div>
+      <div class="reveal-title" style="margin-top:14px;">IDEAS CLAVE QUE DEBÍAS INCLUIR</div>
+      <ul class="key-list">${item.keys.map(k => `<li>${escapeHTML(k)}</li>`).join('')}</ul>
+    `;
+  }
+
+  panel.style.display = 'block';
+  if (markZone) markZone.style.display = 'block';
+  playBleep(523.3, 'triangle', 0.12);
+  try { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
+}
+
+/* ---------- Marcar buena / mala ---------- */
+function markSelf(result) {
+  unlockAudioContext();
+  const st = selfState;
+  if (!st || !st.checked || st.marked) return;
+  st.marked = true;
+  const item = st.items[st.idx];
+  getMarks()[item.id] = result;
+
+  const good = document.getElementById('markGood');
+  const bad = document.getElementById('markBad');
+  if (good) { good.disabled = true; if (result === 'good') good.classList.add('chosen'); }
+  if (bad) { bad.disabled = true; if (result === 'bad') bad.classList.add('chosen'); }
+
+  if (result === 'good') {
+    st.good++;
+    playBleep(587.3, 'triangle', 0.15);
+  } else {
+    st.bad++;
+    st.failedIds.push(item.id);
+    playBleep(196, 'sawtooth', 0.2);
+  }
+  persistProgress();
+  setSelfStatus();
+
+  const nextBtn = document.getElementById('selfNextBtn');
+  if (nextBtn) {
+    nextBtn.style.display = 'flex';
+    try { nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
+  }
+}
+
+function nextSelf() {
+  unlockAudioContext();
+  if (!selfState) return;
+  selfState.idx++;
+  if (selfState.idx < selfState.items.length) {
+    renderSelfQuestion();
+  } else {
+    finishSelfSession();
+  }
+}
+
+/* ---------- Resultados ---------- */
+function finishSelfSession() {
+  const st = selfState;
+  const container = document.getElementById('screenContent');
+  if (!st || !container) return;
+
+  const phaseId = st.kind === 'cloze' ? 91 : 92;
+  if (!st.review && !userProgress.completedPhases.includes(phaseId)) {
+    userProgress.completedPhases.push(phaseId);
+  }
+  persistProgress();
+  playVictorySound();
+
+  const bar = document.getElementById('statusBar');
+  if (bar) bar.style.display = 'none';
+
+  const total = st.items.length;
+  let rank = 'C - Administrador Junior';
+  if (st.good >= total * 0.9) rank = 'S - ADMINISTRADOR LEGENDARIO';
+  else if (st.good >= total * 0.75) rank = 'A - GERENTE ESTRATÉGICO';
+  else if (st.good >= total * 0.5) rank = 'B - ANALISTA SENIOR';
+
+  const failed = st.items.filter(it => st.failedIds.includes(it.id));
+  const failedHTML = failed.length === 0 ? '' : `
+    <div class="review-list">
+      <div class="review-head">PARA REPASAR (${failed.length}):</div>
+      ${failed.map(it => `<div class="review-item">${
+        st.kind === 'cloze' ? clozeSentenceHTML(it, true) : `<strong>${escapeHTML(it.q)}</strong>`
+      }</div>`).join('')}
+    </div>
+  `;
+
+  const kindLabel = st.kind === 'cloze' ? 'FRASES' : 'DESARROLLOS';
+  const badNow = (st.kind === 'cloze' ? CLOZE_BANK : DEV_BANK).filter(i => getMarks()[i.id] === 'bad').length;
+
+  container.innerHTML = `
+    <div class="screen-overlay">
+      <div style="font-size:38px; margin-bottom:14px;">🏆❤️</div>
+      <div class="screen-title" style="color:#00ff00;">¡SESIÓN DE ${kindLabel} COMPLETADA!</div>
+      <div style="margin:10px 0 16px; border:3px solid var(--ut-yellow); padding:14px; font-size:10.5px; line-height:1.8;">
+        BUENAS: <span style="color:var(--hp-green);">${st.good}</span> / ${total}<br>
+        MALAS: <span style="color:#ff6666;">${st.bad}</span><br>
+        RANGO: <span style="color:var(--ut-yellow);">${rank}</span>
+      </div>
+      ${failedHTML}
+      <div class="menu-grid" style="margin-top:14px;">
+        ${badNow > 0 ? `
+        <button class="option-btn" style="border-color:#ff6666; color:#ff6666;" onclick="startSelfSession('${st.kind}', true)">
+          <span class="soul-icon">❤️</span>
+          <span>🔁 REPASAR SOLO LAS MALAS</span>
+          <span class="phase-badge" style="border-color:#ff6666; color:#ff6666;">${badNow}</span>
+        </button>` : ''}
+        <button class="option-btn" onclick="startSelfSession('${st.kind}', false)">
+          <span class="soul-icon">❤️</span>
+          <span>REPETIR TODO (NUEVO ORDEN)</span>
+        </button>
+        <button class="option-btn" onclick="renderSelfMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>VOLVER A LA FASE 9</span>
+        </button>
+        <button class="option-btn" onclick="renderMainMenu()">
+          <span class="soul-icon">❤️</span>
+          <span>VOLVER AL MENÚ PRINCIPAL</span>
+        </button>
+      </div>
+    </div>
+  `;
+  scrollToTopSafe();
 }
 
 if (document.readyState === 'loading') {
